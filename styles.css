@@ -1,3 +1,13 @@
+a{
+    display: inline-block;
+    text-decoration: none;
+}
+
+a:hover, button:hover{
+    color: white;
+}
+
+
 body{
     background-image: url("images/ChessBackground.jpg");
     background-position: 100%;
@@ -25,6 +35,7 @@ header#banner{
     width: 100%;
 }
     header span{
+        display: inline-block;
         font-size: 20px;
         font-weight: bold;
         padding: 20px 100px;
@@ -54,3 +65,9 @@ section#content{
         margin: 20px;
         margin-top: 50px;
     }
+
+footer{
+    color: white;
+    align-self: center;
+    justify-self: center;
+}
