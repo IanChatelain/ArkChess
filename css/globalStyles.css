@@ -7,6 +7,7 @@ a{
 
 a:hover, button:hover, a:focus, button:focus{
     color: white;
+    text-Shadow: 1px 1px 1px white;
 }
 
 body{
@@ -25,18 +26,19 @@ div#container{
 
 div *{
     font-family: 'Merriweather', serif;
-    color: #b9b9b9;
+    color: #c9c9c9;
     text-shadow: 1px 1px 2px black;
 }
 
 .span-hover:hover img{
-    content: url("/images/ArkChessLogoTransparentWhite.png");
+    content: url("/images/ArkChessLogoTransparentBlur.png");
     vertical-align: middle;
     padding-right: 10px;
     width: 10%;
 }
 
 header#banner{
+    margin-bottom: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,4 +76,5 @@ footer{
         display: inline-block;
         list-style: none;
         padding-left: 15px;
+        margin-top: 100px;
     }
