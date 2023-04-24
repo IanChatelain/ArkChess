@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="/js/signin.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <header id="banner">
+            <span class="span-hover"><a href="../index.html"><img src="/images/ArkChessLogoTransparentC9.png" alt="ArkChess Logo">ArkChess</a></span>
+            <nav>
+                <ul>
+                    <li><a href="play.html">Play</a></li>
+                    <li><a href="signin.html">Sign In</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="content" id="signinContent">
+            <form id="signinForm" action="play.html">
+                <fieldset>
+                    <legend>Sign in</legend>
+                    <label for="username">Username</label>
+                    <input class="forms" type="text" id="username" name="username" placeholder="ChessUser1">
+                    <p class="error" id="usernameRequired_error">* Required field</p>
+                    <p class="error" id="usernameInvalid_error">* Please enter a valid username</p>
+
+                    <label for="password">Password</label>
+                    <input class="forms" type="text" id="password" name="password" placeholder="Ilovechess1337!">
+                    <p class="error" id="passwordRequired_error">* Required field</p>
+                    <p id="passwordErrorMarker"></p>
+
+                    <label id="emailLabel" for="email">Email</label>
+                    <input class="forms" type="text" id="email" name="email" placeholder="email@example.com">
+                    <p class="error" id="emailRequired_error">* Required field</p>
+                    <p class="error" id="emailInvalid_error">* Please enter a valid email</p>
+
+                    <button type="submit" id="submit" class="defaultButton">Sign In</button>
+                    <label class="switch">
+                        <input id="slider" type="checkbox">
+                        <span class="slider"></span>
+                      </label>
+                </fieldset>
+            </form>
+        </main>
+        <footer>
+            <nav>
+                <ul id="footerul">
+                    <li><a href="index.html">ArkChess</a></li>
+                    <li><a href="play.html">Play</a></li>
+                    <li><a href="signin.html">Sign In</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+</body>
+</html>
