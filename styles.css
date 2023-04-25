@@ -196,7 +196,12 @@ main#indexContent{
     flex-direction: column;
 }
 
+    main#indexContent h1{
+        font-size: 25px;
+    }
+
     main#indexContent h2{
+        font-size: 20px;
         word-spacing: .5em;
     }
 
@@ -214,7 +219,6 @@ main#playContent{
     }
 
     div#notationWindow{
-        order: 2;
         display: flex;
         flex-direction: column;
         background-color: rgba(255, 255, 255, 0.15);
@@ -233,6 +237,19 @@ main#playContent{
         border-bottom: 1px solid black;
     }
 
+    div#gameDescription{
+        order: 2;
+    }
+
+    div#gameDescription h1{
+        font-size: 20px;
+        margin: 0;
+    }
+
+    div#gameDescription p{
+        font-size: 14px;
+    }
+
 /* signin.html main content */
 main#signinContent{
     display: flex;
@@ -242,6 +259,11 @@ main#signinContent{
     main#signinContent fieldset{
         border: none;
         padding-top: 15px;
+    }
+
+    main#signinContent h1{
+        font-size: 20px;
+        margin-top: 0;
     }
 
 /* contact.html main content */
@@ -305,3 +327,7 @@ footer{
         padding-left: 5px;
         padding-right: 5px;
     }
+
+@media(max-width: 700px){
+    
+}

@@ -120,17 +120,24 @@ function thankYou(){
 // Adds a logo image beside every nav element.
 function footerLogoSeparator(){
     let footerul = document.getElementById("footerul");
+    let footerLength = footerul.children.length + 1;
 
-    for(let n = 0; n < footerul.children.length + 1; n++){
-
+    for(let n = 0; n < footerLength * 2; n++){
         if(n % 2 == 0){
-            let img = document.createElement("img");
-            footerul.appendChild(img);
-
-            img.setAttribute("src", "/images/ArkChessLogoTransparentC9.png");
-
-            footerul.insertBefore(img, footerul.children[n]);
+            let li = document.createElement("li");
+            footerul.insertBefore(li, footerul.children[n]);
         }
+    }
+
+    let lis = footerul.querySelectorAll("li");
+
+    for(let n = 0; n < lis.length; n += 2){
+        var img = document.createElement("img");
+
+        img.setAttribute("src", "/images/ArkChessLogoTransparentC9.png");
+        img.setAttribute("alt", "ArkChess Logo");
+
+        lis[n].appendChild(img);
     }
 }
 
@@ -163,7 +170,7 @@ function load(){
     let usernameInput = document.getElementById("username")
     let emailLabel = document.getElementById("emailLabel");
     let name = document.getElementById("username");
-    let legend = document.getElementsByTagName("legend")[0];
+    let h1 = document.getElementsByTagName("h1")[0];
 
     name.focus();
 
@@ -178,14 +185,14 @@ function load(){
         let toggleSwitch = document.getElementById("slider");
         let button = document.getElementById("submit");
         if(toggleSwitch.checked){
-            legend.innerHTML = "Register";
+            h1.innerHTML = "Register";
             button.innerHTML = "Register";
             button.style.color = "#0071C5";
             emailInput.style.display = "block";
             emailLabel.style.display = "block";
         }
         else{
-            legend.innerHTML = "Sign In";
+            h1.innerHTML = "Sign In";
             button.innerHTML = "Sign In";
             button.style.color = "#a9a9a9";
             hideElements(emailInput, emailLabel);
