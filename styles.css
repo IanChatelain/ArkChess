@@ -136,7 +136,7 @@ a:hover, button:hover, a:focus, button:focus{
 
 /* background */
 body{
-    background-image: url("/images/ChessBackgroundTech.jpg");
+    background-image: url("images/background.jpg");
     background-position: left center;
     background-size: cover;
     background-attachment: fixed;
@@ -159,7 +159,7 @@ div *{
 
 /* header logo */
 .span-hover:hover img{
-    content: url("/images/ArkChessLogoTransparentBlur.png");
+    content: url("images/ArkChessLogoTransparentBlur.png");
     vertical-align: middle;
     padding-right: 10px;
     width: 10%;

@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="/js/play.js"></script>
+    <script src="js/play.js"></script>
     <title>ArkChess &bull; Play</title>
 </head>
 <body>
     <div id="container">
         <header id="banner">
-            <span class="span-hover"><a href="index.html"><img src="/images/ArkChessLogoTransparentC9.png" alt="ArkChess Logo">ArkChess</a></span>
+            <span class="span-hover"><a href="index.html"><img src="images/ArkChessLogoTransparentC9.png" alt="ArkChess Logo">ArkChess</a></span>
             <nav aria-label="Top navigation">
                 <ul>
                     <li><a href="play.html">Play</a></li>
@@ -21,6 +21,10 @@
             </nav>
         </header>
         <main class="content" id="playContent">
+            <div>
+                <link rel="stylesheet" href="css/chessboard-1.0.0.min.css" />
+                <script src="js/chessboard-1.0.0.min.js"></script>
+            </div>
             <table id="chessTable"></table> 
             <div id="gameDescription">
                 <h1>Casual </h1>  
