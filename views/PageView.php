@@ -23,7 +23,25 @@ class PageView{
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link rel="stylesheet" type="text/css" href="css/main.css">
+                <link rel="stylesheet" type="text/css" href="css/board.css">
+                <link rel="stylesheet" type="text/css" href="css/learn.css">
+                <link rel="stylesheet"
+                    href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+                    integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
+                    crossorigin="anonymous">
+                <script src="js/footerLogoSeparator.js"></script>
+                <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+                    integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+                    crossorigin="anonymous">
+                </script>
+                <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
+                    integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+                    crossorigin="anonymous">
+                </script>
+
                 <title>ArkChess - {$title}</title>
+
+                
             </head>
 END;
         return $header;
@@ -39,7 +57,7 @@ END;
             <body>
                 <div id="container">
                     <header id="banner">
-                        <span class="span-hover"><a href="play.php"><img src="images/ArkChessLogoTransparentC9.png" alt="ArkChess Logo">ArkChess</a></span>
+                        <span class="span-hover"><a href="play.php"><img src="img/ArkChessLogoTransparentC9.png" alt="ArkChess Logo">ArkChess</a></span>
                         <nav aria-label="Top navigation">
                             <ul>
                                 <li><a href="play.php">Play</a></li>
@@ -226,8 +244,77 @@ END;
     public static function drawLearn(){
         $header = <<<END
             <article>
-                <h2>Learn</h2>
-            </article>
+                <div id="search">
+                    <div>
+                        <h2>Opening Search</h2>
+                    </div>
+                    <div>
+                        <form id="openingForm">
+                            <input name="openingSearch" id="openingSearch">
+                            <button type="submit">Search</button>
+                        </form>
+                        <script src="js/script.js"></script>
+                    </div>
+                </div>
+                <div id="tableDiv">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Board</th>
+                                <th>Played</th>
+                                <th>Opening</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>            
+                                    <div id="learnBoard1">
+                                        <script src="js/learn.js"></script>
+                                    </div>
+                                </td>
+                                <td>50%</td>
+                                <td>Poop Gambit</td>
+                            </tr>
+                            <tr>
+                                <td>            
+                                    <div id="learnBoard2">
+                                        <script src="js/learn.js"></script>
+                                    </div>
+                                </td>
+                                <td>50%</td>
+                                <td>Poop Gambit</td>
+                            </tr>
+                            <tr>
+                                <td>            
+                                    <div id="learnBoard3">
+                                        <script src="js/learn.js"></script>
+                                    </div>
+                                </td>
+                                <td>50%</td>
+                                <td>Poop Gambit</td>
+                            </tr>
+                            <tr>
+                                <td>            
+                                    <div id="learnBoard4">
+                                        <script src="js/learn.js"></script>
+                                    </div>
+                                </td>
+                                <td>50%</td>
+                                <td>Poop Gambit</td>
+                            </tr>
+                            <tr>
+                                <td>            
+                                    <div id="learnBoard5">
+                                        <script src="js/learn.js"></script>
+                                    </div>
+                                </td>
+                                <td>50%</td>
+                                <td>Poop Gambit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <p>Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
+            </article>  
 END;
         return $header;
     }
@@ -240,29 +327,23 @@ END;
      * @return string $content A string containing the play page HTML.
      */
     public static function drawPlay(){
+        return self::drawBoard();
+    }
+
+    /**
+     * Displays the board HTML.
+     * 
+     * @param 
+     * 
+     * @return string $content A string containing the board HTML.
+     */
+    public static function drawBoard(){
         $content = <<<END
-        <div>
-            <link rel="stylesheet" href="css/chessboard-1.0.0.min.css" />
-            <script src="js/chessboard-1.0.0.min.js"></script>
-        </div>
-        <table id="chessTable"></table> 
-        <div id="gameDescription">
-            <h1>Casual </h1>  
-            <p>&#10686; Arklite - (1435)</p>
-            <p>&#10687; Anonymous - (unrated)</p>
-            <div id="notationWindow">
-                <div>
-                    <button class="gameButtonStyle">&#8592;</button>
-                    <button class="gameButtonStyle">&rarr;</button>
-                    <button class="gameButtonStyle">&#x27f3;</button>
-                </div>
-                <table id="notations"></table>
-                <div>
-                    <button class="gameButtonStyle">Draw</button>
-                    <button class="gameButtonStyle">Resign</button>
-                </div>
+        <article>
+            <div id="playBoard">
+                <script src="js/playBoard.js"></script>
             </div>
-        </div>
+        </article>
 END;
 
         return $content;

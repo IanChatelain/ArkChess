@@ -4,7 +4,7 @@ body {
     font-family: 'Merriweather', serif;
     color: #c9c9c9;
     text-shadow: 1px 1px 2px black;
-    background-image: url("../images/background.jpg");
+    background-image: url("../img/background.jpg");
     background-position: left center;
     background-size: cover;
     background-attachment: fixed;
@@ -76,7 +76,7 @@ div#container {
 }
 
 .span-hover:hover img {
-    content: url("../images/ArkChessLogoTransparentBlur.png");
+    content: url("../img/ArkChessLogoTransparentBlur.png");
     vertical-align: middle;
     padding-right: 10px;
     width: 10%;
@@ -104,8 +104,8 @@ header span img, .span-hover:hover img {
     width: 10%;
 }
 
-header nav ul li, footer nav ul li {
-    padding-right: 50px;
+header nav ul li{
+    padding-right: 20px;
 }
 
 main#indexContent {
@@ -167,7 +167,13 @@ fieldset p{
     color: red;
 }
 
-button{
+button {
+    box-shadow: 1px 1px 2px black;
+    border-radius: 3px;
+    background-color: transparent;
+    border: 1px solid #c9c9c9;
+    height: 22px;
+    width: 75px;
     color: #c9c9c9;
 }
 
@@ -185,6 +191,10 @@ footer nav ul {
     display: flex;
     align-items: center;
     padding-left: 0;
+}
+
+footer nav ul li{
+    padding-right: 8px;
 }
 
 @media(max-width: 700px) {
