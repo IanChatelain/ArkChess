@@ -44,7 +44,7 @@ a#lichessCredit{
     width: 50%;
 }
 
-p {
+p#openingCredit {
     border-top: 1.5px solid #c9c9c9;
     margin: 5px;
     margin-top: 25px;

@@ -1,0 +1,38 @@
+/* contact.php main content */
+main#contactContent{
+    display: flex;
+}
+
+main#contactContent div#contactDescription{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    main#contactContent fieldset{
+        border: none;
+        padding: 0;
+    }
+
+    main#contactContent div h1{
+        margin-bottom: 0;
+    }
+
+    main#contactContent div img{
+        width: 130px;
+    }
+
+/* content.php thank you submission */
+main div#thankYou{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    padding-top: 5px;
+}

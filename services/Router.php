@@ -101,6 +101,14 @@ class Router{
     public static function learnRoute(){
         PageController::drawLearn();
     }
+
+    public static function loginRoute(){
+        PageController::drawLogin();
+    }
+
+    public static function contactRoute(){
+        PageController::drawContact();
+    }
 }
 
 ?>

@@ -25,11 +25,15 @@ class PageView{
                 <link rel="stylesheet" type="text/css" href="css/main.css">
                 <link rel="stylesheet" type="text/css" href="css/board.css">
                 <link rel="stylesheet" type="text/css" href="css/learn.css">
+                <link rel="stylesheet" type="text/css" href="css/login.css">
+                <link rel="stylesheet" type="text/css" href="css/contact.css">
                 <link rel="stylesheet"
                     href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
                     integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
                     crossorigin="anonymous">
                 <script src="js/footerLogoSeparator.js"></script>
+                <script src="js/login.js"></script>
+                <script src="js/contact.js"></script>
                 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
                     integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
                     crossorigin="anonymous">
@@ -63,7 +67,7 @@ END;
                                 <li><a href="play.php">Play</a></li>
                                 <li><a href="blog.php">Blogs</a></li>
                                 <li><a href="learn.php">Learn</a></li>
-                                <li><a href="signin.php">Sign In</a></li>
+                                <li><a href="login.php">Sign In</a></li>
                                 <li><a href="contact.php">Contact Us</a></li>
                             </ul>
                         </nav>
@@ -88,7 +92,7 @@ END;
                                     <li><a href="play.php">Play</a></li>
                                     <li><a href="blog.php">Blogs</a></li>
                                     <li><a href="learn.php">Learn</a></li>
-                                    <li><a href="signin.php">Sign In</a></li>
+                                    <li><a href="login.php">Sign In</a></li>
                                     <li><a href="contact.php">Contact Us</a></li>
                                 </ul>
                             </nav>
@@ -313,7 +317,7 @@ END;
                             </tr>
                         </tbody>
                     </table>
-                <p>Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
+                <p id="openingCredit">Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
             </article>  
 END;
         return $header;
@@ -339,11 +343,89 @@ END;
      */
     public static function drawBoard(){
         $content = <<<END
-        <article>
-            <div id="playBoard">
-                <script src="js/playBoard.js"></script>
-            </div>
-        </article>
+            <article>
+                <div id="playBoard">
+                    <script src="js/playBoard.js"></script>
+                </div>
+            </article>
+END;
+
+        return $content;
+    }
+
+    /**
+     * Displays the login HTML.
+     */
+    public static function drawLogin(){
+        $content = <<<END
+            <form id="signinForm" action="play.html">
+                    <fieldset>
+                        <h1>Sign in</h1>
+                        <label for="username">Username</label>
+                        <input class="forms" type="text" id="username" name="username" placeholder="ChessUser1">
+                        <p class="error" id="usernameRequired_error">* Required field</p>
+                        <p class="error" id="usernameInvalid_error">* Please enter a valid username</p>
+
+                        <label for="password">Password</label>
+                        <input class="forms" type="text" id="password" name="password" placeholder="Ilovechess1337!">
+                        <p class="error" id="passwordRequired_error">* Required field</p>
+                        <p id="passwordErrorMarker"></p>
+
+                        <label id="emailLabel" for="email">Email</label>
+                        <input class="forms" type="text" id="email" name="email" placeholder="email@example.com">
+                        <p class="error" id="emailRequired_error">* Required field</p>
+                        <p class="error" id="emailInvalid_error">* Please enter a valid email</p>
+
+                        <button type="submit" id="submit" class="defaultButton">Sign In</button>
+                        <label class="switch">
+                            <input id="slider" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </fieldset>
+                </form>
+END;
+        return $content;
+    }
+
+    /**
+     * Displays the contact HTML.
+     * 
+     * @param 
+     * 
+     * @return string $content A string containing the contact HTML.
+     */
+    public static function drawContact(){
+        $content = <<<END
+            <article>
+                <form id="contactForm" onsubmit="return validate(e)" method="post">
+                    <fieldset>
+                        <label for="name">Name</label>
+                        <input class="forms" type="text" id="name" name="name" placeholder="Full Name">
+                        <p class="error" id="nameRequired_error">* Required field</p>
+                        <p class="error" id="nameInvalid_error">* Please enter a valid name</p>
+
+                        <label for="phoneNumber">Phone Number</label>
+                        <input class="forms" type="text" id="phoneNumber" name="phoneNumber" placeholder="(204)555-1234">
+                        <p class="error" id="phoneNumberRequired_error">* Required field</p>
+                        <p class="error" id="phoneNumberInvalid_error">* Please enter a valid phone number</p>
+
+
+                        <label for="email">Email</label>
+                        <input class="forms" type="text" id="email" name="email" placeholder="email@example.com">
+                        <p class="error" id="emailRequired_error">* Required field</p>
+                        <p class="error" id="emailInvalid_error">* Please enter a valid email</p>
+
+
+                        <label for="comment">Comment</label>
+                        <textarea class="forms" name="comment" id="comment" cols="30" rows="10"></textarea>
+                        <p class="error" id="commentRequired_error">* Required field</p>
+                        <p class="error" id="commentInvalid_error">* Please enter a valid name</p>
+
+                        <button type="submit" id="submit" class="defaultButton">Submit</button>
+                        <button type="reset" id="clear" class="defaultButton">Clear</button>
+                    </fieldset>
+                </form>
+            </article>
 END;
 
         return $content;

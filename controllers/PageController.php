@@ -86,6 +86,26 @@ class PageController{
         echo PageView::drawPlay() . "\n";
         echo PageView::drawFooter() . "\n";
     }
+
+    /**
+     * Draws login page views.
+     */
+    public static function drawLogin(){
+        echo PageView::drawHeader('Play') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawLogin() . "\n";
+        echo PageView::drawFooter() . "\n";
+    }
+
+    /**
+     * Draws login page views.
+     */
+    public static function drawContact(){
+        echo PageView::drawHeader('Play') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawContact() . "\n";
+        echo PageView::drawFooter() . "\n";
+    }
 }
 
 ?>

@@ -1,0 +1,15 @@
+/* signin.html main content */
+main#signinContent{
+    display: flex;
+    justify-content: center;
+}
+
+    main#signinContent fieldset{
+        border: none;
+        padding-top: 15px;
+    }
+
+    main#signinContent h1{
+        font-size: 20px;
+        margin-top: 0;
+    }
