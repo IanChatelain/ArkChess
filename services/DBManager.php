@@ -1,6 +1,7 @@
 <?php
 
 require_once('models/BlogModel.php');
+require_once('models/UserModel.php');
 
 /**
  * DBManager handles database connection and queries, as well as server authentication.
@@ -33,23 +34,21 @@ class DBManager{
     /**
      * Authenticates the user for access to restricted server functions.
      */
-    public static function authenticate(){
-        define('ADMIN_LOGIN','wally');
+    public static function newUser($userModel){
+      
+        $db = DBManager::connect();
 
-        define('ADMIN_PASSWORD','mypass');
-      
-        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
-      
-            || ($_SERVER['PHP_AUTH_USER'] != ADMIN_LOGIN)
-      
-            || ($_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD)) {
-      
-          header('HTTP/1.1 401 Unauthorized');
-      
-          header('WWW-Authenticate: Basic realm="Our Blog"');
-      
-          exit("Access Denied: Username and password required.");
-      
+        $insertQuery = "INSERT INTO chessUser (user_name, email, user_password) values (:user_name, :email, :user_password)";
+
+        try{
+            $statement = $db->prepare($insertQuery);
+            $statement->bindValue(':user_name', $userModel->getUserName());
+            $statement->bindValue(':email', $userModel->getEmail());
+            $statement->bindValue(':user_password', $userModel->getPassword());
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
         }
     }
 

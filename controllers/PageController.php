@@ -2,6 +2,7 @@
 
 require_once('services/DBManager.php');
 require_once('views/PageView.php');
+require_once('AuthController.php');
 
 /**
  * PageController controls data flow.
