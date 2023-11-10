@@ -381,7 +381,7 @@ END;
                 <button class="menuButton" name="signIn" type="button">Sign In</button>
                 <button class="menuButton" name="register" type="button">Register</button>
             </div>
-            <form id="signinForm" action="play.php" method="POST">
+            <form id="signinForm" action="#" method="POST">
                     <fieldset>
                         <label for="username">Username</label>
                         <input class="forms" type="text" id="username" name="username" placeholder="ChessUser1">
@@ -472,7 +472,7 @@ END;
                 <h2>Profile Page</h2>
                 <p>UserName: {$userName}</p>
                 <p>Rating: {$rating}</p>
-                <form method="POST" action="login.php">
+                <form method="POST" action="#">
                     <button id="logout" name="logout" type="submit">Log Out</button>
                 </form>
             </article>

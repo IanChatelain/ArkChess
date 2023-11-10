@@ -108,7 +108,6 @@ class Router{
         if(isset($_POST['login'])){
             AuthController::loginUser();
         }
-  
     }
 
     public static function contactRoute(){
@@ -117,9 +116,11 @@ class Router{
 
     public static function profileRoute(){
         PageController::drawProfile();
-        // if(isset($_POST['logout'])){
-        //     AuthController::logoutUser();
-        // }
+        if(isset($_POST['logout'])){
+            AuthController::logoutUser();
+            header('Location: login.php');
+            exit();
+        }
     }
 }
 

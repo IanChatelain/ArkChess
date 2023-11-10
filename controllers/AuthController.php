@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once('services/DBManager.php');
 require_once('models/UserModel.php');
 
@@ -8,9 +10,6 @@ require_once('models/UserModel.php');
  */
 class AuthController{
     public static function ensureAuthenticated(){
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         if(!isset($_SESSION['USER_ID']) || empty($_SESSION['USER_ID'])){
             return false;
         }
@@ -27,7 +26,6 @@ class AuthController{
         $userID = $user->getUserID();
 
         if($userAuthed->getAuth()){
-            session_start();
             $_SESSION['USER_ID'] = $userAuthed->getUserID();
             $_SESSION['USER_NAME'] = $userAuthed->getUserName();
             $_SESSION['USER_ROLE'] = $userAuthed->getRole();
@@ -43,11 +41,6 @@ class AuthController{
     }
 
     public static function logoutUser() {
-        // Start the session
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-    
         // Unset all session variables
         $_SESSION = array();
     
@@ -66,6 +59,10 @@ class AuthController{
         // Redirect to the login page
         header('Location: login.php');
         exit();
+    }
+
+    public static function isAdmin($user){
+        
     }
 }
 
