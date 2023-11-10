@@ -12,14 +12,15 @@ class UserModel{
     private $email;
     private $role;
     private $password;
+    private $auth;
 
-    public function __construct($userID = NULL, $userName, $password, $email){
+    public function __construct($userID = NULL, $userName = '', $password = '', $role = NULL){
         $this->userID = $userID;
         $this->userName = $userName;
-        $this->rating = $rating;
-        $this->email = $email;
-        $this->role = $role;
-        $this->content = $content;
+        // $this->rating = $rating;
+        // $this->email = $email;
+        // $this->role = $role;
+        // $this->content = $content;
         $this->password = $password;
     }
     
@@ -48,6 +49,23 @@ class UserModel{
      */
     public function getEmail(){
         return $this->email;
+    }
+
+    /**
+     * Gets whether the user is authenticated.
+     * 
+     * @return int $this->auth The email of the user.
+     */
+    public function getAuth(){
+        return $this->auth;
+    }
+
+    public function setAuth($auth){
+        $this->auth = $auth;
+    }
+
+    public function getPassword(){
+        return $this->password;
     }
 }
 

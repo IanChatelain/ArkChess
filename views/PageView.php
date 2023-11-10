@@ -1,6 +1,7 @@
 <?php
 
 require_once('models/BlogModel.php');
+require_once('models/UserModel.php');
 
 /**
  * PageView displays the HTML markup.
@@ -257,7 +258,6 @@ END;
                             <input name="openingSearch" id="openingSearch">
                             <button type="submit">Search</button>
                         </form>
-                        <script src="js/script.js"></script>
                     </div>
                 </div>
                 <div id="tableDiv">
@@ -272,45 +272,35 @@ END;
                         <tbody>
                             <tr>
                                 <td>            
-                                    <div id="learnBoard1">
-                                        <script src="js/learn.js"></script>
-                                    </div>
+                                    <div id="learnBoard1"></div>
                                 </td>
                                 <td>50%</td>
                                 <td>Poop Gambit</td>
                             </tr>
                             <tr>
                                 <td>            
-                                    <div id="learnBoard2">
-                                        <script src="js/learn.js"></script>
-                                    </div>
+                                    <div id="learnBoard2"></div>
                                 </td>
                                 <td>50%</td>
                                 <td>Poop Gambit</td>
                             </tr>
                             <tr>
                                 <td>            
-                                    <div id="learnBoard3">
-                                        <script src="js/learn.js"></script>
-                                    </div>
+                                    <div id="learnBoard3"></div>
                                 </td>
                                 <td>50%</td>
                                 <td>Poop Gambit</td>
                             </tr>
                             <tr>
                                 <td>            
-                                    <div id="learnBoard4">
-                                        <script src="js/learn.js"></script>
-                                    </div>
+                                    <div id="learnBoard4"></div>
                                 </td>
                                 <td>50%</td>
                                 <td>Poop Gambit</td>
                             </tr>
                             <tr>
                                 <td>            
-                                    <div id="learnBoard5">
-                                        <script src="js/learn.js"></script>
-                                    </div>
+                                    <div id="learnBoard5"></div>
                                 </td>
                                 <td>50%</td>
                                 <td>Poop Gambit</td>
@@ -319,6 +309,7 @@ END;
                     </table>
                 <p id="openingCredit">Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
             </article>  
+            <script src="js/learn.js"></script>
 END;
         return $header;
     }
@@ -345,7 +336,7 @@ END;
         $content = <<<END
             <article>
                 <div id="playBoard">
-                    <script src="js/playBoard.js"></script>
+                <iframe src="https://play.chessbase.com" style="width:760px;height:480px"></iframe>
                 </div>
             </article>
 END;
@@ -358,9 +349,12 @@ END;
      */
     public static function drawLogin(){
         $content = <<<END
-            <form id="signinForm" action="play.html">
+            <div id="contentMenu">
+                <button class="menuButton" name="signIn" type="button">Sign In</button>
+                <button class="menuButton" name="register" type="button">Register</button>
+            </div>
+            <form id="signinForm" action="#" method="POST">
                     <fieldset>
-                        <h1>Sign in</h1>
                         <label for="username">Username</label>
                         <input class="forms" type="text" id="username" name="username" placeholder="ChessUser1">
                         <p class="error" id="usernameRequired_error">* Required field</p>
@@ -376,13 +370,10 @@ END;
                         <p class="error" id="emailRequired_error">* Required field</p>
                         <p class="error" id="emailInvalid_error">* Please enter a valid email</p>
 
-                        <button type="submit" id="submit" class="defaultButton">Sign In</button>
-                        <label class="switch">
-                            <input id="slider" type="checkbox">
-                            <span class="slider"></span>
-                        </label>
+                        <button name="submit" type="submit" class="defaultButton">Submit</button>
                     </fieldset>
                 </form>
+                <script src="js/login.js"></script>
 END;
         return $content;
     }

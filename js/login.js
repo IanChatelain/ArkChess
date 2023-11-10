@@ -8,22 +8,7 @@ function validate(e){
 		return false;
 	}
 
-    thankYou();
-
 	return true;
-}
-
-// Initiates a message box verifying whether to reset the form.
-function resetForm(e){
-	if (confirm('Clear form?')){
-		hideErrors();
-
-		return true;
-	}
-
-	e.preventDefault();
-
-	return false;
 }
 
 // Checks whether the forms have valid inputs before submitting the page.
@@ -113,6 +98,13 @@ function hideElements(){
     }
 }
 
+// Hides any number of elements specified in the parameters.
+function showElements(){
+    for(let x = 0; x < arguments.length; x++){
+        arguments[x].style.display = "block";
+    }
+}
+
 // Clears all paramaters specified values.
 function clearFields(){
     for(let y = 0; y < arguments.length; y++){
@@ -132,7 +124,7 @@ function fieldIsEmpty(){
 function load(){
     let emailInput = document.getElementById("email");
     let passwordInput = document.getElementById("password");
-    let usernameInput = document.getElementById("username")
+    let usernameInput = document.getElementById("username");
     let emailLabel = document.getElementById("emailLabel");
     let name = document.getElementById("username");
     let h1 = document.getElementsByTagName("h1")[0];
@@ -142,29 +134,19 @@ function load(){
     hideElements(emailInput, emailLabel);
     hideErrors();
 
-    document.getElementById("slider").addEventListener("change", function(){
-        hideErrors();
-        clearFields(emailInput, passwordInput, usernameInput);
+    document.getElementById("signinForm").addEventListener("submit", validate);
 
-        let toggleSwitch = document.getElementById("slider");
-        let button = document.getElementById("submit");
-        if(toggleSwitch.checked){
-            h1.innerHTML = "Register";
-            button.innerHTML = "Register";
-            button.style.color = "#0071C5";
-            emailInput.style.display = "block";
-            emailLabel.style.display = "block";
-        }
-        else{
-            h1.innerHTML = "Sign In";
-            button.innerHTML = "Sign In";
-            button.style.color = "#a9a9a9";
-            hideElements(emailInput, emailLabel);
-        }
+    document.getElementsByName("signIn")[0].addEventListener("click", function() {
+        clearFields(emailInput, emailLabel);
+        hideElements(emailInput, emailLabel);
+        hideErrors();
     });
 
-    document.getElementById("signinForm").addEventListener("submit", validate);
-    document.getElementById("signinForm").addEventListener("reset", resetForm);
+    document.getElementsByName("register")[0].addEventListener("click", function() {
+        clearFields(emailInput, emailLabel);
+        showElements(emailInput, emailLabel);
+        hideErrors();
+    });
 }
 
 document.addEventListener("DOMContentLoaded", load);

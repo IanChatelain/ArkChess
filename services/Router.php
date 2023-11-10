@@ -1,6 +1,7 @@
 <?php
 
 require_once('controllers/PageController.php');
+require_once('models/UserModel.php');
 require_once('services/DBManager.php');
 
 /**
@@ -104,6 +105,16 @@ class Router{
 
     public static function loginRoute(){
         PageController::drawLogin();
+
+        if(isset($_POST['submit'])){
+            $userName = $_POST['username'];
+            $password = $_POST['password'];
+            $user = new UserModel(NULL, $userName, $password, NULL);
+            $userAuth = DBManager::authUser($user);
+            $userID = $user->getUserID();
+
+            var_dump($userAuth);
+        }
     }
 
     public static function contactRoute(){

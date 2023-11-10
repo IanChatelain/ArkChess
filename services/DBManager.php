@@ -34,22 +34,63 @@ class DBManager{
     /**
      * Authenticates the user for access to restricted server functions.
      */
-    public static function newUser($userModel){
+    public static function registerUser($userRegistered){
       
         $db = DBManager::connect();
 
-        $insertQuery = "INSERT INTO chessUser (user_name, email, user_password) values (:user_name, :email, :user_password)";
+        $insertQuery = "INSERT INTO chessUser (user_name, user_password) values (:user_name, :user_password)";
 
         try{
             $statement = $db->prepare($insertQuery);
-            $statement->bindValue(':user_name', $userModel->getUserName());
-            $statement->bindValue(':email', $userModel->getEmail());
-            $statement->bindValue(':user_password', $userModel->getPassword());
+            $statement->bindValue(':user_name', $userRegistered->getUserName());
+            $statement->bindValue(':user_password', $userRegistered->getPassword());
             $statement->execute();
         }
         catch(PDOException $e){
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public static function authUser($userLoggedIn){
+        $authed = false;
+        $userName = $userLoggedIn->getUserName();
+        $password = $userLoggedIn->getPassword();
+        $db = DBManager::connect();
+        $user = NULL;
+    
+        $userQuery = "SELECT user_id, user_name, user_password, role_id FROM chessuser WHERE user_name = :userName";
+    
+        try{
+            $statement = $db->prepare($userQuery);
+            $statement->bindParam(':userName', $userName, PDO::PARAM_STR);
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                // Debugging: Check the retrieved row
+                error_log(print_r($row, true));
+    
+                if (password_verify($password, $row['user_password'])) {
+                    // Instantiate the user object
+                    // ...
+                } else {
+                    // Debugging: Incorrect password
+                    error_log('Password verification failed.');
+                }
+            } else {
+                // Debugging: No user found
+                error_log('No user found with the username: ' . $userName);
+            }
+            if($row && password_verify($password, $row['user_password'])){
+                $user = new UserModel($row['user_id'], $row['user_name'], null, $row['role_id']);
+                $authed = true;
+                $user->setAuth($authed);
+            }
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+        }
+    
+        return $user;
     }
 
     /**

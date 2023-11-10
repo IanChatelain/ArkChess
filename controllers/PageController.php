@@ -2,7 +2,7 @@
 
 require_once('services/DBManager.php');
 require_once('views/PageView.php');
-require_once('AuthController.php');
+require_once('models/UserModel.php');
 
 /**
  * PageController controls data flow.
@@ -92,7 +92,7 @@ class PageController{
      * Draws login page views.
      */
     public static function drawLogin(){
-        echo PageView::drawHeader('Play') . "\n";
+        echo PageView::drawHeader('Login') . "\n";
         echo PageView::drawBanner() . "\n";
         echo PageView::drawLogin() . "\n";
         echo PageView::drawFooter() . "\n";
@@ -102,11 +102,12 @@ class PageController{
      * Draws login page views.
      */
     public static function drawContact(){
-        echo PageView::drawHeader('Play') . "\n";
+        echo PageView::drawHeader('Contact Us') . "\n";
         echo PageView::drawBanner() . "\n";
         echo PageView::drawContact() . "\n";
         echo PageView::drawFooter() . "\n";
     }
+
 }
 
 ?>
