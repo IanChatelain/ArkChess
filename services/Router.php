@@ -29,35 +29,40 @@ class Router{
             $blogID = filter_input(INPUT_GET, 'edit', FILTER_SANITIZE_NUMBER_INT);
 
             if($blogID){
-                DBManager::authenticate();
-
-                // If POST is update and if POST is not empty string then display edit page,
-                // otherwise display error.
-                if(isset($_POST['update'])){
-                    $errorFlag = false;
-                    $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                    $blogID = filter_input(INPUT_POST, 'blogID', FILTER_SANITIZE_NUMBER_INT);
-                    $blogModel = new BlogModel($blogID, $title, $content);
-
-                    if(strlen(trim($title)) > 0 && strlen(trim($content) > 0)){
-                        DBManager::updateEdit($blogModel);
-                        header("Location: blog.php?post={$blogID}");
-                        exit;
+                if(!empty($_SESSION['USER_ROLE'])){
+                    if($_SESSION['USER_ROLE'] == 1){
+                        // If POST is update and if POST is not empty string then display edit page,
+                        // otherwise display error.
+                        if(isset($_POST['update'])){
+                            $errorFlag = false;
+                            $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                            $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                            $blogID = filter_input(INPUT_POST, 'blogID', FILTER_SANITIZE_NUMBER_INT);
+                            $blogModel = new BlogModel($blogID, $title, $content);
+    
+                            if(strlen(trim($title)) > 0 && strlen(trim($content) > 0)){
+                                DBManager::updateEdit($blogModel);
+                                header("Location: blog.php?post={$blogID}");
+                                exit;
+                            }
+                            else{
+                                $errorFlag = true;
+                                PageController::drawEdit($blogID, $errorFlag, $blogModel);
+                            }
+                        }
+                        // If POST is delete, delete the post and display index.
+                        elseif(isset($_POST['delete'])){
+                            DBManager::deleteBlog($blogID);
+                            header("Location: blog.php");
+                            exit;
+                        }
+                        else{
+                            PageController::drawEdit($blogID);
+                        }
                     }
-                    else{
-                        $errorFlag = true;
-                        PageController::drawEdit($blogID, $errorFlag, $blogModel);
-                    }
-                }
-                // If POST is delete, delete the post and display index.
-                elseif(isset($_POST['delete'])){
-                    DBManager::deleteBlog($blogID);
-                    header("Location: blog.php");
-                    exit;
                 }
                 else{
-                    PageController::drawEdit($blogID);
+                    PageController::drawRestricted();
                 }
             }
             else{
@@ -66,28 +71,33 @@ class Router{
         }
         // If GET is newpost, display the new post page otherwise display index.
         elseif(isset($_GET['newpost'])){
-            DBManager::authenticate();
-
-            // If POST is insert and if POST is not empty string then display new post page,
-            // otherwise display error.
-            if(isset($_POST['insert'])){
-                $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                $blogModel = new BlogModel(NULL, $title, $content);
-                
-                if(strlen(trim($title)) > 0 && strlen(trim(trim($content)) > 0)){
-                    DBManager::insertNewBlog($blogModel);
-                    header("Location: blog.php");
-                    exit;
-                }
-                else
-                {
-                    $errorFlag = true;
-                    PageController::drawNewPost($errorFlag, $blogModel);
+            if(!empty($_SESSION['USER_ROLE'])){
+                if($_SESSION['USER_ROLE'] == 1){
+                // If POST is insert and if POST is not empty string then display new post page,
+                // otherwise display error.
+                    if(isset($_POST['insert'])){
+                        $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $blogModel = new BlogModel(NULL, $title, $content);
+                        
+                        if(strlen(trim($title)) > 0 && strlen(trim(trim($content)) > 0)){
+                            DBManager::insertNewBlog($blogModel);
+                            header("Location: blog.php");
+                            exit;
+                        }
+                        else
+                        {
+                            $errorFlag = true;
+                            PageController::drawNewPost($errorFlag, $blogModel);
+                        }
+                    }
+                    else{
+                        PageController::drawNewPost();
+                    }
                 }
             }
             else{
-                PageController::drawNewPost();
+                PageController::drawRestricted();
             }
         }
         else{

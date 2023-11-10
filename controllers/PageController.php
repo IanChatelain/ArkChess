@@ -118,6 +118,13 @@ class PageController{
         echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
     }
 
+    public static function drawRestricted(){
+        echo PageView::drawHeader('Profile', AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawRestricted(AuthController::getUser(), AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+    }
+
 }
 
 ?>

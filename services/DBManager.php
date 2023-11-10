@@ -31,29 +31,6 @@ class DBManager{
         }
     }
 
-    /**
-     * Authenticates the user for access to restricted server functions.
-     */
-    public static function authenticate(){
-        define('ADMIN_LOGIN','wally');
-
-        define('ADMIN_PASSWORD','mypass');
-      
-        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
-      
-            || ($_SERVER['PHP_AUTH_USER'] != ADMIN_LOGIN)
-      
-            || ($_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD)) {
-      
-          header('HTTP/1.1 401 Unauthorized');
-      
-          header('WWW-Authenticate: Basic realm="Our Blog"');
-      
-          exit("Access Denied: Username and password required.");
-      
-        }
-    }
-
     public static function registerUser($userRegistered){
       
         $db = DBManager::connect();
@@ -111,6 +88,8 @@ class DBManager{
             if($row){
                 $user = new UserModel($row['user_id'], $row['user_name']);
                 $user->setRating($row['rating']);
+                $user->setRole($row['role_id']);
+
                 $authed = true;
                 $user->setAuth($authed);
             }

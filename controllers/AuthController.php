@@ -35,9 +35,11 @@ class AuthController{
     }
 
     public static function getUser(){
-        $userId = $_SESSION['USER_ID'];
+        if(!empty($_SESSION['USER_ID'])){
+            $userId = $_SESSION['USER_ID'];
 
-        return DBManager::getAuthUser($userId);
+            return DBManager::getAuthUser($userId);
+        }
     }
 
     public static function logoutUser() {

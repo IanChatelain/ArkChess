@@ -485,6 +485,26 @@ END;
             return $content;
         }
     }
+
+    
+    /**
+     * Displays the profile HTML.
+     * 
+     * @param 
+     * 
+     * @return string $content A string containing the profile HTML.
+     */
+    public static function drawRestricted($auth = false){
+        $unauthorized = "Access Denied: Admin authentication required.";
+
+        $content = <<<END
+            <article>
+                {$unauthorized}
+            </article>
+END;
+
+        return $content;
+    }
 }
 
 ?>

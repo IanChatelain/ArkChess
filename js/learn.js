@@ -20,6 +20,9 @@ function fetchAndDisplayOpenings(query = '', limit = 20) {
             const openingsContainer = document.querySelector('.openingsContainer');
             openingsContainer.innerHTML = '';
 
+            console.log("Openings: ", data.opening)
+            console.log("Moves: ", data.moves);
+
             filteredMoves.forEach((move, index) => {
                 const chess = new Chess();
                 const result = chess.move({ from: move.uci.slice(0, 2), to: move.uci.slice(2, 4) });
@@ -30,11 +33,19 @@ function fetchAndDisplayOpenings(query = '', limit = 20) {
                 }
 
                 const fen = chess.fen();
+                console.log(fen);
+                
+                fetch('https://explorer.lichess.ovh/masters?play=' + move.uci)
+                .then(response => response.json())
+                .then(data => {
+                    const openingName = data.opening.name;
+
+
                 const openingTile = document.createElement('div');
                 openingTile.className = 'openingTile';
                 openingTile.innerHTML = `
                     <div class="openingInfo">
-                        <span class="openingName">Move: ${move.san}</span>
+                        <span class="openingName">Opening: ${openingName}</span>
                         <span class="openingStats">Played by ${move.white} white, ${move.draws} draws, ${move.black} black</span>
                         <span class="openingMove">Rating: ${move.averageRating}</span>
                     </div>
@@ -42,6 +53,7 @@ function fetchAndDisplayOpenings(query = '', limit = 20) {
                 `;
                 openingsContainer.appendChild(openingTile);
                 initChessboard(`learnBoard${index}`, fen);
+                });
             });
         })
         .catch(error => {

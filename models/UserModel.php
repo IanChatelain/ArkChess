@@ -64,6 +64,10 @@ class UserModel{
     public function setRating($rating){
         $this->rating = $rating;
     }
+    
+    public function setRole($role){
+        $this->role = $role;
+    }
 
     public function getPassword(){
         return $this->password;
