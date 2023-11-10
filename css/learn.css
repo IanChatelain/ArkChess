@@ -1,57 +1,57 @@
-/* Table Layout & Alignment */
-form{
-    margin-bottom: 20px;
+/* Base Layout */
+.openingsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust this to make the tiles smaller or larger */
+    gap: 10px; /* Adjust the gap size as needed */
+    border-top: 1.5px solid #c9c9c9;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #c9c9c9;
 }
 
-table {
-    width: 100%;
-}
-
-table, th, td {
+/* Individual Opening Tiles */
+.openingTile {
     border: 1px solid #c9c9c9;
-    text-align: left;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    text-align: center;
+}
+
+.openingTile:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover effect for tiles */
+}
+
+/* Header for each tile */
+.openingTile th {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #c9c9c9;
     padding: 8px;
 }
 
-tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.1);
+/* Opening Name and Stats */
+.openingName {
+    font-weight: bold;
+    color: #c9c9c9; /* Light text color */
 }
 
-tr:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+.openingStats {
+    color: #c9c9c9; /* Light text color */
+    font-size: 0.8em;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Styling for the chessboard inside the tile */
+.playBoard {
+    width: 100%; /* This will make the board expand to the full width of the tile */
+    margin-bottom: 10px;
 }
 
-table th {
-    background-color: rgba(0, 0, 0, 0.4);
-    color: #c9c9c9;
-}
-
-table th:last-child {
-    border-right: none;
+/* Adjust the search box width */
+#openingSearch {
+    width: 50%; /* Adjust width of the search input as needed, accounting for button width */
 }
 
 a#lichessCredit{
     text-decoration: underline;
-}
-
-#openingSearch{
-    margin-right: 5px;
-    width: 50%;
-}
-
-p#openingCredit {
-    border-top: 1.5px solid #c9c9c9;
-    margin: 5px;
-    margin-top: 25px;
-    padding-top: 5px;
-}
-
-#learnBoard1, #learnBoard2, #learnBoard3, #learnBoard4, #learnBoard5{
-    width: 250px;
-    margin-bottom: 20px;
 }

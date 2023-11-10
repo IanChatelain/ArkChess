@@ -260,53 +260,48 @@ END;
                         </form>
                     </div>
                 </div>
-                <div id="tableDiv">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Board</th>
-                                <th>Played</th>
-                                <th>Opening</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>            
-                                    <div id="learnBoard1"></div>
-                                </td>
-                                <td>50%</td>
-                                <td>Poop Gambit</td>
-                            </tr>
-                            <tr>
-                                <td>            
-                                    <div id="learnBoard2"></div>
-                                </td>
-                                <td>50%</td>
-                                <td>Poop Gambit</td>
-                            </tr>
-                            <tr>
-                                <td>            
-                                    <div id="learnBoard3"></div>
-                                </td>
-                                <td>50%</td>
-                                <td>Poop Gambit</td>
-                            </tr>
-                            <tr>
-                                <td>            
-                                    <div id="learnBoard4"></div>
-                                </td>
-                                <td>50%</td>
-                                <td>Poop Gambit</td>
-                            </tr>
-                            <tr>
-                                <td>            
-                                    <div id="learnBoard5"></div>
-                                </td>
-                                <td>50%</td>
-                                <td>Poop Gambit</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="openingsContainer">
+                    <div class="openingTile">
+                        <div class="openingInfo">
+                            <span class="openingName">King's Pawn Game</span>
+                            <span class="openingStats">Played: 5996 times</span>
+                            <span class="openingMove">e4</span>
+                        </div>
+                        <div class="playBoard" id="learnBoard1"></div>
+                    </div>
+                    <div class="openingTile">
+                        <div class="openingInfo">
+                            <span class="openingName">King's Pawn Game</span>
+                            <span class="openingStats">Played: 5996 times</span>
+                            <span class="openingMove">e4</span>
+                        </div>
+                        <div class="playBoard" id="learnBoard2"></div>
+                    </div>
+                    <div class="openingTile">
+                        <div class="openingInfo">
+                            <span class="openingName">King's Pawn Game</span>
+                            <span class="openingStats">Played: 5996 times</span>
+                            <span class="openingMove">e4</span>
+                        </div>
+                        <div class="playBoard" id="learnBoard3"></div>
+                    </div>
+                    <div class="openingTile">
+                        <div class="openingInfo">
+                            <span class="openingName">King's Pawn Game</span>
+                            <span class="openingStats">Played: 5996 times</span>
+                            <span class="openingMove">e4</span>
+                        </div>
+                        <div class="playBoard" id="learnBoard4"></div>
+                    </div>
+                    <div class="openingTile">
+                        <div class="openingInfo">
+                            <span class="openingName">King's Pawn Game</span>
+                            <span class="openingStats">Played: 5996 times</span>
+                            <span class="openingMove">e4</span>
+                        </div>
+                        <div class="playBoard" id="learnBoard5"></div>
+                    </div>
+                </div>
                 <p id="openingCredit">Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
             </article>  
             <script src="js/learn.js"></script>
@@ -336,7 +331,7 @@ END;
         $content = <<<END
             <article>
                 <div id="playBoard">
-                <iframe src="https://play.chessbase.com" style="width:760px;height:480px"></iframe>
+                    <script src="js/playBoard.js"></script>
                 </div>
             </article>
 END;
