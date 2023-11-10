@@ -98,6 +98,30 @@ class DBManager{
         return $user;
     }
 
+    public static function getAuthUser($userID){
+        $db = DBManager::connect();
+
+        $userQuery = "SELECT * FROM chessuser WHERE user_id = :userID";
+    
+        try{
+            $statement = $db->prepare($userQuery);
+            $statement->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            if($row){
+                $user = new UserModel($row['user_id'], $row['user_name']);
+                $user->setRating($row['rating']);
+                $authed = true;
+                $user->setAuth($authed);
+            }
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+        }
+
+        return $user;
+    }
+
     /**
      * Connects and queries the database for multiple blog posts.
      * 

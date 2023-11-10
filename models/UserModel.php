@@ -17,10 +17,7 @@ class UserModel{
     public function __construct($userID = NULL, $userName = '', $password = '', $role = NULL){
         $this->userID = $userID;
         $this->userName = $userName;
-        // $this->rating = $rating;
-        // $this->email = $email;
         $this->role = $role;
-        // $this->content = $content;
         $this->password = $password;
     }
     
@@ -64,12 +61,20 @@ class UserModel{
         $this->auth = $auth;
     }
 
+    public function setRating($rating){
+        $this->rating = $rating;
+    }
+
     public function getPassword(){
         return $this->password;
     }
 
     public function getRole(){
         return $this->role;
+    }
+
+    public function getRating(){
+        return $this->rating;
     }
 }
 
