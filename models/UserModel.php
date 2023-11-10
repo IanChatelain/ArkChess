@@ -19,7 +19,7 @@ class UserModel{
         $this->userName = $userName;
         // $this->rating = $rating;
         // $this->email = $email;
-        // $this->role = $role;
+        $this->role = $role;
         // $this->content = $content;
         $this->password = $password;
     }
@@ -66,6 +66,10 @@ class UserModel{
 
     public function getPassword(){
         return $this->password;
+    }
+
+    public function getRole(){
+        return $this->role;
     }
 }
 

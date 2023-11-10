@@ -34,6 +34,26 @@ class DBManager{
     /**
      * Authenticates the user for access to restricted server functions.
      */
+    public static function authenticate(){
+        define('ADMIN_LOGIN','wally');
+
+        define('ADMIN_PASSWORD','mypass');
+      
+        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
+      
+            || ($_SERVER['PHP_AUTH_USER'] != ADMIN_LOGIN)
+      
+            || ($_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD)) {
+      
+          header('HTTP/1.1 401 Unauthorized');
+      
+          header('WWW-Authenticate: Basic realm="Our Blog"');
+      
+          exit("Access Denied: Username and password required.");
+      
+        }
+    }
+
     public static function registerUser($userRegistered){
       
         $db = DBManager::connect();
@@ -51,36 +71,21 @@ class DBManager{
         }
     }
 
-    public static function authUser($userLoggedIn){
+    public static function authUser($user){
         $authed = false;
-        $userName = $userLoggedIn->getUserName();
-        $password = $userLoggedIn->getPassword();
+        $userName = $user->getUserName();
+        $password = $user->getPassword();
         $db = DBManager::connect();
-        $user = NULL;
     
-        $userQuery = "SELECT user_id, user_name, user_password, role_id FROM chessuser WHERE user_name = :userName";
+        $userQuery = "SELECT user_id, user_name, user_password, role_id FROM chessuser WHERE user_name = :userName AND user_password = :password";
     
         try{
             $statement = $db->prepare($userQuery);
             $statement->bindParam(':userName', $userName, PDO::PARAM_STR);
+            $statement->bindParam(':password', $password, PDO::PARAM_STR);
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($row) {
-                // Debugging: Check the retrieved row
-                error_log(print_r($row, true));
-    
-                if (password_verify($password, $row['user_password'])) {
-                    // Instantiate the user object
-                    // ...
-                } else {
-                    // Debugging: Incorrect password
-                    error_log('Password verification failed.');
-                }
-            } else {
-                // Debugging: No user found
-                error_log('No user found with the username: ' . $userName);
-            }
-            if($row && password_verify($password, $row['user_password'])){
+            if($row){
                 $user = new UserModel($row['user_id'], $row['user_name'], null, $row['role_id']);
                 $authed = true;
                 $user->setAuth($authed);

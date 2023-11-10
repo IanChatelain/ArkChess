@@ -104,16 +104,21 @@ class Router{
     }
 
     public static function loginRoute(){
+        session_start();
         PageController::drawLogin();
 
         if(isset($_POST['submit'])){
             $userName = $_POST['username'];
             $password = $_POST['password'];
             $user = new UserModel(NULL, $userName, $password, NULL);
-            $userAuth = DBManager::authUser($user);
+            $userAuthed = DBManager::authUser($user);
             $userID = $user->getUserID();
 
-            var_dump($userAuth);
+            if($userAuthed->getAuth()){
+                $_SESSION['USER_ID'] = $userAuthed->getUserID();
+                $_SESSION['USER_NAME'] = $userAuthed->getUserName();
+                $_SESSION['USER_ROLE'] = $userAuthed->getRole();
+            }
         }
     }
 

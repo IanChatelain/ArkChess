@@ -250,6 +250,10 @@ END;
         $header = <<<END
             <article>
                 <div id="search">
+                    <div id="learnContentMenu">
+                        <button class="learnMenuButton" name="openingSearch" type="button">Search</button>
+                        <button class="learnMenuButton" name="openingExplore" type="button">Explore</button>
+                    </div>
                     <div>
                         <h2>Opening Search</h2>
                     </div>
@@ -260,50 +264,10 @@ END;
                         </form>
                     </div>
                 </div>
-                <div class="openingsContainer">
-                    <div class="openingTile">
-                        <div class="openingInfo">
-                            <span class="openingName">King's Pawn Game</span>
-                            <span class="openingStats">Played: 5996 times</span>
-                            <span class="openingMove">e4</span>
-                        </div>
-                        <div class="playBoard" id="learnBoard1"></div>
-                    </div>
-                    <div class="openingTile">
-                        <div class="openingInfo">
-                            <span class="openingName">King's Pawn Game</span>
-                            <span class="openingStats">Played: 5996 times</span>
-                            <span class="openingMove">e4</span>
-                        </div>
-                        <div class="playBoard" id="learnBoard2"></div>
-                    </div>
-                    <div class="openingTile">
-                        <div class="openingInfo">
-                            <span class="openingName">King's Pawn Game</span>
-                            <span class="openingStats">Played: 5996 times</span>
-                            <span class="openingMove">e4</span>
-                        </div>
-                        <div class="playBoard" id="learnBoard3"></div>
-                    </div>
-                    <div class="openingTile">
-                        <div class="openingInfo">
-                            <span class="openingName">King's Pawn Game</span>
-                            <span class="openingStats">Played: 5996 times</span>
-                            <span class="openingMove">e4</span>
-                        </div>
-                        <div class="playBoard" id="learnBoard4"></div>
-                    </div>
-                    <div class="openingTile">
-                        <div class="openingInfo">
-                            <span class="openingName">King's Pawn Game</span>
-                            <span class="openingStats">Played: 5996 times</span>
-                            <span class="openingMove">e4</span>
-                        </div>
-                        <div class="playBoard" id="learnBoard5"></div>
-                    </div>
-                </div>
+                <div class="openingsContainer"></div>
                 <p id="openingCredit">Data provided by <a id="lichessCredit" href="https://lichess.org/api">Lichess Opening Explorer database.</a></p>
             </article>  
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
             <script src="js/learn.js"></script>
 END;
         return $header;

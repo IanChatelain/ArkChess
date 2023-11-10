@@ -1,7 +1,7 @@
 /* Base Layout */
 .openingsContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust this to make the tiles smaller or larger */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 24%)); /* Adjust this to make the tiles smaller or larger */
     gap: 10px; /* Adjust the gap size as needed */
     border-top: 1.5px solid #c9c9c9;
     margin-top: 10px;
@@ -55,3 +55,20 @@
 a#lichessCredit{
     text-decoration: underline;
 }
+
+div#learnContentMenu{
+    display: flex;
+}
+
+    .learnMenuButton{
+        all: unset;
+        padding: 0px;
+        margin: 0px;
+        margin-right: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        border-left: 1.5px solid #c9c9c9;
+        border-right: 1.5px solid #c9c9c9;
+        border-top: 1.5px solid #c9c9c9;
+    }
+
