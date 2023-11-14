@@ -30,8 +30,6 @@ class AuthController{
             $_SESSION['USER_NAME'] = $userAuthed->getUserName();
             $_SESSION['USER_ROLE'] = $userAuthed->getRole();
         }
-
-        return $userAuthed;
     }
 
     public static function getUser(){
@@ -43,10 +41,8 @@ class AuthController{
     }
 
     public static function logoutUser() {
-        // Unset all session variables
         $_SESSION = array();
     
-        // If it's desired to kill the session, also delete the session cookie
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(session_name(), '', time() - 42000,
@@ -55,16 +51,7 @@ class AuthController{
             );
         }
     
-        // Destroy the session
         session_destroy();
-    
-        // Redirect to the login page
-        header('Location: login.php');
-        exit();
-    }
-
-    public static function isAdmin($user){
-        
     }
 }
 

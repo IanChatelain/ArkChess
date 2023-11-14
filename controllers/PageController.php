@@ -13,10 +13,11 @@ class PageController{
      */
     public static function drawBlogIndex(){
         $blogModels = DBManager::getMultiBlog();
-        echo PageView::drawHeader('Blogs', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBlogIndex($blogModels, AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+
+        echo PageView::drawHeader('Blogs') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawBlogIndex($blogModels) . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
@@ -31,10 +32,10 @@ class PageController{
         if(!$errorFlag){
             $blogModel = $blogModelDB;
         }
-        echo PageView::drawHeader($blogModel->getTitle(), AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawEdit($errorFlag, $blogModel, AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader($blogModel->getTitle()) . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawEdit($errorFlag, $blogModel) . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
@@ -48,10 +49,10 @@ class PageController{
             self::drawNotFound();
         }
         else{
-            echo PageView::drawHeader($blogModel->getTitle(), AuthController::ensureAuthenticated()) . "\n";
-            echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-            echo PageView::drawPost($blogModel, NULL, AuthController::ensureAuthenticated()) . "\n";
-            echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+            echo PageView::drawHeader($blogModel->getTitle()) . "\n";
+            echo PageView::drawBanner() . "\n";
+            echo PageView::drawPost($blogModel, NULL) . "\n";
+            echo PageView::drawFooter() . "\n";
         }
     }
 
@@ -62,30 +63,30 @@ class PageController{
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
     public static function drawNewPost($errorFlag = false, $blogModel = new BlogModel()){
-        echo PageView::drawHeader('New Post', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawNewPost($errorFlag, $blogModel, AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('New Post') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawNewPost($errorFlag, $blogModel) . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
      * Draws opening database search page views using data from lichess API.
      */
     public static function drawLearn(){
-        echo PageView::drawHeader('Learn', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawLearn(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('Learn') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawLearn() . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
      * Draws play page views.
      */
     public static function drawPlay(){
-        echo PageView::drawHeader('Play', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawPlay(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('Play') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawPlay() . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
@@ -102,29 +103,45 @@ class PageController{
      * Draws login page views.
      */
     public static function drawContact(){
-        echo PageView::drawHeader('Contact Us', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawContact(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('Contact Us') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawContact() . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
     /**
      * Draws profile page views.
      */
     public static function drawProfile(){
-        echo PageView::drawHeader('Profile', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawProfile(AuthController::getUser(), AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('Profile') . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawProfile(AuthController::getUser()) . "\n";
+        echo PageView::drawFooter() . "\n";
     }
 
+    /**
+     * Draws restricted page views.
+     */
     public static function drawRestricted(){
-        echo PageView::drawHeader('Profile', AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawBanner(AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawRestricted(AuthController::getUser(), AuthController::ensureAuthenticated()) . "\n";
-        echo PageView::drawFooter(AuthController::ensureAuthenticated()) . "\n";
+        echo PageView::drawHeader('Profile',) . "\n";
+        echo PageView::drawBanner() . "\n";
+        echo PageView::drawRestricted(AuthController::getUser()) . "\n";
+        echo PageView::drawFooter() . "\n";
     }
+    
+    public static function changeBannerLink(){
+         $auth = AuthController::ensureAuthenticated();
+        $linkText = 'Login';
+        $link = 'login';
 
+        if ($auth) {
+            $userName = AuthController::getUser()->getUserName();
+            $linkText = $userName;
+            $link = 'profile';
+        }
+
+        return ['linkText' => $linkText, 'link' => $link];
+    }
 }
 
 ?>

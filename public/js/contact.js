@@ -83,7 +83,6 @@ function load(){
     name.focus();
 
     hideErrors();
-    footerLogoSeparator();
 
     document.getElementById("contactForm").addEventListener("submit", validate);
     document.getElementById("contactForm").addEventListener("reset", resetForm);

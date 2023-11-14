@@ -14,7 +14,7 @@ function footerLogoSeparator(){
     for(let n = 0; n < lis.length; n += 2){
         var img = document.createElement("img");
 
-        img.setAttribute("src", "./img/ArkChessLogoTransparentC9.png");
+        img.setAttribute("src", "./public/img/ArkChessLogoTransparentC9.png");
         img.setAttribute("alt", "ArkChess Logo");
 
         lis[n].appendChild(img);
