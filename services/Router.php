@@ -132,6 +132,10 @@ class Router{
             exit();
         }
     }
+    
+    public static function registerRoute(){
+        PageController::drawRegister();
+    }
 }
 
 ?>

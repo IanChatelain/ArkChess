@@ -1,8 +1,5 @@
 <?php
 
-require_once('models/BlogModel.php');
-require_once('controllers/PageController.php');
-
 /**
  * PageView displays the HTML markup.
  */

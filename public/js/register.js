@@ -15,9 +15,10 @@ function validate(e){
 function formHasErrors(){
     let errorFlag = false;
     let passwordValid = true;
-    let requiredFields = ["username", "password"];
+    let requiredFields = ["username", "password", "email"];
     let regexKeys = [/^[a-zA-Z0-9_-]{3,16}$/i,
-                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z0-9!@#$%^&*()_+]{8,}$/i];
+                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z0-9!@#$%^&*()_+]{8,}$/i,
+                     /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i];
 
     for(let i = 0; i < requiredFields.length; i++){
         let field = document.getElementById(requiredFields[i]);
@@ -113,7 +114,7 @@ function load(){
 
     hideErrors();
 
-    document.getElementById("signinForm").addEventListener("submit", validate);
+    document.getElementById("signInForm").addEventListener("submit", validate);
 }
 
 document.addEventListener("DOMContentLoaded", load);

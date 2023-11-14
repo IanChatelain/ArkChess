@@ -25,12 +25,13 @@
 }
 
   /* Input field styles */
-input#username, input#password {
+input#username, input#password, input#email {
     background: #fff;
     border: 1px solid #aaa;
     border-radius: 4px;
     padding: 10px;
     margin-top: 8px;
+    margin-bottom: 20px;
     width: 100%;
     box-sizing: border-box; /* Makes sure padding doesn't affect width */
     box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7); /* Darker shadow for better visibility */
@@ -42,7 +43,7 @@ input#submit {
     border: none;
     color: white;
     padding: 10px 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
@@ -71,24 +72,18 @@ input#submit:hover {
     visibility: visible; /* Show when there is an error */
 }
 
-.form-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .form-links {
+.form-links {
     font-size: 0.8em; /* Smaller text */
     margin-left: 10px; /* Spacing from the submit button */
-  }
-  
-  .form-links a {
+}
+
+.form-links a {
     color: #819cff; /* Color similar to your submit button for consistency */
     text-decoration: none;
     margin: 0 5px; /* Spacing between links */
     transition: color 0.3s ease;
-  }
-  
-  .form-links a:hover {
+}
+
+.form-links a:hover {
     color: #ccd1ff; /* Lighter color on hover for better visibility */
-  }
+}

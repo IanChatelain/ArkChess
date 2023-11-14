@@ -30,7 +30,6 @@ class CommonView{
                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
                     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="crossorigin="anonymous">
                 </script>
-                <script src="public/js/footerLogoSeparator.js"></script>
                 <script src="public/js/login.js"></script>
                 <script src="public/js/contact.js"></script>
                 <script src="public/js/chessboard-1.0.0.js"></script>
@@ -68,7 +67,7 @@ END;
         $footer = <<<END
                         <footer>
                             <nav aria-label="Bottom navigation">
-                                <ul id="footerul">
+                                <ul id="class="footer-links"">
                                     <li><a href="play.php">Play</a></li>
                                     <li><a href="blog.php">Blogs</a></li>
                                     <li><a href="learn.php">Learn</a></li>

@@ -10,6 +10,7 @@ require_once('views/LoginView.php');
 require_once('views/PlayView.php');
 require_once('views/ProfileView.php');
 require_once('views/RestrictedView.php');
+require_once('views/RegisterView.php');
 
 /**
  * PageController controls data flow.
@@ -125,10 +126,19 @@ class PageController{
         echo RestrictedView::drawRestricted(AuthController::getUser()) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
+
+    /**
+     * Draws restricted page views.
+     */
+    public static function drawRegister(){
+        echo CommonView::drawHeader('Profile',) . "\n";
+        echo RegisterView::drawRegister() . "\n";
+        echo CommonView::drawFooter() . "\n";
+    }
     
     public static function changeBannerLink(){
         $auth = AuthController::ensureAuthenticated();
-        $linkText = 'Login';
+        $linkText = 'Sign In';
         $link = 'login';
 
         if ($auth) {
