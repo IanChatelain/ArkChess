@@ -1,32 +1,94 @@
-/* signin.html main content */
-main#signinContent{
-    display: flex;
-    justify-content: center;
+
+.error{
+    margin: 0px;
+    font-size: small;
 }
 
-    main#signinContent fieldset{
-        border: none;
-        padding-top: 15px;
-    }
-
-    main#signinContent h1{
-        font-size: 20px;
-        margin-top: 0;
-    }
-
-div#contentMenu{
-    display: flex;
+.form-container {
+    /* background: rgba(0, 0, 0, 0.7); */
+    background: linear-gradient(to bottom left, #4d4d4d, #303030, #242424, #161616);
+    /* background: linear-gradient(to bottom left, #434343, #2c2c2c, #1e1e2e, #111122); */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
+    width: 300px;
+    margin: 50px auto;
 }
 
-    .menuButton{
-        all: unset;
-        padding: 0px;
-        margin: 0px;
-        margin-right: 10px;
-        padding-right: 10px;
-        padding-left: 10px;
-        border-left: 1.5px solid #c9c9c9;
-        border-right: 1.5px solid #c9c9c9;
-        border-top: 1.5px solid #c9c9c9;
-    }
+  /* Style for form title */
+#formTitle {
+    color: #fff; /* White color text */
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px; /* Spacing between the title and the form */
+    font-size: 1.5em; /* Adjust size as necessary */
+}
 
+  /* Input field styles */
+input#username, input#password {
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box; /* Makes sure padding doesn't affect width */
+    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7); /* Darker shadow for better visibility */
+}
+  
+  /* Styling the submit button for a 3D look */
+input#submit {
+    background: linear-gradient(to bottom, #08c, #0044cc); /* Blue gradient */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Drop shadow for a lifted effect */
+}
+
+input:focus {
+    outline: 3px solid #555; /* Change color to a darker grey */
+    border: 1px solid #555; /* Optional: Change the border color to match the outline */
+}
+
+input#submit:hover {
+    background: linear-gradient(to bottom, #04c, #003399); /* Slightly darker gradient on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth on hover */
+}
+
+/* Error message styling */
+.error {
+    color: #ff6666; /* Red color for errors */
+    font-size: 0.8em;
+    height: 20px;
+    visibility: hidden; /* Hide by default */
+}
+
+.error.show {
+    visibility: visible; /* Show when there is an error */
+}
+
+.form-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .form-links {
+    font-size: 0.8em; /* Smaller text */
+    margin-left: 10px; /* Spacing from the submit button */
+  }
+  
+  .form-links a {
+    color: #819cff; /* Color similar to your submit button for consistency */
+    text-decoration: none;
+    margin: 0 5px; /* Spacing between links */
+    transition: color 0.3s ease;
+  }
+  
+  .form-links a:hover {
+    color: #ccd1ff; /* Lighter color on hover for better visibility */
+  }

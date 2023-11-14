@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
-
 body {
-    font-family: 'Merriweather', serif;
+    font-family: Arial, sans-serif;
     color: #c9c9c9;
     text-shadow: 1px 1px 2px black;
     background-image: url("../img/background.jpg");
@@ -161,10 +159,6 @@ main#indexContent h2 {
 
 #newPost {
     font-size: 14px;
-}
-
-fieldset p{
-    color: red;
 }
 
 button {

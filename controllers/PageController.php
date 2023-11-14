@@ -1,8 +1,15 @@
 <?php
 
 require_once('services/DBManager.php');
-require_once('views/PageView.php');
 require_once('controllers/AuthController.php');
+require_once('views/BlogView.php');
+require_once('views/CommonView.php');
+require_once('views/ContactView.php');
+require_once('views/LearnView.php');
+require_once('views/LoginView.php');
+require_once('views/PlayView.php');
+require_once('views/ProfileView.php');
+require_once('views/RestrictedView.php');
 
 /**
  * PageController controls data flow.
@@ -14,10 +21,9 @@ class PageController{
     public static function drawBlogIndex(){
         $blogModels = DBManager::getMultiBlog();
 
-        echo PageView::drawHeader('Blogs') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawBlogIndex($blogModels) . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Blogs') . "\n";
+        echo BlogView::drawBlogIndex($blogModels) . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
@@ -32,10 +38,9 @@ class PageController{
         if(!$errorFlag){
             $blogModel = $blogModelDB;
         }
-        echo PageView::drawHeader($blogModel->getTitle()) . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawEdit($errorFlag, $blogModel) . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
+        echo BlogView::drawEdit($errorFlag, $blogModel) . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
@@ -49,10 +54,9 @@ class PageController{
             self::drawNotFound();
         }
         else{
-            echo PageView::drawHeader($blogModel->getTitle()) . "\n";
-            echo PageView::drawBanner() . "\n";
-            echo PageView::drawPost($blogModel, NULL) . "\n";
-            echo PageView::drawFooter() . "\n";
+            echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
+            echo BlogView::drawPost($blogModel, NULL) . "\n";
+            echo CommonView::drawFooter() . "\n";
         }
     }
 
@@ -63,74 +67,67 @@ class PageController{
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
     public static function drawNewPost($errorFlag = false, $blogModel = new BlogModel()){
-        echo PageView::drawHeader('New Post') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawNewPost($errorFlag, $blogModel) . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('New Post') . "\n";
+        echo BlogView::drawNewPost($errorFlag, $blogModel) . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws opening database search page views using data from lichess API.
      */
     public static function drawLearn(){
-        echo PageView::drawHeader('Learn') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawLearn() . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Learn') . "\n";
+        echo LearnView::drawLearn() . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws play page views.
      */
     public static function drawPlay(){
-        echo PageView::drawHeader('Play') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawPlay() . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Play') . "\n";
+        echo PlayView::drawPlay() . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws login page views.
      */
     public static function drawLogin(){
-        echo PageView::drawHeader('Login') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawLogin() . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Login') . "\n";
+        echo LoginView::drawLogin() . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws login page views.
      */
     public static function drawContact(){
-        echo PageView::drawHeader('Contact Us') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawContact() . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Contact Us') . "\n";
+        echo ContactView::drawContact() . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws profile page views.
      */
     public static function drawProfile(){
-        echo PageView::drawHeader('Profile') . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawProfile(AuthController::getUser()) . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Profile') . "\n";
+        echo ProfileView::drawProfile(AuthController::getUser()) . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
 
     /**
      * Draws restricted page views.
      */
     public static function drawRestricted(){
-        echo PageView::drawHeader('Profile',) . "\n";
-        echo PageView::drawBanner() . "\n";
-        echo PageView::drawRestricted(AuthController::getUser()) . "\n";
-        echo PageView::drawFooter() . "\n";
+        echo CommonView::drawHeader('Profile',) . "\n";
+        echo RestrictedView::drawRestricted(AuthController::getUser()) . "\n";
+        echo CommonView::drawFooter() . "\n";
     }
     
     public static function changeBannerLink(){
-         $auth = AuthController::ensureAuthenticated();
+        $auth = AuthController::ensureAuthenticated();
         $linkText = 'Login';
         $link = 'login';
 
