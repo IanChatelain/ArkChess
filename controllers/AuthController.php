@@ -3,8 +3,6 @@
 ini_set('log_errors', 'On');
 ini_set('error_log', 'C:\\xampp\\php\\logs\\php_error_log');
 
-session_start();
-
 require_once('services/DBManager.php');
 require_once('models/UserModel.php');
 require_once('services/Email.php');
@@ -14,7 +12,6 @@ require_once('services/Email.php');
  */
 class AuthController{
     public static function generateSecureToken(){
-        // Try getting a cryptographically secure token
         try{
             $token = openssl_random_pseudo_bytes(16, $crypto_strong);
 
@@ -29,7 +26,6 @@ class AuthController{
         }
     }
 
-    // TODO: need to revamp role based access. Hit DB and check for role often.
     public static function ensureAuthenticated(){
         if(!isset($_SESSION['USER_ID']) || empty($_SESSION['USER_ID'])){
             return false;
@@ -40,6 +36,7 @@ class AuthController{
     }
 
     public static function loginUser(){
+        $isAuthed = false;
         $userName = $_POST['username'];
         $password = $_POST['password'];
         $user = new UserModel(NULL, $userName, $password, NULL);
@@ -53,11 +50,13 @@ class AuthController{
             $_SESSION['USER_ID'] = $userAuthed->getUserID();
             $_SESSION['USER_NAME'] = $userAuthed->getUserName();
             $_SESSION['USER_ROLE'] = $userAuthed->getRole();
+            $isAuthed = true;
         }
+
+        return $isAuthed;
     }
 
     public static function processUserRegistration(){
-        // TODO: add php validation in the future
         $userName = $_POST['username'];
         $password = $_POST['password'];
         $email = $_POST['email'];
@@ -68,7 +67,7 @@ class AuthController{
 
         switch(DBManager::insertNewUser($user)){
             case 0:
-                $expiry = time() + 3600; // 1 hour from now
+                $expiry = time() + 3600;
                 $cookieName = $user->getUserName() . "_email_token";
 
                 // deployment cookie

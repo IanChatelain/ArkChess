@@ -5,10 +5,19 @@
     text-shadow: none;
 }
 
+.form-container#profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: auto;
+    margin: 50px;
+    padding: 20px;
+    gap: 20px;
+}
+
 .form-container {
-    /* background: rgba(0, 0, 0, 0.7); */
     background: linear-gradient(to bottom left, #4d4d4d, #303030, #242424, #161616);
-    /* background: linear-gradient(to bottom left, #434343, #2c2c2c, #1e1e2e, #111122); */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
@@ -18,16 +27,14 @@
     padding-top: 15px;
 }
 
-  /* Style for form title */
 #formTitle {
-    color: #fff; /* White color text */
+    color: #fff;
     text-align: center;
     margin-top: 10px;
-    margin-bottom: 20px; /* Spacing between the title and the form */
-    font-size: 1.5em; /* Adjust size as necessary */
+    margin-bottom: 20px;
+    font-size: 1.5em;
 }
 
-  /* Input field styles */
 input{
     background: #fff;
     border: 1px solid #aaa;
@@ -36,13 +43,12 @@ input{
     margin-top: 8px;
     margin-bottom: 20px;
     width: 100%;
-    box-sizing: border-box; /* Makes sure padding doesn't affect width */
-    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7); /* Darker shadow for better visibility */
+    box-sizing: border-box;
+    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
 }
   
-  /* Styling the submit button for a 3D look */
 input#submit, input#reset {
-    background: linear-gradient(to bottom, #08c, #0044cc); /* Blue gradient */
+    background: linear-gradient(to bottom, #08c, #0044cc);
     border: none;
     color: white;
     padding: 10px 15px;
@@ -50,7 +56,20 @@ input#submit, input#reset {
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    width: 30%;
+    width: 85px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+form input#submit{
+    background: linear-gradient(to bottom, #08c, #0044cc);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 85px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Drop shadow for a lifted effect */
 }
 
@@ -96,3 +115,31 @@ textarea {
     box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
     resize: none;
 }
+
+/* Recent games container */
+.recent-games-container {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5); /* Inset shadow for the 'inset' effect */
+    margin: 20px auto; /* Give some space around the container */
+    width: 95%; /* Adjust as necessary */
+    max-width: 1000px; /* Ensures it doesn't get too wide on larger screens */
+}
+
+.recent-games-title {
+    color: #ddd; /* Light grey color for the title */
+    margin-bottom: 15px; /* Space between title and game list */
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.recent-game-item {
+    background: #333; /* Darker background for each game item for distinction */
+    border: 1px solid #444; /* Slightly lighter border for visibility */
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px; /* Space between game items */
+    color: #ccc; /* Light grey color for text */
+}
+

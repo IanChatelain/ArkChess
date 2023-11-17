@@ -1,5 +1,10 @@
 <?php
 
+// Might not need this.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once('services/DBManager.php');
 require_once('controllers/AuthController.php');
 require_once('views/BlogView.php');
@@ -21,6 +26,7 @@ class PageController{
      * Draws index page views using data from the database.
      */
     public static function drawBlogIndex(){
+        self::isReadOnlyUser();
         $blogModels = DBManager::getMultiBlog();
 
         echo CommonView::drawHeader('Blogs') . "\n";
@@ -36,6 +42,7 @@ class PageController{
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
     public static function drawEdit($blogID, $errorFlag = false, $blogModel = new BlogModel()){
+        self::isReadOnlyUser();
         $blogModelDB = DBManager::getSingleBlog($blogID);
         if(!$errorFlag){
             $blogModel = $blogModelDB;
@@ -51,6 +58,7 @@ class PageController{
      * @param int $blogID A blogs unique identifier.
      */
     public static function drawSinglePost($blogID){
+        self::isReadOnlyUser();
         $blogModel = DBManager::getSingleBlog($blogID);
         if($blogModel->getBlogID() == -1){
             self::drawNotFound();
@@ -69,6 +77,7 @@ class PageController{
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
     public static function drawNewPost($errorFlag = false, $blogModel = new BlogModel()){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('New Post') . "\n";
         echo BlogView::drawNewPost($errorFlag, $blogModel) . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -78,6 +87,7 @@ class PageController{
      * Draws opening database search page views using data from lichess API.
      */
     public static function drawLearn(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Learn') . "\n";
         echo LearnView::drawLearn() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -87,6 +97,7 @@ class PageController{
      * Draws play page views.
      */
     public static function drawPlay(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Play') . "\n";
         echo PlayView::drawPlay() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -96,6 +107,7 @@ class PageController{
      * Draws login page views.
      */
     public static function drawLogin(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Login') . "\n";
         echo LoginView::drawLogin() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -105,6 +117,7 @@ class PageController{
      * Draws login page views.
      */
     public static function drawContact(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Contact Us') . "\n";
         echo ContactView::drawContact() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -114,6 +127,7 @@ class PageController{
      * Draws profile page views.
      */
     public static function drawProfile(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
         echo ProfileView::drawProfile(DBManager::getAuthUser()) . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -123,8 +137,9 @@ class PageController{
      * Draws restricted page views.
      */
     public static function drawRestricted(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
-        echo RestrictedView::drawRestricted(AuthController::getUser()) . "\n";
+        echo RestrictedView::drawRestricted() . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
@@ -132,6 +147,7 @@ class PageController{
      * Draws register page views.
      */
     public static function drawRegister(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
         echo RegisterView::drawRegister() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -141,6 +157,7 @@ class PageController{
      * Draws validated email page views.
      */
     public static function drawValidatedEmail(){
+        self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
         echo ValidatedEmailView::drawValidatedEmail() . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -158,6 +175,12 @@ class PageController{
         }
 
         return ['linkText' => $linkText, 'link' => $link];
+    }
+
+    public static function isReadOnlyUser(){
+        if(!isset($_SESSION['USER_ID'])){
+            $_SESSION['USER_ROLE'] = 4;
+        }
     }
 }
 

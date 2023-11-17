@@ -1,8 +1,10 @@
 <?php
 
 require_once('controllers/PageController.php');
+require_once('controllers/AuthController.php');
 require_once('models/UserModel.php');
 require_once('services/DBManager.php');
+require_once('services/Utility.php');
 
 /**
  * Router sanitizes input and decides which page to display.
@@ -115,10 +117,17 @@ class Router{
 
     public static function loginRoute(){
         PageController::drawLogin();
-        if(isset($_POST['submit'])){
-            AuthController::loginUser();
-            header('Location: profile.php');
-            exit();
+        if (isset($_POST['submit'])) {
+            // If loginUser() was successful send to profile page.
+            if (AuthController::loginUser()) {
+                header('Location: profile.php');
+                exit();
+            } else {
+                Utility::setFlashMessage('login_error', "No account found with that username or password. Try again.");
+                echo "after post, after message set\n\r";
+                header('Location: login.php');
+                exit();
+            }
         }
     }
 
@@ -127,7 +136,17 @@ class Router{
     }
 
     public static function profileRoute(){
-        PageController::drawProfile();
+        // If user session active, get user data from DB and draw profile page,
+        // otherwise draw login page.
+        if(AuthController::ensureAuthenticated()){
+            PageController::drawProfile(DBManager::getAuthUser());
+        }
+        else{
+            header('Location: login.php');
+            exit();
+        }
+
+        // If logout button is pressed, log user out and redirect to login page.
         if(isset($_POST['submit'])){
             AuthController::logoutUser();
             header('Location: login.php');
@@ -145,6 +164,7 @@ class Router{
         }
     }
 
+    // TODO: This logic should be in PageController. Only handle routing here.
     public static function validatedEmailRoute(){
         if(isset($_SESSION['USER_NAME'])){
             $userName = $_SESSION['USER_NAME'];

@@ -16,7 +16,7 @@ class UserModel{
     private $isEmailValidated;
 
 
-    public function __construct($userID = NULL, $userName = '', $password = '', $role = NULL){
+    public function __construct($userID = NULL, $userName = '', $password = '', $role = 4){
         $this->userID = $userID;
         $this->userName = $userName;
         $this->role = $role;

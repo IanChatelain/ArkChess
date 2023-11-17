@@ -16,15 +16,27 @@ class ProfileView{
         $rating = $user->getRating();
 
         $profile = <<<END
-        <main class="content">
-            <article>
-                <h2>Profile Page</h2>
+        <main class="form-container" id="profile">
+            <div class="title-container">
+                <h2 class="formTitle">{$userName}'s Profile</h2>
+            </div>
+            <div class="user-details">
+                <!-- User details here -->
                 <p>UserName: {$userName}</p>
                 <p>Rating: {$rating}</p>
-                <form method="POST">
-                    <button id="logout" name="submit" type="submit">Log Out</button>
-                </form>
-            </article>
+                <input type="submit" id="submit" name="submit" value="Logout">
+            </div>
+            <div class="recent-games-container">
+                <!-- Recent games here -->
+                <h2 class="recent-games-title">Recent Games</h2>
+                <div class="recent-game-item">
+                    <p>Game 1</p>
+                </div>
+                <div class="recent-game-item">
+                    <p>Game 2</p>
+                </div>
+                <!-- Add more game items as needed -->
+            </div>
         </main>
 END;
 

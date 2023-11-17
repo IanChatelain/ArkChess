@@ -14,7 +14,7 @@ class RegisterView{
     public static function drawRegister(){
         $content = <<<END
         <main class="form-container">
-            <h2 id="formTitle">Register</h2>
+            <h2 class="formTitle">Register</h2>
             <form method="POST" id="signInForm">
                 <input type="text" id="username" name="username" placeholder="Username">
                 <div class="error" id="usernameError">Username is required</div>

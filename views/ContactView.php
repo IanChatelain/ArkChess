@@ -14,7 +14,7 @@ class ContactView{
     public static function drawContact(){
         $content = <<<END
         <main class="form-container">
-            <h2 id="formTitle">Contact Us</h2>
+            <h2 class="formTitle">Contact Us</h2>
             <form method="POST" id="contactForm">
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="email@example.com">
