@@ -22,7 +22,7 @@ class ProfileView{
                 <p>UserName: {$userName}</p>
                 <p>Rating: {$rating}</p>
                 <form method="POST">
-                    <button id="logout" name="logout" type="submit">Log Out</button>
+                    <button id="logout" name="submit" type="submit">Log Out</button>
                 </form>
             </article>
         </main>

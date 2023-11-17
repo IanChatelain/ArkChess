@@ -26,7 +26,7 @@
 }
 
   /* Input field styles */
-input#username, input#password, input#email {
+input#username, input#password, input#email, input#confirmPassword{
     background: #fff;
     border: 1px solid #aaa;
     border-radius: 4px;

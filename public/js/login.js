@@ -23,7 +23,6 @@ function formHasErrors(){
         let field = document.getElementById(requiredFields[i]);
         let regex = regexKeys[i];
 
-        // TODO: if field is "email" and if it's display = "none" do not show error.
         if(field.value == null || field.value.trim() == ""){
             document.getElementById(requiredFields[i] + "Error").style.display = "block";
             if(!errorFlag){
@@ -35,6 +34,10 @@ function formHasErrors(){
             if(!regex.test(field.value)){
                 if(field.id == "password"){
                     ShowPasswordRequirements();
+                    errorFlag = true;
+                }
+                else if(field.id == "username"){
+                    showUsernameRequirements();
                     errorFlag = true;
                 }
                 else{
@@ -76,6 +79,26 @@ function ShowPasswordRequirements(){
         }
     }
 }
+
+function showUsernameRequirements() {
+    let username = document.getElementById("username");
+    let marker = document.getElementById("usernameError");
+    let usernameRegexKeys = [/^[a-zA-Z0-9]+$/,
+                             /^.{3,16}$/];
+    let usernameReqPhrases = ["* Username can only contain letters, numbers",
+                              "* Username must be 3 to 16 characters long"];
+
+    for (let u = 0; u < usernameRegexKeys.length; u++) {
+        let usernameRegex = usernameRegexKeys[u];
+        if (!usernameRegex.test(username.value)) {
+            let usernamePhrase = document.createElement("p");
+            usernamePhrase.innerHTML = usernameReqPhrases[u];
+            usernamePhrase.setAttribute("class", "error");
+            marker.insertAdjacentElement("beforebegin", usernamePhrase);
+        }
+    }
+}
+
 
 // Hides all errors on the page.
 function hideErrors(){

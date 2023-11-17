@@ -115,7 +115,7 @@ class Router{
 
     public static function loginRoute(){
         PageController::drawLogin();
-        if(isset($_POST['login'])){
+        if(isset($_POST['submit'])){
             AuthController::loginUser();
             header('Location: profile.php');
             exit();
@@ -128,7 +128,7 @@ class Router{
 
     public static function profileRoute(){
         PageController::drawProfile();
-        if(isset($_POST['logout'])){
+        if(isset($_POST['submit'])){
             AuthController::logoutUser();
             header('Location: login.php');
             exit();
