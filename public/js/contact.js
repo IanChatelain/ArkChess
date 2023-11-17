@@ -1,58 +1,49 @@
-// TODO: log and export submissions to database?
+function validate(e) {
+    hideErrors();
+    let errors = formHasErrors();
 
-function validate(e){
-	hideErrors();
-
-	if (formHasErrors()){
-		e.preventDefault();
-
-		return false;
-	}
-
-    thankYou();
-
-	return true;
+    if (errors) {
+        e.preventDefault();
+    } else {
+        e.preventDefault(); // Remove this if the form should submit to a server
+        displayThankYou();
+    }
 }
 
-function resetForm(e){
-	if (confirm('Clear form?')){
-		hideErrors();
-
-		return true;
-	}
-
-	e.preventDefault();
-
-	return false;
+function resetForm(e) {
+    if (!confirm('Are you sure you want to clear the form?')) {
+        e.preventDefault();
+    } else {
+        hideErrors();
+    }
 }
 
 function formHasErrors(){
     let errorFlag = false;
-    let requiredFields = ["name", "phoneNumber", "email", "comment"];
-    let regexKeys = [/^[a-zA-Z\s\,\''\-]*$/i,
-                     /^\d{10}$/i,
-					 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i,
-                     /^[\x20-\x7E\n\r]*$/];
+    let fields = {
+        "email": /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+        "comment": /.+/
+    };
 
-    for(let i = 0; i < requiredFields.length; i++){
-        let field = document.getElementById(requiredFields[i]);
-        let regex = regexKeys[i];
-
-        if(field.value == null || field.value.trim() == ""){
-            document.getElementById(requiredFields[i] + "Required_error").style.display = "block";
-            if(!errorFlag){
-                document.getElementById(field.id).focus();
-            }
+    // Check for empty fields first
+    for (let id in fields) {
+        let field = document.getElementById(id);
+        if (field.value.trim() === "") {
+            document.getElementById(id + "Required_error").style.display = "block";
+            field.focus();
             errorFlag = true;
         }
-        else{
-            if(!regex.test(field.value)){
-                document.getElementById(field.id + "Invalid_error").style.display = "block";
-                if(!errorFlag){
-                    document.getElementById(field.id).focus();
-                    document.getElementById(field.id).select();
-                }
+    }
+
+    // If no empty fields were found, check for invalid input
+    if (!errorFlag) {
+        for (let id in fields) {
+            let field = document.getElementById(id);
+            if (!fields[id].test(field.value)) {
+                document.getElementById(id + "Invalid_error").style.display = "block";
+                field.focus();
                 errorFlag = true;
+                break; // Stop at the first invalid input
             }
         }
     }
@@ -60,27 +51,29 @@ function formHasErrors(){
     return errorFlag;
 }
 
-function hideErrors(){
-	let error = document.getElementsByClassName("error");
 
-	for(let i = 0; i < error.length; i++) {
-		error[i].style.display = "none";
-	}
+function hideErrors() {
+    var errors = document.getElementsByClassName("error");
+    for (var i = 0; i < errors.length; i++) {
+        errors[i].style.display = "none";
+    }
 }
 
-function thankYou(){
-    let form = document.getElementById("contactForm");
-    form.remove();
-    let contactDescription = document.getElementById("contactDescription");
-
-    contactDescription.id = "thankYou";
-    contactDescription.getElementsByTagName("h1")[0].textContent = "Thank you!";
-    contactDescription.getElementsByTagName("p")[0].textContent = "Thank you for contacting us! We have received your message and will respond to you as soon as possible.";
+function displayThankYou() {
+    let formContainer = document.getElementsByClassName("form-container")[0];
+    if (formContainer) {
+        formContainer.innerHTML = '<h2 id="thankYouTitle">Thank You!</h2><p>Thank you for contacting us! We have received your message and will respond to you as soon as possible.</p>';
+        // Alternatively, you can hide the form and add the thank you message
+        // document.getElementById("contactForm").style.display = 'none';
+        // let thankYouMessage = document.createElement('div');
+        // thankYouMessage.innerHTML = '<h2 id="thankYouTitle">Thank You!</h2><p>Thank you for contacting us! We have received your message and will respond to you as soon as possible.</p>';
+        // formContainer.appendChild(thankYouMessage);
+    }
 }
 
-function load(){
-    let name = document.getElementById("name");
-    name.focus();
+function load() {
+    let email = document.getElementById("email");
+    email.focus();
 
     hideErrors();
 

@@ -25,7 +25,6 @@ class CommonView{
                 <link rel="stylesheet" type="text/css" href="public/css/board.css">
                 <link rel="stylesheet" type="text/css" href="public/css/learn.css">
                 <link rel="stylesheet" type="text/css" href="public/css/login.css">
-                <link rel="stylesheet" type="text/css" href="public/css/contact.css">
                 <link rel="stylesheet" type="text/css" href="public/css/chessboard-1.0.0.css">
                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
                     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="crossorigin="anonymous">

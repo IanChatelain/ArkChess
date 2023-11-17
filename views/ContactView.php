@@ -13,38 +13,22 @@ class ContactView{
      */
     public static function drawContact(){
         $content = <<<END
-        <main class="content">
-            <article>
-                <form id="contactForm" onsubmit="return validate(e)" method="post">
-                    <fieldset>
-                        <label for="name">Name</label>
-                        <input class="forms" type="text" id="name" name="name" placeholder="Full Name">
-                        <p class="error" id="nameRequired_error">* Required field</p>
-                        <p class="error" id="nameInvalid_error">* Please enter a valid name</p>
-
-                        <label for="phoneNumber">Phone Number</label>
-                        <input class="forms" type="text" id="phoneNumber" name="phoneNumber" placeholder="(204)555-1234">
-                        <p class="error" id="phoneNumberRequired_error">* Required field</p>
-                        <p class="error" id="phoneNumberInvalid_error">* Please enter a valid phone number</p>
-
-
-                        <label for="email">Email</label>
-                        <input class="forms" type="text" id="email" name="email" placeholder="email@example.com">
-                        <p class="error" id="emailRequired_error">* Required field</p>
-                        <p class="error" id="emailInvalid_error">* Please enter a valid email</p>
-
-
-                        <label for="comment">Comment</label>
-                        <textarea class="forms" name="comment" id="comment" cols="30" rows="10"></textarea>
-                        <p class="error" id="commentRequired_error">* Required field</p>
-                        <p class="error" id="commentInvalid_error">* Please enter a valid name</p>
-
-                        <button type="submit" id="submit" class="defaultButton">Submit</button>
-                        <button type="reset" id="clear" class="defaultButton">Clear</button>
-                    </fieldset>
-                </form>
-            </article>
+        <main class="form-container">
+            <h2 id="formTitle">Contact Us</h2>
+            <form method="POST" id="contactForm">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="email@example.com">
+                <div class="error" id="emailRequired_error">* Required field</div>
+    
+                <label for="comment">Comment</label>
+                <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+                <div class="error" id="commentRequired_error">* Required field</div>
+    
+                <input type="submit" id="submit" name="submit" value="Submit">
+                <input type="reset" id="reset" name="reset" value="Clear">
+            </form>
         </main>
+        <script src="public/js/contact.js"></script>
 END;
 
         return $content;

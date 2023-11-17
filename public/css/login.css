@@ -14,6 +14,8 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
     width: 300px;
     margin: 50px auto;
+    padding-bottom: 0px;
+    padding-top: 15px;
 }
 
   /* Style for form title */
@@ -26,7 +28,7 @@
 }
 
   /* Input field styles */
-input#username, input#password, input#email, input#confirmPassword{
+input{
     background: #fff;
     border: 1px solid #aaa;
     border-radius: 4px;
@@ -39,7 +41,7 @@ input#username, input#password, input#email, input#confirmPassword{
 }
   
   /* Styling the submit button for a 3D look */
-input#submit {
+input#submit, input#reset {
     background: linear-gradient(to bottom, #08c, #0044cc); /* Blue gradient */
     border: none;
     color: white;
@@ -48,7 +50,12 @@ input#submit {
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
+    width: 30%;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Drop shadow for a lifted effect */
+}
+
+input#reset{
+    margin-left: 15px;
 }
 
 input:focus {
@@ -56,7 +63,7 @@ input:focus {
     border: 1px solid #555; /* Optional: Change the border color to match the outline */
 }
 
-input#submit:hover {
+input#submit:hover, input#reset:hover {
     background: linear-gradient(to bottom, #04c, #003399); /* Slightly darker gradient on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth on hover */
 }
@@ -75,4 +82,17 @@ input#submit:hover {
 
 .form-links a:hover {
     color: #ccd1ff; /* Lighter color on hover for better visibility */
+}
+
+textarea {
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
+    resize: none;
 }
