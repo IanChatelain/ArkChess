@@ -137,7 +137,7 @@ class Router{
     
     public static function registerRoute(){
         PageController::drawRegister();
-        if(isset($_POST['register'])){
+        if(isset($_POST['submit'])){
             AuthController::processUserRegistration();
             AuthController::loginUser();
             header('Location: profile.php');
