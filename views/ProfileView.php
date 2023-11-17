@@ -17,25 +17,36 @@ class ProfileView{
 
         $profile = <<<END
         <main class="form-container" id="profile">
-            <div class="title-container">
-                <h2 class="formTitle">{$userName}'s Profile</h2>
+            <div class="titleContainer">
+                <h2 id="formTitle">{$userName}</h2>
             </div>
-            <div class="user-details">
-                <!-- User details here -->
-                <p>UserName: {$userName}</p>
-                <p>Rating: {$rating}</p>
-                <input type="submit" id="submit" name="submit" value="Logout">
-            </div>
-            <div class="recent-games-container">
-                <!-- Recent games here -->
-                <h2 class="recent-games-title">Recent Games</h2>
-                <div class="recent-game-item">
-                    <p>Game 1</p>
-                </div>
-                <div class="recent-game-item">
+            <div class="profileContent">
+                <div class="recent-games-container">
+                    <h2 class="recent-games-title">Recent Games</h2>
+                    <div class="recent-game-item">
+                        <!-- Game details here -->
+                        <p>Game 1</p>
+                    </div>
+                    <div class="recent-game-item">
+                        <!-- Game details here -->
+                        <p>Game 2</p>
+                    </div>
+                    <div class="recent-game-item">
+                        <!-- Game details here -->
                     <p>Game 2</p>
                 </div>
-                <!-- Add more game items as needed -->
+                </div>
+                <div class="userDetails">
+                    <h2 class="recent-games-title">User Details</h2>
+                    <p class="userDetail rating"><span class="label">Bullet:</span> {$rating}</p>
+                    <p class="userDetail rating"><span class="label">Blitz:</span> 800</p>
+                    <p class="userDetail rating"><span class="label">Rapid:</span> 1200</p>
+                </div>
+            </div>
+            <div class="logoutContainer">
+                <form method="POST">
+                    <input type="submit" id="submit" name="submit" value="Logout">
+                </form>
             </div>
         </main>
 END;
@@ -43,3 +54,5 @@ END;
         return $profile;
     }
 }
+
+?>

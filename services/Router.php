@@ -136,19 +136,18 @@ class Router{
     }
 
     public static function profileRoute(){
-        // If user session active, get user data from DB and draw profile page,
-        // otherwise draw login page.
-        if(AuthController::ensureAuthenticated()){
-            PageController::drawProfile(DBManager::getAuthUser());
-        }
-        else{
+        // Check for logout first
+        if(isset($_POST['submit'])){
+            AuthController::logoutUser();
             header('Location: login.php');
             exit();
         }
 
-        // If logout button is pressed, log user out and redirect to login page.
-        if(isset($_POST['submit'])){
-            AuthController::logoutUser();
+        // Then check if user is authenticated
+        if(AuthController::ensureAuthenticated()){
+            PageController::drawProfile(DBManager::getAuthUser());
+        }
+        else{
             header('Location: login.php');
             exit();
         }
