@@ -13,12 +13,15 @@ class UserModel{
     private $role;
     private $password;
     private $auth;
+    private $isEmailValidated;
+
 
     public function __construct($userID = NULL, $userName = '', $password = '', $role = NULL){
         $this->userID = $userID;
         $this->userName = $userName;
         $this->role = $role;
         $this->password = $password;
+        $this->isEmailValidated = false;
     }
     
     /**
@@ -69,6 +72,10 @@ class UserModel{
         $this->role = $role;
     }
 
+    public function setEmail($email){
+        $this->email = $email;
+    }
+
     public function getPassword(){
         return $this->password;
     }
@@ -79,6 +86,14 @@ class UserModel{
 
     public function getRating(){
         return $this->rating;
+    }
+
+    public function setIsEmailValidated($isEmailValidated){
+        $this->isEmailValidated = $isEmailValidated;
+    }
+
+    public function getIsEmailValidated(){
+        return $this->isEmailValidated;
     }
 }
 

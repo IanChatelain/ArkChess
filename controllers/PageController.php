@@ -11,6 +11,7 @@ require_once('views/PlayView.php');
 require_once('views/ProfileView.php');
 require_once('views/RestrictedView.php');
 require_once('views/RegisterView.php');
+require_once('views/ValidatedEmailView.php');
 
 /**
  * PageController controls data flow.
@@ -114,7 +115,7 @@ class PageController{
      */
     public static function drawProfile(){
         echo CommonView::drawHeader('Profile') . "\n";
-        echo ProfileView::drawProfile(AuthController::getUser()) . "\n";
+        echo ProfileView::drawProfile(DBManager::getAuthUser()) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
@@ -122,17 +123,26 @@ class PageController{
      * Draws restricted page views.
      */
     public static function drawRestricted(){
-        echo CommonView::drawHeader('Profile',) . "\n";
+        echo CommonView::drawHeader('Profile') . "\n";
         echo RestrictedView::drawRestricted(AuthController::getUser()) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
     /**
-     * Draws restricted page views.
+     * Draws register page views.
      */
     public static function drawRegister(){
-        echo CommonView::drawHeader('Profile',) . "\n";
+        echo CommonView::drawHeader('Profile') . "\n";
         echo RegisterView::drawRegister() . "\n";
+        echo CommonView::drawFooter() . "\n";
+    }
+
+    /**
+     * Draws validated email page views.
+     */
+    public static function drawValidatedEmail(){
+        echo CommonView::drawHeader('Profile') . "\n";
+        echo ValidatedEmailView::drawValidatedEmail() . "\n";
         echo CommonView::drawFooter() . "\n";
     }
     
@@ -142,7 +152,7 @@ class PageController{
         $link = 'login';
 
         if ($auth) {
-            $userName = AuthController::getUser()->getUserName();
+            $userName = DBManager::getAuthUser()->getUserName();
             $linkText = $userName;
             $link = 'profile';
         }

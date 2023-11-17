@@ -25,14 +25,11 @@ function formHasErrors(){
 
         // TODO: if field is "email" and if it's display = "none" do not show error.
         if(field.value == null || field.value.trim() == ""){
-            if(field.id != "email" || (field.id == "email" && field.style.display == "block"))
-            {
-                document.getElementById(requiredFields[i] + "Required_error").style.display = "block";
-                if(!errorFlag){
-                    document.getElementById(field.id).focus();
-                }
-                errorFlag = true;
+            document.getElementById(requiredFields[i] + "Error").style.display = "block";
+            if(!errorFlag){
+                document.getElementById(field.id).focus();
             }
+            errorFlag = true;
         }
         else{
             if(!regex.test(field.value)){
@@ -41,7 +38,7 @@ function formHasErrors(){
                     errorFlag = true;
                 }
                 else{
-                    document.getElementById(field.id + "Invalid_error").style.display = "block";
+                    document.getElementById(field.id + "error").style.display = "block";
                     if(!errorFlag){
                         document.getElementById(field.id).focus();
                         document.getElementById(field.id).select();
@@ -57,7 +54,7 @@ function formHasErrors(){
 
 function ShowPasswordRequirements(){
     let password = document.getElementById("password");
-    let marker = document.getElementById("passwordErrorMarker");
+    let marker = document.getElementById("passwordError");
     let passRegexKeys = [/(?=.*\d)/i,
                          /(?=.*[a-z])/i,
                          /(?=.*[A-Z])/i,
@@ -78,7 +75,6 @@ function ShowPasswordRequirements(){
             marker.insertAdjacentElement("beforebegin", passPhrase);
         }
     }
-
 }
 
 // Hides all errors on the page.
@@ -112,8 +108,7 @@ function load(){
     name.focus();
 
     hideErrors();
-
-    document.getElementById("signinForm").addEventListener("submit", validate);
+    document.getElementById("signInForm").addEventListener("submit", validate);
 }
 
 document.addEventListener("DOMContentLoaded", load);

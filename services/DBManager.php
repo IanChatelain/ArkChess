@@ -31,28 +31,42 @@ class DBManager{
         }
     }
 
-    public static function registerUser($userRegistered){
-      
-        $db = DBManager::connect();
+    public static function insertNewUser($userRegistered){
+        // New user insert successful.
+        $errorCode = 0;
+        $db = self::connect();
+        $username = $userRegistered->getUserName();
 
-        $insertQuery = "INSERT INTO chessUser (user_name, user_password) values (:user_name, :user_password)";
+        if(self::doesUserExist($username, 'user_name')){
+            // User already exists.
+            $errorCode = -100;
+        }
+        else{
+            $insertQuery = "INSERT INTO chessuser (user_name, user_password, email) values (:user_name, :user_password, :email)";
 
-        try{
-            $statement = $db->prepare($insertQuery);
-            $statement->bindValue(':user_name', $userRegistered->getUserName());
-            $statement->bindValue(':user_password', $userRegistered->getPassword());
-            $statement->execute();
+            try{
+                $statement = $db->prepare($insertQuery);
+                $statement->bindValue(':user_name', $userRegistered->getUserName());
+                $statement->bindValue(':user_password', $userRegistered->getPassword());
+                $statement->bindValue(':email', $userRegistered->getEmail());
+                $statement->execute();
+            }
+            catch(PDOException $e){
+                // Failed to insert new user.
+                $erroCode = -200;
+
+                echo "Error: " . $e->getMessage();
+            }
         }
-        catch(PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+
+        return $errorCode;
     }
 
     public static function authUser($user){
         $authed = false;
         $userName = $user->getUserName();
         $password = $user->getPassword();
-        $db = DBManager::connect();
+        $db = self::connect();
     
         $userQuery = "SELECT user_id, user_name, user_password, role_id FROM chessuser WHERE user_name = :userName AND user_password = :password";
     
@@ -75,30 +89,59 @@ class DBManager{
         return $user;
     }
 
-    public static function getAuthUser($userID){
-        $db = DBManager::connect();
+    public static function getAuthUser(){
+        $user = null;
 
-        $userQuery = "SELECT * FROM chessuser WHERE user_id = :userID";
+        if(isset($_SESSION['USER_ID'])){
+            $userID = $_SESSION['USER_ID'];
+            $db = self::connect();
+
+            $userQuery = "SELECT * FROM chessuser WHERE user_id = :userID";
+        
+            try{
+                $statement = $db->prepare($userQuery);
+                $statement->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $statement->execute();
+                $row = $statement->fetch(PDO::FETCH_ASSOC);
+                if($row){
+                    $user = new UserModel($row['user_id'], $row['user_name']);
+                    $user->setRating($row['rating']);
+                    $user->setRole($row['role_id']);
+    
+                    $authed = true;
+                    $user->setAuth($authed);
+                }
+            }
+            catch(PDOException $e){
+                echo "Error: " . $e->getMessage();
+            }
+
+        }
+        
+        return $user;
+    }
+
+    public static function doesUserExist($userField, $searchColumn){
+        $userAlreadyExists = false;
+
+        $db = self::connect();
+
+        $userQuery = "SELECT * FROM chessuser WHERE $searchColumn = :userField";
     
         try{
             $statement = $db->prepare($userQuery);
-            $statement->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $statement->bindParam(':userField', $userField, PDO::PARAM_STR);
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
             if($row){
-                $user = new UserModel($row['user_id'], $row['user_name']);
-                $user->setRating($row['rating']);
-                $user->setRole($row['role_id']);
-
-                $authed = true;
-                $user->setAuth($authed);
+                $userAlreadyExists = true;
             }
         }
         catch(PDOException $e){
             echo "Error: " . $e->getMessage();
         }
 
-        return $user;
+        return $userAlreadyExists;
     }
 
     /**
@@ -113,7 +156,7 @@ class DBManager{
         $result = [];
         $blogs = [];
 
-        $db = DBManager::connect();
+        $db = self::connect();
 
         try{
             $statement = $db->prepare($indexQuery);
@@ -144,7 +187,7 @@ class DBManager{
         $blogQuery = "SELECT * FROM blogs WHERE blogID = :id";
         $result = [];
 
-        $db = DBManager::connect();
+        $db = self::connect();
 
         try{
             $statement = $db->prepare($blogQuery);
@@ -169,7 +212,7 @@ class DBManager{
      * @param BlogModel $blogModel An instance of a blog.
      */
     public static function updateEdit($blogModel){
-        $db = DBManager::connect();
+        $db = self::connect();
 
         $updateQuery = "UPDATE blogs SET title = :title, content = :content WHERE blogID = :blogID";
         try{
@@ -190,7 +233,7 @@ class DBManager{
      * @param BlogModel $blogModel An instance of a blog.
      */
     public static function insertNewBlog($blogModel){
-        $db = DBManager::connect();
+        $db = self::connect();
 
         $insertQuery = "INSERT INTO blogs (title, content) values (:title, :content)";
         try{
@@ -210,7 +253,7 @@ class DBManager{
      * @param int $blogID A unique identifier of a blog.
      */
     public static function deleteBlog($blogID){
-        $db = DBManager::connect();
+        $db = self::connect();
 
         $deleteQuery = "DELETE FROM blogs WHERE blogID = :blogID LIMIT 1";
         try{

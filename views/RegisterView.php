@@ -31,7 +31,7 @@ class RegisterView{
                     <a href="register.php" id="registerLink">Register</a>
                 </span>
             </form>
-            <script src="public/js/login.js"></script>
+            <script src="public/js/register.js"></script>
         </main>
 END;
 

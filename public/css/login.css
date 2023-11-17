@@ -1,7 +1,8 @@
-
 .error{
-    margin: 0px;
-    font-size: small;
+    color: red;
+    font-size: 10px;
+    font-style: italic;
+    text-shadow: none;
 }
 
 .form-container {
@@ -58,18 +59,6 @@ input:focus {
 input#submit:hover {
     background: linear-gradient(to bottom, #04c, #003399); /* Slightly darker gradient on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth on hover */
-}
-
-/* Error message styling */
-.error {
-    color: #ff6666; /* Red color for errors */
-    font-size: 0.8em;
-    height: 20px;
-    visibility: hidden; /* Hide by default */
-}
-
-.error.show {
-    visibility: visible; /* Show when there is an error */
 }
 
 .form-links {

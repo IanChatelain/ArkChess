@@ -117,6 +117,8 @@ class Router{
         PageController::drawLogin();
         if(isset($_POST['login'])){
             AuthController::loginUser();
+            header('Location: profile.php');
+            exit();
         }
     }
 
@@ -135,6 +137,28 @@ class Router{
     
     public static function registerRoute(){
         PageController::drawRegister();
+        if(isset($_POST['register'])){
+            AuthController::processUserRegistration();
+            AuthController::loginUser();
+            header('Location: profile.php');
+            exit();
+        }
+    }
+
+    public static function validatedEmailRoute(){
+        if(isset($_SESSION['USER_NAME'])){
+            $userName = $_SESSION['USER_NAME'];
+            $cookieName = $userName . "_email_token";
+            $token = $_COOKIE[$cookieName];
+            if(isset($_GET['token'])){
+                if($_GET['token'] === $token){
+                    PageController::drawValidatedEmail();
+                }
+                else{
+                    echo "Incorrect token or token expired";
+                }
+            }
+        }
     }
 }
 
