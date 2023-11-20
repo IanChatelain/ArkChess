@@ -1,8 +1,5 @@
 <?php
 
-ini_set('log_errors', 'On');
-ini_set('error_log', 'C:\\xampp\\php\\logs\\php_error_log');
-
 require_once('services/DBManager.php');
 require_once('models/UserModel.php');
 require_once('services/Email.php');
@@ -12,17 +9,12 @@ require_once('services/Email.php');
  */
 class AuthController{
     public static function generateSecureToken(){
-        try{
-            $token = openssl_random_pseudo_bytes(16, $crypto_strong);
+        $token = openssl_random_pseudo_bytes(16, $crypto_strong);
 
-            if ($token === false || !$crypto_strong) {
-                echo "Unable to generate a secure token";
-            } else {
-                return bin2hex($token);
-            }
-        }
-        catch(Exception $e){
-            echo "Error: " . $e->getMessage();
+        if ($token === false || !$crypto_strong) {
+            echo "Unable to generate a secure token";
+        } else {
+            return bin2hex($token);
         }
     }
 
@@ -36,72 +28,44 @@ class AuthController{
     }
 
     public static function loginUser(){
-        $isAuthed = false;
         $userName = $_POST['username'];
         $password = $_POST['password'];
-        $user = new UserModel(NULL, $userName, $password, NULL);
-        $userAuthed = DBManager::authUser($user);
-        $userID = $user->getUserID();
-        if($userAuthed->getIsEmailValidated()){
-            $userAuthed->setRole(4);
-        }
 
-        if($userAuthed->getAuth()){
-            $_SESSION['USER_ID'] = $userAuthed->getUserID();
-            $_SESSION['USER_NAME'] = $userAuthed->getUserName();
-            $_SESSION['USER_ROLE'] = $userAuthed->getRole();
-            $isAuthed = true;
-        }
+        // Returns user id or false if user not verified.
+        $userId = DBManager::verifyUserLogin($userName, $password);
 
-        return $isAuthed;
+        if($userId){
+            self::setSession($userId, $userName);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
-    public static function processUserRegistration(){
+    public static function setUserSession($userId, $userName){
+        $_SESSION['USER_ID'] = $userId;
+        $_SESSION['USER_NAME'] = $userName;
+    }
+
+    public static function registerUser(){
         $userName = $_POST['username'];
         $password = $_POST['password'];
         $email = $_POST['email'];
-        $user = new UserModel(NULL, $userName, $password, NULL);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $token = self::generateSecureToken();
 
-        $user->setEmail($email);
+        if(!DBManager::doesUserExist($userName)){
 
-        switch(DBManager::insertNewUser($user)){
-            case 0:
-                $expiry = time() + 3600;
-                $cookieName = $user->getUserName() . "_email_token";
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
 
-                // deployment cookie
-                // setcookie($cookieName, $token, [
-                //     'expires' => $expiry,
-                //     'path' => '/',
-                //     'domain' => 'arkchess.ca',
-                //     'secure' => true,
-                //     'httponly' => true,
-                //     'samesite' => 'Strict'
-                // ]);
-
-                setcookie($cookieName, $token, [
-                    'expires' => $expiry,
-                    'path' => '/',
-                ]);
-                
-                
-                $userAuthed = DBManager::authUser($user);
+            if($userId){
+                self::setSession($userId, $userName);
         
-                if($userAuthed->getAuth()){
-                    $_SESSION['USER_ID'] = $userAuthed->getUserID();
-                    $_SESSION['USER_NAME'] = $userAuthed->getUserName();
-                    $_SESSION['USER_ROLE'] = $userAuthed->getRole();
-                }
+                Email::validationEmail($email, $token);
 
-                Email::validationEmail($userAuthed->getEmail(), $token);
-                break;
-            case -100:
-                echo "User already exists";
-                break;
-            case -200:
-                echo "Failed to insert";
-                break;
+                self::loginUser();
+            }
         }
     }
 

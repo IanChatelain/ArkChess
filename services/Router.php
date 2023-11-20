@@ -118,13 +118,11 @@ class Router{
     public static function loginRoute(){
         PageController::drawLogin();
         if (isset($_POST['submit'])) {
-            // If loginUser() was successful send to profile page.
             if (AuthController::loginUser()) {
                 header('Location: profile.php');
                 exit();
             } else {
-                Utility::setFlashMessage('login_error', "No account found with that username or password. Try again.");
-                echo "after post, after message set\n\r";
+                Utility::setFlashMessage('login_error', 'No account found with that username or password. Try again.');
                 header('Location: login.php');
                 exit();
             }
@@ -156,14 +154,12 @@ class Router{
     public static function registerRoute(){
         PageController::drawRegister();
         if(isset($_POST['submit'])){
-            AuthController::processUserRegistration();
-            AuthController::loginUser();
+            AuthController::registerUser();
             header('Location: profile.php');
             exit();
         }
     }
 
-    // TODO: This logic should be in PageController. Only handle routing here.
     public static function validatedEmailRoute(){
         if(isset($_SESSION['USER_NAME'])){
             $userName = $_SESSION['USER_NAME'];

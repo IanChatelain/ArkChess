@@ -127,9 +127,12 @@ class PageController{
      * Draws profile page views.
      */
     public static function drawProfile(){
+        if(isset($_SESSION['USER_ID'])){
+            $userData = DBManager::getAuthUser($_SESSION['USER_ID']);
+        }
         self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
-        echo ProfileView::drawProfile(DBManager::getAuthUser()) . "\n";
+        echo ProfileView::drawProfile($userData) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 

@@ -8,20 +8,20 @@ class UserModel{
     private $userName;
     private $firstName;
     private $lastName;
-    private $rating;
     private $email;
+    private $rating;
     private $role;
-    private $password;
-    private $auth;
-    private $isEmailValidated;
 
 
-    public function __construct($userID = NULL, $userName = '', $password = '', $role = 4){
+    public function __construct($userID = NULL, $userName = null, $firstName = null, $lastName = null, 
+                                $email = null, $rating = 1200, $role = 4){
         $this->userID = $userID;
         $this->userName = $userName;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->rating = $rating;
         $this->role = $role;
-        $this->password = $password;
-        $this->isEmailValidated = false;
     }
     
     /**
@@ -58,10 +58,6 @@ class UserModel{
      */
     public function getAuth(){
         return $this->auth;
-    }
-
-    public function setAuth($auth){
-        $this->auth = $auth;
     }
 
     public function setRating($rating){

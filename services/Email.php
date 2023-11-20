@@ -6,12 +6,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 class Email {
-    public static function validationEmail($email, $token) {
+    public static function validationEmail($email) {
         // True enables exceptions
         $mail = new PHPMailer(true);
 
         try {
             //Server settings
+            $mail->SMTPDebug = 1;
             $mail->isSMTP();
             $mail->Host = 'sandbox.smtp.mailtrap.io';
             $mail->SMTPAuth = true;
@@ -27,8 +28,7 @@ class Email {
             //Content
             $mail->isHTML(true);
             $mail->Subject = 'Email Validation';
-            $mail->Body    = 'Please click the following link to validate your email: <a href="http://localhost:8012/ArkChess/validated.php?token=' . $token . '">Validate Email</a>';
-            $mail->AltBody = 'Please click the following link to validate your email: http://localhost:8012/ArkChess/validated.php?token=' . $token;
+            $mail->Body    = 'Please click the following link to validate your email: <a href="http://localhost:8012/ArkChess/validate.php">Validate Email</a>';
 
             $mail->send();
             echo 'Message has been sent';
