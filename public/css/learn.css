@@ -1,0 +1,74 @@
+/* Base Layout */
+.openingsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 24%)); /* Adjust this to make the tiles smaller or larger */
+    gap: 10px; /* Adjust the gap size as needed */
+    border-top: 1.5px solid #c9c9c9;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #c9c9c9;
+}
+
+/* Individual Opening Tiles */
+.openingTile {
+    border: 1px solid #c9c9c9;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    text-align: center;
+}
+
+.openingTile:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover effect for tiles */
+}
+
+/* Header for each tile */
+.openingTile th {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #c9c9c9;
+    padding: 8px;
+}
+
+/* Opening Name and Stats */
+.openingName {
+    font-weight: bold;
+    color: #c9c9c9; /* Light text color */
+}
+
+.openingStats {
+    color: #c9c9c9; /* Light text color */
+    font-size: 0.8em;
+}
+
+/* Styling for the chessboard inside the tile */
+.playBoard {
+    width: 100%; /* This will make the board expand to the full width of the tile */
+    margin-bottom: 10px;
+}
+
+/* Adjust the search box width */
+#openingSearch {
+    width: 50%; /* Adjust width of the search input as needed, accounting for button width */
+}
+
+a#lichessCredit{
+    text-decoration: underline;
+}
+
+div#learnContentMenu{
+    display: flex;
+}
+
+    .learnMenuButton{
+        all: unset;
+        padding: 0px;
+        margin: 0px;
+        margin-right: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        border-left: 1.5px solid #c9c9c9;
+        border-right: 1.5px solid #c9c9c9;
+        border-top: 1.5px solid #c9c9c9;
+    }
+

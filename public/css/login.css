@@ -1,0 +1,195 @@
+.error{
+    color: red;
+    font-size: 10px;
+    font-style: italic;
+    text-shadow: none;
+}
+
+/* Profile page main content container */
+.form-container#profile {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    margin: 50px;
+    gap: 20px;
+}
+
+.logoutContainer {
+    align-self: flex-start; /* Aligns the logout button to the left */
+}
+
+.profileContent {
+    display: flex;
+    justify-content: space-between; /* Add space between the child elements */
+    width: 100%; /* Ensure it takes the full width of its parent */
+    gap: 20px; /* Optional: add space between the child elements */
+}
+
+/* Common main content container */
+.form-container {
+    background: linear-gradient(to bottom left, #4d4d4d, #303030, #242424, #161616);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
+    width: 300px;
+    margin: 50px auto;
+    padding-bottom: 0px;
+    padding-top: 15px;
+}
+
+#formTitle {
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+input{
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
+}
+  
+input#submit, input#reset {
+    background: linear-gradient(to bottom, #08c, #0044cc);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 85px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+form input#submit{
+    background: linear-gradient(to bottom, #08c, #0044cc);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    margin-top: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 85px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+input#reset{
+    margin-left: 15px;
+}
+
+input:focus {
+    outline: 3px solid #555;
+    border: 1px solid #555;
+}
+
+input#submit:hover, input#reset:hover {
+    background: linear-gradient(to bottom, #04c, #003399);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.form-links {
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.form-links a {
+    color: #819cff;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.form-links a:hover {
+    color: #ccd1ff;
+}
+
+textarea {
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
+    resize: none;
+}
+
+/* Recent games container */
+.recent-games-container {
+    flex: 1.5;
+    order: 2;
+    border-radius: 8px;
+    padding: 20px;
+    background: #1C1C1E; /* Darker background for containers */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    width: 95%;
+    max-width: 1000px;
+    padding-top: 10px;
+}
+
+.userDetails {
+    flex: 1; /* Allow the container to grow */
+    padding: 20px;
+    border-radius: 8px; /* Maintain the border radius */
+    background: #1C1C1E; /* Darker background for containers */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between user details */
+    padding-top: 10px;
+}
+
+    .userDetail {
+        font-size: 1rem; /* Increase font size */
+        padding-bottom: 8px; /* Padding at the bottom */
+    }
+
+    .userDetail:last-child {
+        border-bottom: none; /* Remove border from the last item */
+    }
+
+    .userDetail .label {
+        display: inline-block;
+        font-weight: 700; /* Bold for labels */
+        margin-right: 5px; /* Space between label and value */
+        color: #a9a9a9; /* Subtle color for labels */
+    }
+
+.recent-games-title {
+    color: #ddd;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    font-size: 1.2em;
+    text-align: center;
+    border-bottom: 1px solid #3a3a3c;
+}
+
+.recent-game-item {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.recent-game-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hover effect for tiles */
+}
