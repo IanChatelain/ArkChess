@@ -128,9 +128,11 @@ class PageController{
      */
     public static function drawProfile(){
         if(isset($_SESSION['USER_ID'])){
-            $userData = DBManager::getAuthUser($_SESSION['USER_ID']);
+            $userData = DBManager::getUserData($_SESSION['USER_ID'], UserField::All);
         }
-        self::isReadOnlyUser();
+        if($userData->getRole() == 1){
+            
+        }
         echo CommonView::drawHeader('Profile') . "\n";
         echo ProfileView::drawProfile($userData) . "\n";
         echo CommonView::drawFooter() . "\n";
@@ -167,12 +169,12 @@ class PageController{
     }
     
     public static function changeBannerLink(){
-        $auth = AuthController::ensureAuthenticated();
+        $userId = AuthController::isLoggedIn();
         $linkText = 'Sign In';
         $link = 'login';
 
-        if ($auth) {
-            $userName = DBManager::getAuthUser()->getUserName();
+        if ($userId) {
+            $userName = DBManager::getUserData($_SESSION['USER_ID'], UserField::UserName);
             $linkText = $userName;
             $link = 'profile';
         }

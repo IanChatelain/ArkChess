@@ -5,6 +5,7 @@ require_once('controllers/AuthController.php');
 require_once('models/UserModel.php');
 require_once('services/DBManager.php');
 require_once('services/Utility.php');
+require_once('services/UserField.php');
 
 /**
  * Router sanitizes input and decides which page to display.
@@ -134,16 +135,16 @@ class Router{
     }
 
     public static function profileRoute(){
-        // Check for logout first
+        // Check for logout first.
         if(isset($_POST['submit'])){
             AuthController::logoutUser();
             header('Location: login.php');
             exit();
         }
 
-        // Then check if user is authenticated
-        if(AuthController::ensureAuthenticated()){
-            PageController::drawProfile(DBManager::getAuthUser());
+        // Then check if user is logged in.
+        if(AuthController::isLoggedIn()){
+            PageController::drawProfile();
         }
         else{
             header('Location: login.php');

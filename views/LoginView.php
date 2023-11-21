@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * PageView displays the HTML markup.
  */
@@ -8,6 +12,7 @@ class LoginView{
      * Displays the login HTML.
      */
     public static function drawLogin(){
+        
         $errorMessage = Utility::getFlashMessage('login_error');
 
         $content = <<<END
@@ -19,7 +24,7 @@ class LoginView{
 
 END;
 
-        if ($errorMessage !== '') {
+        if ($errorMessage !== '' && $errorMessage !== null) {
             $content .= '<div class="error" id="loginError">' . htmlspecialchars($errorMessage) . '</div>';
         }
 

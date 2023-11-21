@@ -18,7 +18,7 @@ class AuthController{
         }
     }
 
-    public static function ensureAuthenticated(){
+    public static function isLoggedIn(){
         if(!isset($_SESSION['USER_ID']) || empty($_SESSION['USER_ID'])){
             return false;
         }
@@ -35,7 +35,7 @@ class AuthController{
         $userId = DBManager::verifyUserLogin($userName, $password);
 
         if($userId){
-            self::setSession($userId, $userName);
+            self::setUserSession($userId, $userName);
             return true;
         }
         else{

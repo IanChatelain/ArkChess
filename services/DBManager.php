@@ -99,7 +99,7 @@ class DBManager{
             $query = "SELECT user_id, user_name, first_name, last_name, email, rating, role_id FROM chessuser WHERE user_id = :user_id";
         }
         else{
-            $query = "SELECT $field->value FROM chessuser WHERE user_id = :userId";
+            $query = "SELECT $field->value FROM chessuser WHERE user_id = :user_id";
         }
 
         try{
@@ -120,7 +120,7 @@ class DBManager{
                     );
                 }
                 else{
-                    return $row;
+                    return $row[$field->value];
                 }
             }
         }
@@ -141,14 +141,14 @@ class DBManager{
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
             if ($row && password_verify($password, $row['user_password'])) {
-                return $db->lastInsertId();
+                return $row['user_id'];
             }
-    
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
             return false;
         }
+        return false;
     }
 
     /**

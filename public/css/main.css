@@ -29,6 +29,15 @@ nav ul {
     display: flex;
 }
 
+.dropdown-content {
+    display: none;
+    /* Other styling */
+}
+
+.show {
+    display: block;
+}
+
 .forms {
     display: block;
     color: black;
