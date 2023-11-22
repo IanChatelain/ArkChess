@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * PageView displays the HTML markup.
  */
@@ -14,9 +17,27 @@ class ProfileView{
     public static function drawProfile($user){
         $userName = $user->getUserName();
         $rating = $user->getRating();
+        $role = $user->getRole();
 
         $profile = <<<END
         <main class="form-container" id="profile">
+            <div id="adminModal" class="modal">
+                <div class="modal-content">
+                    <h2 id="formTitle">Admin Settings</h2>
+                    <div class="userDetails">
+                        <span class="close">&times;</span>
+                        <div class="search-container">
+                            <input type="text" size="30" onkeyup="showResult(this.value)">
+                            <input type="submit" id="search" name="search" value="Search">
+                        </div>
+                        <div class="userSearch" id="userSearch">
+                            <ul id="userList">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+
             <div class="titleContainer">
                 <h2 id="formTitle">{$userName}</h2>
             </div>
@@ -44,8 +65,9 @@ class ProfileView{
                 </div>
             </div>
             <div class="logoutContainer">
+                <input type="button" id="adminBtn" onclick="adminSettings.js" name="admin" value="Admin">
                 <form method="POST">
-                    <input type="submit" id="submit" name="submit" value="Logout">
+                    <input type="submit" id="logout" name="logout" value="Logout">
                 </form>
             </div>
         </main>

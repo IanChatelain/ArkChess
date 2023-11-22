@@ -14,6 +14,10 @@ class CommonView{
         $link = PageController::changeBannerLink()['link'];
         $linkText = PageController::changeBannerLink()['linkText'];
 
+        if($link == "profile"){
+            $link = "javascript:void(0)";
+        }
+
         $header = <<<END
             <!DOCTYPE html>
             <html lang="en">
@@ -25,12 +29,8 @@ class CommonView{
                 <link rel="stylesheet" type="text/css" href="public/css/board.css">
                 <link rel="stylesheet" type="text/css" href="public/css/learn.css">
                 <link rel="stylesheet" type="text/css" href="public/css/login.css">
+                <link rel="stylesheet" type="text/css" href="public/css/adminModal.css">
                 <link rel="stylesheet" type="text/css" href="public/css/chessboard-1.0.0.css">
-                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-                    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="crossorigin="anonymous">
-                </script>
-                <script src="public/js/chessboard-1.0.0.js"></script>
-
                 <title>ArkChess - {$title}</title>
             </head>
             <body>
@@ -42,7 +42,11 @@ class CommonView{
                                 <li><a href="play.php">Play</a></li>
                                 <li><a href="blog.php">Blogs</a></li>
                                 <li><a href="learn.php">Learn</a></li>
-                                <li><a href="{$link}.php">{$linkText}</a></li>
+                                <li><a href="javascript:void(0);" id="dynamicDropdown" onclick="openDropdown(event)">{$linkText}</a>
+                                    <div id="dropdownContent" class="dropdown-content">
+                                        <!-- Dropdown content will be added here dynamically -->
+                                    </div>
+                                </li>
                                 <li><a href="contact.php">Contact Us</a></li>
                             </ul>
                         </nav>
@@ -74,6 +78,11 @@ END;
                             </nav>
                         </footer>
                     </div>
+                    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="crossorigin="anonymous">
+                    </script>
+                    <script src="public/js/chessboard-1.0.0.js"></script>
+                    <script src="public/js/banner.js"></script>
                 </body>
             </html>
 END;

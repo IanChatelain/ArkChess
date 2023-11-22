@@ -92,6 +92,38 @@ class DBManager{
         }
     }
 
+    public static function getAllUsers(){
+        $indexQuery = "SELECT * FROM chessusers";
+        $result = [];
+        $users = [];
+
+        $db = self::connect();
+
+        try{
+            $statement = $db->prepare($indexQuery);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            foreach($result as $row){
+                $user = new UserModel(
+                    $row['user_id'] ?? null,
+                    $row['user_name'] ?? null,
+                    $row['first_name'] ?? null,
+                    $row['last_name'] ?? null,
+                    $row['email'] ?? null,
+                    $row['rating'] ?? null,
+                    $row['role_id'] ?? null,
+                );
+
+                $columns[] = $user;
+            }
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+
+        return $columns;
+    }
+
     public static function getUserData($userId, UserField $field){
         $db = self::connect();
 

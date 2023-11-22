@@ -7,18 +7,17 @@
 
 /* Profile page main content container */
 .form-container#profile {
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 800px;
-    margin: 50px;
+    width: 1000px;
     gap: 20px;
 }
 
 .logoutContainer {
-    align-self: flex-start; /* Aligns the logout button to the left */
+    display: flex;
+    margin-right: auto;
 }
 
 .profileContent {
@@ -35,7 +34,6 @@
     padding: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
     width: 300px;
-    margin: 50px auto;
     padding-bottom: 0px;
     padding-top: 15px;
 }
@@ -60,7 +58,7 @@ input{
     box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
 }
   
-input#submit, input#reset {
+input#submit, input#reset, input#adminBtn, input#logout {
     background: linear-gradient(to bottom, #08c, #0044cc);
     border: none;
     color: white;
@@ -90,14 +88,18 @@ input#reset{
     margin-left: 15px;
 }
 
-input:focus {
+input:focus{
     outline: 3px solid #555;
     border: 1px solid #555;
 }
 
-input#submit:hover, input#reset:hover {
+input#submit:hover, input#reset:hover, input#adminBtn:hover, input#logout:hover {
     background: linear-gradient(to bottom, #04c, #003399);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+input#logout{
+    margin-left: 20px;
 }
 
 .form-links {
@@ -136,7 +138,8 @@ textarea {
     border-radius: 8px;
     padding: 20px;
     background: #1C1C1E; /* Darker background for containers */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    border: 1px solid rgb(59, 59, 59);
+    /* box-shadow: 0 4px 6px rgba(136, 136, 136, 0.6); */
     width: 95%;
     max-width: 1000px;
     padding-top: 10px;
@@ -147,7 +150,8 @@ textarea {
     padding: 20px;
     border-radius: 8px; /* Maintain the border radius */
     background: #1C1C1E; /* Darker background for containers */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    border: 1px solid rgb(59, 59, 59);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); */
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -186,7 +190,7 @@ textarea {
     border: 1px solid #444;
     border-radius: 4px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: #ccc;
 }
 
