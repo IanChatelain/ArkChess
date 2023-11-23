@@ -17,6 +17,7 @@ require_once('views/ProfileView.php');
 require_once('views/RestrictedView.php');
 require_once('views/RegisterView.php');
 require_once('views/ValidatedEmailView.php');
+require_once('views/AdminView.php');
 
 /**
  * PageController controls data flow.
@@ -165,6 +166,17 @@ class PageController{
         self::isReadOnlyUser();
         echo CommonView::drawHeader('Profile') . "\n";
         echo ValidatedEmailView::drawValidatedEmail() . "\n";
+        echo CommonView::drawFooter() . "\n";
+    }
+
+    /**
+     * Draws admin page views.
+     */
+    public static function drawAdmin(){
+        $users = DBManager::getAllUsers();
+
+        echo CommonView::drawHeader('Admin') . "\n";
+        echo AdminView::drawAdmin($users) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
     

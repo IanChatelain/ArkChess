@@ -28,7 +28,7 @@ class RegisterView{
                 <input type="text" id="email" name="email" placeholder="Email">
                 <div class="error" id="emailError">Email is required</div>
 
-                <input type="submit" id="submit" name="submit" value="Submit">
+                <input type="submit" class="submit" name="submit" value="Submit">
                 <span class="form-links">
                     <a href="forgot.php" id="passwordReset">Forgot Password?</a> |
                     <a href="register.php" id="registerLink">Register</a>

@@ -51,6 +51,20 @@ class DBManager{
         }
     }
 
+    public static function deleteUser($userId){
+        $db = self::connect();
+
+        $query = "DELETE FROM chessuser WHERE user_id = :user_id LIMIT 1";
+        try{
+            $statement = $db->prepare($query);
+            $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+
     public static function getAuthUser($userId){
         $db = self::connect();
 
@@ -93,8 +107,8 @@ class DBManager{
     }
 
     public static function getAllUsers(){
-        $indexQuery = "SELECT * FROM chessusers";
-        $result = [];
+        $indexQuery = "SELECT * FROM chessuser";
+        $columns = [];
         $users = [];
 
         $db = self::connect();
@@ -123,6 +137,36 @@ class DBManager{
 
         return $columns;
     }
+
+    public static function getAllUsersJSON($userName = null){
+        $db = self::connect();
+    
+        if($userName){
+            $query = "SELECT * FROM chessuser WHERE user_name LIKE :user_name";
+            $userName = "%$userName%"; // Add wildcard characters for partial matching
+        } else {
+            $query = "SELECT * FROM chessusers";
+        }
+    
+        $users = [];
+    
+        try{
+            $statement = $db->prepare($query);
+            if($userName){
+                $statement->bindParam(':user_name', $userName, PDO::PARAM_STR);
+            }
+            $statement->execute();
+            $users = $statement->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+            // You could return a JSON-encoded error message here if desired
+            return json_encode(['error' => 'Database error']);
+        }
+    
+        return json_encode($users);
+    }
+    
 
     public static function getUserData($userId, UserField $field){
         $db = self::connect();
@@ -190,8 +234,8 @@ class DBManager{
      * 
      * @return BlogModel[] $blogs An array of blogs.
      */
-    public static function getMultiBlog(int $limit = 5){
-        $indexQuery = "SELECT * FROM blogs ORDER BY date DESC LIMIT :limit";
+    public static function getMultiBlog(){
+        $indexQuery = "SELECT * FROM blogs ORDER BY date DESC";
         $result = [];
         $blogs = [];
 
@@ -199,7 +243,6 @@ class DBManager{
 
         try{
             $statement = $db->prepare($indexQuery);
-            $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll();
             foreach($result as $row){

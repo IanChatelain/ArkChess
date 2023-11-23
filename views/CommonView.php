@@ -13,9 +13,12 @@ class CommonView{
     public static function drawHeader($title){
         $link = PageController::changeBannerLink()['link'];
         $linkText = PageController::changeBannerLink()['linkText'];
+        $event = "openDropdown(event)";
+        $onclick = "";
 
         if($link == "profile"){
             $link = "javascript:void(0)";
+            $onclick = sprintf("onclick=%s", $event);
         }
 
         $header = <<<END
@@ -29,6 +32,7 @@ class CommonView{
                 <link rel="stylesheet" type="text/css" href="public/css/board.css">
                 <link rel="stylesheet" type="text/css" href="public/css/learn.css">
                 <link rel="stylesheet" type="text/css" href="public/css/login.css">
+                <link rel="stylesheet" type="text/css" href="public/css/admin.css">
                 <link rel="stylesheet" type="text/css" href="public/css/adminModal.css">
                 <link rel="stylesheet" type="text/css" href="public/css/chessboard-1.0.0.css">
                 <title>ArkChess - {$title}</title>
@@ -42,9 +46,8 @@ class CommonView{
                                 <li><a href="play.php">Play</a></li>
                                 <li><a href="blog.php">Blogs</a></li>
                                 <li><a href="learn.php">Learn</a></li>
-                                <li><a href="javascript:void(0);" id="dynamicDropdown" onclick="openDropdown(event)">{$linkText}</a>
+                                <li><a href="{$link}.php" id="dynamicDropdown" {$onclick}>{$linkText}</a>
                                     <div id="dropdownContent" class="dropdown-content">
-                                        <!-- Dropdown content will be added here dynamically -->
                                     </div>
                                 </li>
                                 <li><a href="contact.php">Contact Us</a></li>

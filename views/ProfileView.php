@@ -18,28 +18,19 @@ class ProfileView{
         $userName = $user->getUserName();
         $rating = $user->getRating();
         $role = $user->getRole();
+        if($role === 1){
+            $adminButton = <<<END
+            <a href="admin.php"><input type="button" class="adminBtn" name="admin" value="Admin"></a>
+END;
+        }
+        else{
+            $adminButton = '';
+        }
 
         $profile = <<<END
-        <main class="form-container" id="profile">
-            <div id="adminModal" class="modal">
-                <div class="modal-content">
-                    <h2 id="formTitle">Admin Settings</h2>
-                    <div class="userDetails">
-                        <span class="close">&times;</span>
-                        <div class="search-container">
-                            <input type="text" size="30" onkeyup="showResult(this.value)">
-                            <input type="submit" id="search" name="search" value="Search">
-                        </div>
-                        <div class="userSearch" id="userSearch">
-                            <ul id="userList">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>        
-
+        <main class="form-container profile">
             <div class="titleContainer">
-                <h2 id="formTitle">{$userName}</h2>
+                <h2 class="formTitle">{$userName}</h2>
             </div>
             <div class="profileContent">
                 <div class="recent-games-container">
@@ -65,9 +56,9 @@ class ProfileView{
                 </div>
             </div>
             <div class="logoutContainer">
-                <input type="button" id="adminBtn" onclick="adminSettings.js" name="admin" value="Admin">
+                    {$adminButton}
                 <form method="POST">
-                    <input type="submit" id="logout" name="logout" value="Logout">
+                    <input type="submit" class="logout" name="logout" value="Logout">
                 </form>
             </div>
         </main>
