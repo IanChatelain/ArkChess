@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * PageView displays the HTML markup.
  */
@@ -14,11 +17,20 @@ class ProfileView{
     public static function drawProfile($user){
         $userName = $user->getUserName();
         $rating = $user->getRating();
+        $role = $user->getRole();
+        if($role === 1){
+            $adminButton = <<<END
+            <a href="admin.php"><input type="button" class="adminBtn" name="admin" value="Admin"></a>
+END;
+        }
+        else{
+            $adminButton = '';
+        }
 
         $profile = <<<END
-        <main class="form-container" id="profile">
+        <main class="form-container profile">
             <div class="titleContainer">
-                <h2 id="formTitle">{$userName}</h2>
+                <h2 class="formTitle">{$userName}</h2>
             </div>
             <div class="profileContent">
                 <div class="recent-games-container">
@@ -44,8 +56,9 @@ class ProfileView{
                 </div>
             </div>
             <div class="logoutContainer">
+                    {$adminButton}
                 <form method="POST">
-                    <input type="submit" id="submit" name="submit" value="Logout">
+                    <input type="submit" class="logout" name="logout" value="Logout">
                 </form>
             </div>
         </main>

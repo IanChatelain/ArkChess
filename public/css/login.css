@@ -6,19 +6,18 @@
 }
 
 /* Profile page main content container */
-.form-container#profile {
-
+.form-container.profile {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 800px;
-    margin: 50px;
+    width: 1000px;
     gap: 20px;
 }
 
 .logoutContainer {
-    align-self: flex-start; /* Aligns the logout button to the left */
+    display: flex;
+    margin-right: auto;
 }
 
 .profileContent {
@@ -35,16 +34,15 @@
     padding: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.7);
     width: 300px;
-    margin: 50px auto;
     padding-bottom: 0px;
     padding-top: 15px;
 }
 
-#formTitle {
+.formTitle {
     color: #fff;
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 1.5em;
 }
 
@@ -56,12 +54,29 @@ input{
     margin-top: 8px;
     margin-bottom: 20px;
     width: 100%;
+    height: 35px;   
     box-sizing: border-box;
     box-shadow: inset -1px 2px 4px rgba(0, 0, 0, .7);
 }
+
+input#userSearchBar{
+    width: 35%;
+}
+
+.search-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchBtn{
+    margin-left: 20px;
+}
   
-input#submit, input#reset {
-    background: linear-gradient(to bottom, #08c, #0044cc);
+input.submit, input.reset, input.addUserBtn, input.logout, 
+input.searchBtn, input.userActionSubmit, input.editUserSubmit,
+input.adminBtn, input.deleteUser, input.editUser, input.addUser {
+    background: linear-gradient(to bottom, #3636ae, #1a1a66);
     border: none;
     color: white;
     padding: 10px 15px;
@@ -73,8 +88,8 @@ input#submit, input#reset {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-form input#submit{
-    background: linear-gradient(to bottom, #08c, #0044cc);
+form input.submit{
+    background: linear-gradient(to bottom, #3636ae, #1a1a66);
     border: none;
     color: white;
     padding: 10px 15px;
@@ -86,18 +101,24 @@ form input#submit{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-input#reset{
+input.reset{
     margin-left: 15px;
 }
 
-input:focus {
+input:focus{
     outline: 3px solid #555;
     border: 1px solid #555;
+}   
+
+input.submit:hover, input.reset:hover, input.addUserBtn:hover, 
+input.logout:hover, input.searchBtn:hover, input.userActionSubmit:hover, 
+input.editUserSubmit:hover, input.deleteUser:hover, input.editUser:hover, input.addUser:hover {
+    background: linear-gradient(to bottom, #4d4dbf, #2a2a88);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-input#submit:hover, input#reset:hover {
-    background: linear-gradient(to bottom, #04c, #003399);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+input.logout{
+    margin-left: 20px;
 }
 
 .form-links {
@@ -136,7 +157,8 @@ textarea {
     border-radius: 8px;
     padding: 20px;
     background: #1C1C1E; /* Darker background for containers */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    border: 1px solid rgb(59, 59, 59);
+    /* box-shadow: 0 4px 6px rgba(136, 136, 136, 0.6); */
     width: 95%;
     max-width: 1000px;
     padding-top: 10px;
@@ -147,7 +169,8 @@ textarea {
     padding: 20px;
     border-radius: 8px; /* Maintain the border radius */
     background: #1C1C1E; /* Darker background for containers */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    border: 1px solid rgb(59, 59, 59);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); */
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -186,7 +209,7 @@ textarea {
     border: 1px solid #444;
     border-radius: 4px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: #ccc;
 }
 

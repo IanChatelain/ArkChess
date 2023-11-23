@@ -63,6 +63,9 @@ class Router{
                             PageController::drawEdit($blogID);
                         }
                     }
+                    else{
+                        PageController::drawRestricted();
+                    }
                 }
                 else{
                     PageController::drawRestricted();
@@ -98,6 +101,9 @@ class Router{
                         PageController::drawNewPost();
                     }
                 }
+                else{
+                    PageController::drawRestricted();
+                }
             }
             else{
                 PageController::drawRestricted();
@@ -117,8 +123,7 @@ class Router{
     }
 
     public static function loginRoute(){
-        PageController::drawLogin();
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['login'])) {
             if (AuthController::loginUser()) {
                 header('Location: profile.php');
                 exit();
@@ -128,6 +133,7 @@ class Router{
                 exit();
             }
         }
+        PageController::drawLogin();
     }
 
     public static function contactRoute(){
@@ -136,7 +142,7 @@ class Router{
 
     public static function profileRoute(){
         // Check for logout first.
-        if(isset($_POST['submit'])){
+        if(isset($_POST['logout']) || isset($_POST['logout.php'])){
             AuthController::logoutUser();
             header('Location: login.php');
             exit();
@@ -153,14 +159,54 @@ class Router{
     }
     
     public static function registerRoute(){
-        PageController::drawRegister();
         if(isset($_POST['submit'])){
             AuthController::registerUser();
             header('Location: profile.php');
             exit();
         }
+        PageController::drawRegister();
     }
 
+    public static function logoutRoute(){
+        AuthController::logoutUser();
+        header('Location: login.php');
+        exit();
+    }
+
+    public static function adminRoute(){
+        if(isset($_SESSION['USER_ROLE']))
+        {
+            if($_SESSION['USER_ROLE'] == 1){
+                if (isset($_POST['deleteUser']) && isset($_POST['userId'])) {
+                    $userId = $_POST['userId'];
+                    DBManager::deleteUser($userId);
+                }
+                if(isset($_POST['addUser'])){
+                    AuthController::addUser();
+                    header('Location: admin.php');
+                    exit();
+                }
+                if(isset($_POST['editUserSubmit'])){
+                    $userId = $_POST['editUserId'];
+                    $userName = $_POST['editUserName'];
+                    $email = $_POST['editEmail'];
+                    $rating = $_POST['editRating'];
+                    $role = $_POST['editRole'];
+                    DBManager::editUser($userId, $userName, $email, $rating, $role);
+                    header('Location: admin.php');
+                    exit();
+                }
+                PageController::drawAdmin();
+            }
+            else{
+                PageController::drawRestricted();
+            }
+        }
+        else{
+            PageController::drawRestricted();
+        }
+    }
+    
     public static function validatedEmailRoute(){
         if(isset($_SESSION['USER_NAME'])){
             $userName = $_SESSION['USER_NAME'];

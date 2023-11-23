@@ -1,0 +1,45 @@
+/* Modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1;
+    top: -15%;
+    left: 35%;
+    height: 80%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for contrast */
+    width: 25%; /* Adjust width as necessary */
+    margin: 10% auto; /* Increase top margin to push it down the page */
+    padding: 20px;
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+.modal-content{
+    justify-content: space-between; /* Add space between the child elements */
+    background-color: #333; /* Dark background */
+    color: #fff; /* Light text */
+    border-radius: 8px; /* Rounded corners */
+    width: 90%; /* Adjust as needed */
+    margin: 5% auto; /* Vertically center */
+    padding: 20px;
+}
+
+.addClose, .editClose{
+    color: #aaa; /* Light grey */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+}
+
+.close:hover, .close:focus{
+    color: #ddd; /* Slightly darker grey on hover/focus */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 80%; /* Full width on smaller screens */
+        margin: 10% auto;
+    }
+}

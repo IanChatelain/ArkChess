@@ -32,7 +32,7 @@ END;
                 <input type="password" id="password" name="password" placeholder="Password">
                 <div class="error" id="passwordError">Password is required</div>
                 
-                <input type="submit" id="submit" name="submit" value="Submit">
+                <input type="submit" class="submit" name="login" value="Sign In">
                 <span class="form-links">
                     <a href="forgot.php" id="passwordReset">Forgot Password?</a>
                     <a href="register.php" id="registerLink">Register</a>

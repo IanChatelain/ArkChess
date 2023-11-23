@@ -33,9 +33,10 @@ class AuthController{
 
         // Returns user id or false if user not verified.
         $userId = DBManager::verifyUserLogin($userName, $password);
+        $userRole = DBManager::getUserData($userId, UserField::Role);
 
         if($userId){
-            self::setUserSession($userId, $userName);
+            self::setUserSession($userId, $userName, $userRole);
             return true;
         }
         else{
@@ -43,9 +44,27 @@ class AuthController{
         }
     }
 
-    public static function setUserSession($userId, $userName){
+    public static function setUserSession($userId, $userName, $role){
         $_SESSION['USER_ID'] = $userId;
         $_SESSION['USER_NAME'] = $userName;
+        $_SESSION['USER_ROLE'] = $role;
+    }
+
+    public static function addUser(){
+        $userName = $_POST['username'];
+        $password = $_POST['password'];
+        $email = $_POST['email'];
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $token = self::generateSecureToken();
+
+        if(!DBManager::doesUserExist($userName)){
+
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
+
+            if($userId){
+                return true;
+            }
+        }
     }
 
     public static function registerUser(){
@@ -60,9 +79,7 @@ class AuthController{
             $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
 
             if($userId){
-                self::setSession($userId, $userName);
-        
-                Email::validationEmail($email, $token);
+                //Email::validationEmail($email, $token);
 
                 self::loginUser();
             }

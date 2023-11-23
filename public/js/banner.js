@@ -1,9 +1,10 @@
 function openDropdown(event) {
     event.preventDefault();
     var dropdownContent = document.getElementById("dropdownContent");
+    var dropdownLink = document.getElementById("dynamicDropdown");
 
     if (!dropdownContent.querySelector('a')) {
-        var links = ['Profile', 'Admin Settings', 'Logout'];
+        var links = ['Profile', 'Logout'];
         links.forEach(function(link) {
             var a = document.createElement('a');
             a.textContent = link;
@@ -12,29 +13,24 @@ function openDropdown(event) {
         });
     }
 
-    dropdownContent.classList.toggle('show');
+    dropdownContent.classList.toggle('show-dropdown-content');
+
+    if (dropdownContent.classList.contains('show-dropdown-content')){
+        dropdownLink.style.backgroundColor = "#333";
+        dropdownLink.style.border = "1px solid #444";
+        dropdownLink.style.padding = "2px";
+    }
+
     event.stopPropagation();
 }
 
 window.onclick = function(event) {
-    // Get the dropdown content element
     var dropdownContent = document.getElementById("dropdownContent");
-    
-    // Check if the clicked area is not the dropdown itself and not the dropdown button
-    if (!dropdownContent.contains(event.target) && !event.target.matches('.dropbtn')) {
-        // If the 'show' class is present, remove it to hide the dropdown
-        if (dropdownContent.classList.contains('show')) {
-            dropdownContent.classList.remove('show');
-        }
-    }
-};
+    var dropdownLink = document.getElementById("dynamicDropdown");
 
-window.onclick = function(event) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    for (var i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown && openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-        }
+    if (!dropdownContent.contains(event.target) && !event.target.matches('#dynamicDropdown')) {
+        dropdownContent.classList.remove('show-dropdown-content');
+        dropdownLink.style.backgroundColor = "transparent";
+        dropdownLink.style.border = "none";
     }
 };
