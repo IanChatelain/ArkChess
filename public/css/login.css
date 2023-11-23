@@ -74,7 +74,7 @@ input#userSearchBar{
 }
   
 input.submit, input.reset, input.addUserBtn, input.logout, 
-input.searchBtn, input.userActionSubmit, input.editUserBtn,
+input.searchBtn, input.userActionSubmit, input.editUserSubmit,
 input.adminBtn, input.deleteUser, input.editUser, input.addUser {
     background: linear-gradient(to bottom, #3636ae, #1a1a66);
     border: none;
@@ -112,7 +112,7 @@ input:focus{
 
 input.submit:hover, input.reset:hover, input.addUserBtn:hover, 
 input.logout:hover, input.searchBtn:hover, input.userActionSubmit:hover, 
-input.editUserBtn:hover, input.deleteUser:hover, input.editUser:hover, input.addUser:hover {
+input.editUserSubmit:hover, input.deleteUser:hover, input.editUser:hover, input.addUser:hover {
     background: linear-gradient(to bottom, #4d4dbf, #2a2a88);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }

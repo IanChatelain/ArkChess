@@ -24,8 +24,8 @@ class ContactView{
                 <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
                 <div class="error" id="commentRequired_error">* Required field</div>
     
-                <input type="submit" id="submit" name="submit" value="Submit">
-                <input type="reset" id="reset" name="reset" value="Clear">
+                <input type="submit" class="submit" name="submit" value="Submit">
+                <input type="reset" class="reset" name="reset" value="Clear">
             </form>
         </main>
         <script src="public/js/contact.js"></script>

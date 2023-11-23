@@ -27,7 +27,7 @@ class AdminView{
             $userRole = $user->getRole();
             $userEmail = $user->getEmail();
             $userID = $user->getUserID();
-            $userRating = $user->getRating();   
+            $userRating = $user->getRating();
 
             // <select name="action">
             //     <option value="edit">Edit</option>
@@ -37,12 +37,17 @@ class AdminView{
             $userRows .= <<<END
                 <tr>
                     <td>{$userName}</td>
+                    <td>{$userRating}</td>
                     <td>{$userRole}</td>
                     <td>{$userEmail}</td>
                     <td class="userAction">
-                        <input type="hidden" name="userId" value="{$userID}">
-                        <input type="button" class="editUser" name="editUser" value="Edit">
-                        <input type="submit" class="deleteUser" name="deleteUser" value="Delete">
+                        <input type="button" class="editUser" 
+                            data-user-id="{$userID}" 
+                            data-user-name="{$userName}" 
+                            data-user-email="{$userEmail}" 
+                            data-user-rating="{$userRating}" 
+                            data-user-role="{$userRole}" value="Edit">
+                        <input type="submit" class="deleteUser" name="deleteUser" data-user-id="{$userID}" value="Delete">
                     </td>
                 </tr>
 END;
@@ -81,18 +86,19 @@ END;
                     <span class="editClose">&times;</span>
                     <div class="userDetails">
                         <h2 class="recent-games-title">Edit User</h2>
-                        <form method="POST" id="signInForm">
-                            <input type="text" id="editUsername" name="editUsername" placeholder="Username" value="$userName">
+                        <form method="POST" id="editUserForm">
+                            <input type="hidden" id="editUserId" name="editUserId" value="">
+                            <input type="text" id="editUserName" name="editUserName" placeholder="Username" value="test">
                             <div class="error" id="editUsernameError">Username is required</div>
                             
-                            <input type="text" id="editEmail" name="editEmail" placeholder="Email" value="$userEmail">
+                            <input type="text" id="editEmail" name="editEmail" placeholder="Email" value="">
                             <div class="error" id="editEmailError">Email is required</div>
 
-                            <input type="number" id="editRating" name="editRating" placeholder="Rating" value="$userRating">
+                            <input type="number" id="editRating" name="editRating" placeholder="Rating" value="">
                             
-                            <input type="number" id="editRole" name="editRole" placeholder="Role" value="$userRole">
-            
-                            <input type="submit" class="editUser" name="editUser" value="Submit">
+                            <input type="number" id="editRole" name="editRole" placeholder="Role" value="">
+                            
+                            <input type="submit" class="editUserSubmit" name="editUserSubmit" value="Submit">
                         </form>
                     </div>
                 </div>
@@ -108,6 +114,7 @@ END;
                         <thead>
                             <tr>
                                 <th>UserName</th>
+                                <th>Rating</th>
                                 <th>Role</th>
                                 <th>Email</th>
                                 <th>Action</th>
@@ -117,6 +124,7 @@ END;
                             {$userRows}
                         </tbody>
                     </table>
+                    <input type="hidden" name="userId" value="">
                 </form>
                 <input type="button" class="addUserBtn" name="addUser" value="Add User">
             </div>

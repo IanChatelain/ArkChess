@@ -50,6 +50,24 @@ class DBManager{
             return false;
         }
     }
+    
+    public static function editUser($userId, $userName, $email, $rating, $role){
+        $db = self::connect();
+
+        $query = "UPDATE chessuser SET user_name = :user_name, email = :email, rating = :rating, role_id = :role_id  WHERE user_id = :user_id";
+        try{
+            $statement = $db->prepare($query);
+            $statement->bindValue(':user_name', $userName);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':rating', $rating);
+            $statement->bindValue(':role_id', $role);
+            $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
 
     public static function deleteUser($userId){
         $db = self::connect();

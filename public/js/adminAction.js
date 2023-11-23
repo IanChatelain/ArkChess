@@ -15,21 +15,40 @@ document.addEventListener("DOMContentLoaded", function() {
     var editUserBtns = document.getElementsByClassName("editUser");
     var editUserSpan = document.getElementsByClassName("editClose")[0];
 
-    for (var i = 0; i < editUserBtns.length; i++) {
-        editUserBtns[i].onclick = function() {
-            editUserModal.style.display = "block";
-        }
-    }
-
     editUserSpan.onclick = function() {
         editUserModal.style.display = "none";
     }
+
+    Array.from(editUserBtns).forEach(function(btn) {
+        btn.addEventListener('click', function() {
+
+            var userId = this.getAttribute('data-user-id');
+            var userName = this.getAttribute('data-user-name');
+            var userEmail = this.getAttribute('data-user-email');
+            var userRating = this.getAttribute('data-user-rating');
+            var userRole = this.getAttribute('data-user-role');
+    
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUserName').value = userName;
+            document.getElementById('editEmail').value = userEmail;
+            document.getElementById('editRating').value = userRating;
+            document.getElementById('editRole').value = userRole;
+
+            editUserModal.style.display = "block";
+        });
+    });
 
     var deleteUserBtns = document.getElementsByClassName("deleteUser");
     Array.from(deleteUserBtns).forEach(function(btn) {
         btn.addEventListener("click", function(event) {
             var userId = this.getAttribute("data-user-id");
-            if (confirm("Are you sure you want to delete user " + userId + "?")) {
+            if (confirm('Are you sure you want to delete user ' + userId + '?')) {
+                // Set the userId in the hidden input field
+                document.querySelector("[name='userId']").value = userId;
+                // Submit the form
+                document.querySelector("[name='userActionForm']").submit();
+            } else {
+                event.preventDefault();
             }
         });
     });

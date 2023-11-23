@@ -181,13 +181,18 @@ class Router{
                     $userId = $_POST['userId'];
                     DBManager::deleteUser($userId);
                 }
-                else if(isset($_POST['addUser'])){
+                if(isset($_POST['addUser'])){
                     AuthController::addUser();
                     header('Location: admin.php');
                     exit();
                 }
-                else if(isset($_POST['editUser'])){
-                    // edit user
+                if(isset($_POST['editUserSubmit'])){
+                    $userId = $_POST['editUserId'];
+                    $userName = $_POST['editUserName'];
+                    $email = $_POST['editEmail'];
+                    $rating = $_POST['editRating'];
+                    $role = $_POST['editRole'];
+                    DBManager::editUser($userId, $userName, $email, $rating, $role);
                     header('Location: admin.php');
                     exit();
                 }
