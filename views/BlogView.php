@@ -22,7 +22,7 @@ class BlogView{
         if($errorFlag){
             $errorTag = '<p>Each field must contain at least 1 letter</p>';
         }
-        $newPostMain = <<<END
+        $html = <<<END
             <div>
                 <h1>New Blog</h1>
                 <form method="post">
@@ -40,7 +40,7 @@ class BlogView{
             </div>
 END;
         
-        return $newPostMain;
+        return $html;
     }
 
 
@@ -60,7 +60,7 @@ END;
         if($errorFlag){
             $errorTag = '<p>Each field must contain at least 1 letter.</p>';
         }
-        $editMain = <<<END
+        $html = <<<END
             <div>
                 <h1>Edit Blog</h1>
                 <form method="post">
@@ -80,7 +80,7 @@ END;
             </div>
 END;
         
-        return $editMain;
+        return $html;
     }
 
     /**
@@ -90,20 +90,42 @@ END;
      * 
      * @return string $content A string containing the blog page HTML.
      */
-    public static function drawBlogIndex($blogModels){
-        $content = '<main class="content"><div><h1>Recent Blogs<a id="newPost" href="blog.php?newpost">New Post</a></h1>';
+    public static function drawBlogSearch($blogModels){
+        $blogItem = "";
 
         foreach($blogModels as $blogModel){
-            $content = $content . self::drawPost($blogModel, 200);
+            $blogID = $blogModel->getBlogID();
+            $title = $blogModel->getTitle();
+            $date = $blogModel->getDate();
+            $content = substr($blogModel->getContent(), 0, 200);
+            $blogItem .= <<<END
+            <div class="blog-item">
+                <h2>
+                    <a href="blog.php?post={$blogID}">{$title}</a>
+                </h2>
+                <p class="date">{$date}</p>
+                <p class="blogContent">{$content}</p>
+            </div>
+END;
         }
 
-        if(empty($blogModels)){
-            $content = $content . '<article class="blogs">No Blogs Exist.</article>';
-        }
+        $html = <<<END
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                <div class="blogSearchContainer">
+                    <a href="blog.php?newpost"><input type="submit" name="newPostButton" class="newPostButton" value="New Post"></a>
+                    <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
+                    <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
+                </div>
+                <div class="blog-container">
+                $blogItem
+                </div>
+            </div>
+        </main>
+END;
 
-        $content = $content . '</div></main>';
-
-        return $content;
+        return $html;
     }
 
     /**
@@ -114,29 +136,29 @@ END;
      * 
      * @return string $postMain A string containing the blog post page HTML.
      */
-    public static function drawPost($blogModel, $limit = NULL){
+    public static function drawSingleBlog($blogModel, $limit = NULL){
         $blogID = $blogModel->getBlogID();
         $title = $blogModel->getTitle();
         $date = $blogModel->getDate();
         $content = $blogModel->getContent();
-        $blogLink = '';
 
-        if($limit && strlen($content) > $limit){
-            $content = substr($content, 0, $limit);
-            $blogLink = 'Read Full Post...';
-        }
-
-        $postMain = <<<END
-            <article class="blogs">  
-                <h2>
+        $html = <<<END
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                <h2 class="recent-games-title">
                     <a href="blog.php?post={$blogID}">{$title}</a>
-                    <a id="editLink" href="blog.php?edit={$blogID}">Edit</a>
                 </h2>
-                <p class="date">{$date}</p>
-                <p class="blogContent">{$content}<a class="blogLink" href="blog.php?post={$blogID}">{$blogLink}</a></p>
-            </article>
+                <div class="blog-container">
+                    <div class="blog-item">
+                        <p class="date">{$date}</p>
+                        <p class="blogContent">{$content}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
 END;
 
-        return $postMain;
+        return $html;
     }
 }

@@ -253,7 +253,7 @@ class DBManager{
      * @return BlogModel[] $blogs An array of blogs.
      */
     public static function getMultiBlog(){
-        $indexQuery = "SELECT * FROM blogs ORDER BY date DESC";
+        $indexQuery = "SELECT * FROM blog ORDER BY date DESC";
         $result = [];
         $blogs = [];
 
@@ -264,8 +264,8 @@ class DBManager{
             $statement->execute();
             $result = $statement->fetchAll();
             foreach($result as $row){
-                $blog = new BlogModel($row['blogID'],  $row['title'], nl2br($row['content']));
-                $blog->setDate($row['date']);
+                $blog = new BlogModel($row['blog_id'],  $row['title'], nl2br($row['text_content']));
+                $blog->setDate($row['date_time']);
                 $blogs[] = $blog;
             }
         }
@@ -284,20 +284,20 @@ class DBManager{
      * @return BlogModel $blog An instance of a blog.
      */
     public static function getSingleBlog($blogID){
-        $blogQuery = "SELECT * FROM blogs WHERE blogID = :id";
+        $blogQuery = "SELECT * FROM blog WHERE blog_id = :blog_id";
         $result = [];
 
         $db = self::connect();
 
         try{
             $statement = $db->prepare($blogQuery);
-            $statement->bindValue('id', $blogID, PDO::PARAM_INT);
+            $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetch();
             if($result === false){
                 return new BlogModel(-1,'','','','');
             }
-            $blog = new BlogModel($result['blogID'],  $result['title'], $result['content']);
+            $blog = new BlogModel($result['blog_id'],  $result['title'], $result['text_content']);
             $blog->setDate($result['date']);
         }
         catch(PDOException $e){
@@ -314,12 +314,12 @@ class DBManager{
     public static function updateEdit($blogModel){
         $db = self::connect();
 
-        $updateQuery = "UPDATE blogs SET title = :title, content = :content WHERE blogID = :blogID";
+        $updateQuery = "UPDATE blog SET title = :title, text_content = :text_content WHERE blog_id = :blog_id";
         try{
             $statement = $db->prepare($updateQuery);
             $statement->bindValue(':title', $blogModel->getTitle());
-            $statement->bindValue(':content', $blogModel->getContent());
-            $statement->bindValue(':blogID', $blogModel->getBlogID(), PDO::PARAM_INT);
+            $statement->bindValue(':text_content', $blogModel->getContent());
+            $statement->bindValue(':blog_id', $blogModel->getBlogID(), PDO::PARAM_INT);
             $statement->execute();
         }
         catch(PDOException $e){
@@ -335,11 +335,11 @@ class DBManager{
     public static function insertNewBlog($blogModel){
         $db = self::connect();
 
-        $insertQuery = "INSERT INTO blogs (title, content) values (:title, :content)";
+        $insertQuery = "INSERT INTO blog (title, text_content) values (:title, :text_content)";
         try{
             $statement = $db->prepare($insertQuery);
             $statement->bindValue(':title', $blogModel->getTitle());
-            $statement->bindValue(':content', $blogModel->getContent());
+            $statement->bindValue(':text_content', $blogModel->getContent());
             $statement->execute();
         }
         catch(PDOException $e){
@@ -355,10 +355,10 @@ class DBManager{
     public static function deleteBlog($blogID){
         $db = self::connect();
 
-        $deleteQuery = "DELETE FROM blogs WHERE blogID = :blogID LIMIT 1";
+        $deleteQuery = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
         try{
             $statement = $db->prepare($deleteQuery);
-            $statement->bindValue(':blogID', $blogID, PDO::PARAM_INT);
+            $statement->bindValue(':blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
         }
         catch(PDOException $e){

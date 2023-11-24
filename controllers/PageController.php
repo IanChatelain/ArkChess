@@ -26,12 +26,11 @@ class PageController{
     /**
      * Draws index page views using data from the database.
      */
-    public static function drawBlogIndex(){
-        self::isReadOnlyUser();
+    public static function drawBlogSearch(){
         $blogModels = DBManager::getMultiBlog();
 
         echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogIndex($blogModels) . "\n";
+        echo BlogView::drawBlogSearch($blogModels) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
@@ -58,15 +57,14 @@ class PageController{
      * 
      * @param int $blogID A blogs unique identifier.
      */
-    public static function drawSinglePost($blogID){
-        self::isReadOnlyUser();
+    public static function drawSingleBlog($blogID){
         $blogModel = DBManager::getSingleBlog($blogID);
         if($blogModel->getBlogID() == -1){
             self::drawNotFound();
         }
         else{
             echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-            echo BlogView::drawPost($blogModel, NULL) . "\n";
+            echo BlogView::drawSingleBlog($blogModel, NULL) . "\n";
             echo CommonView::drawFooter() . "\n";
         }
     }

@@ -21,10 +21,10 @@ class Router{
             $blogID = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
 
             if($blogID){
-                PageController::drawSinglePost($blogID, 0);
+                PageController::drawSingleBlog($blogID, 0);
             }
             else{
-                PageController::drawBlogIndex();
+                PageController::drawBlogSearch();
             }
         }
         // If GET is edit, display the edit page otherwise display index.
@@ -72,7 +72,7 @@ class Router{
                 }
             }
             else{
-                PageController::drawBlogIndex();
+                PageController::drawBlogSearch();
             }
         }
         // If GET is newpost, display the new post page otherwise display index.
@@ -110,7 +110,7 @@ class Router{
             }
         }
         else{
-            PageController::drawBlogIndex();
+            PageController::drawBlogSearch();
         }
     }
 

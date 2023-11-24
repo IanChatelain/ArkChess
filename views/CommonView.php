@@ -33,6 +33,7 @@ class CommonView{
                 <link rel="stylesheet" type="text/css" href="public/css/learn.css">
                 <link rel="stylesheet" type="text/css" href="public/css/login.css">
                 <link rel="stylesheet" type="text/css" href="public/css/admin.css">
+                <link rel="stylesheet" type="text/css" href="public/css/blog.css">
                 <link rel="stylesheet" type="text/css" href="public/css/adminModal.css">
                 <link rel="stylesheet" type="text/css" href="public/css/chessboard-1.0.0.css">
                 <title>ArkChess - {$title}</title>

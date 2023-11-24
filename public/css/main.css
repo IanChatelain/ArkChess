@@ -124,28 +124,6 @@ main#indexContent h2 {
     font-size: 20px;
 }
 
-.blogs {
-    box-shadow: inset 0px 0px 5px #888888;
-    outline: 1px solid #c9c9c9;
-    border: 1px solid black;
-    background-color: rgba(19, 19, 19, 0);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-#blogs h2 {
-    line-height: 0;
-}
-
-.blogContent {
-    font-size: 15px;
-}
-
-.blogLink {
-    padding-left: 30px;
-    font-size: 10px;
-}
-
 #recentPosts {
     text-decoration: underline;
 }
