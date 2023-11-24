@@ -3,10 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     commentButton.addEventListener("click", function(event) {
         event.preventDefault();
-        var blogItem = document.getElementsByClassName('blog-item')[0];
 
+        var commentButton = document.getElementsByClassName("commentButton")[0];
+        commentButton.setAttribute("display", "hidden");
+
+        blogItem = document.getElementsByClassName('blog-item')[0];
         var commentForm = document.createElement("form");
         commentForm.setAttribute("method", "post");
+        commentForm.setAttribute("id", "commentForm");
 
         var commentTextArea = document.createElement("textarea");
         commentTextArea.setAttribute("name", "commentTextArea");
@@ -34,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         cancelButton.addEventListener("click", function(event) {
             document.body.removeChild(commentForm);
+            commentButton.setAttribute("display", "block");
         });
     })
 });

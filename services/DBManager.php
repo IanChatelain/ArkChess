@@ -306,6 +306,34 @@ class DBManager{
         return $blog;
     }
 
+    public static function getComments($blogID){
+        $blogQuery = "SELECT * FROM comment WHERE blog_id = :blog_id";
+        $blogModel = self::getSingleBlog($blogID);
+        $result = [];
+
+        $db = self::connect();
+
+        try{
+            $statement = $db->prepare($blogQuery);
+            $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if($result === false){
+                return new BlogModel(NULL, '','','',NULL);
+            }
+            foreach($result as $row){
+                $commentID = $row['comment_id'];
+                $commentDate = $row['date'];
+            }
+            $commentModel = new CommentModel();
+
+            return new BlogModel($blogID, $blogModel->getTitle(), $blogModel->getContent(), $blogModel->getUserID(), $commentModel);
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+
     /**
      * Connects and queries the database to update a blog record.
      * 
@@ -349,7 +377,11 @@ class DBManager{
         }
     }
     
-    public static function insertBlogComment(){
+    public static function insertBlogComment($commentModel){
+        $commentText = $commentModel->getText();
+        $commentUserID = $commentModel->getUserID();
+        $commentBlogID = $commentModel->getBlogID();
+
         $db = self::connect();
 
         $insertQuery = "INSERT INTO comment (comment_text, user_id, blog_id) values (:comment_text, :user_id, :blog_id)";

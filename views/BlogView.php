@@ -134,11 +134,18 @@ END;
      * 
      * @return string $postMain A string containing the blog post page HTML.
      */
-    public static function drawSingleBlog($blogModel, $limit = NULL){
+    public static function drawSingleBlog($blogModel, $commentID){
         $blogID = $blogModel->getBlogID();
         $title = $blogModel->getTitle();
         $date = $blogModel->getDate();
         $content = $blogModel->getContent();
+
+        $commentBlock = <<<END
+        <div class="blog-item">
+            <p class="date">{$date}</p>
+            <p class="blogContent">{$content}</p>
+        </div>
+END;
 
         $html = <<<END
         <main class="form-container profile">

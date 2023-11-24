@@ -57,8 +57,9 @@ class PageController{
      * 
      * @param int $blogID A blogs unique identifier.
      */
-    public static function drawSingleBlog($blogID){
+    public static function drawSingleBlog($blogID, $commentID){
         $blogModel = DBManager::getSingleBlog($blogID);
+        $commentModel = DBManager::getComment($blogID);
         if($blogModel->getBlogID() == -1){
             self::drawNotFound();
         }

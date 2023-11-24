@@ -1,5 +1,7 @@
 <?php
 
+require_once('models/CommentModel.php');
+
 /**
  * BlogModel represents the data stored of in a blog.
  */
@@ -9,12 +11,14 @@ class BlogModel{
     private $date;
     private $content;
     private $userID;
+    private CommentModel $comments;
 
-    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL){
+    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments){
         $this->blogID = $blogID;
         $this->title = $title;
         $this->content = $content;
         $this->userID = $userID;
+        $this->comments = $comments;
     }
     
     /**

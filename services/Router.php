@@ -6,6 +6,7 @@ require_once('models/UserModel.php');
 require_once('services/DBManager.php');
 require_once('services/Utility.php');
 require_once('services/UserField.php');
+require_once('models/CommentModel.php');
 
 /**
  * Router sanitizes input and decides which page to display.
@@ -19,6 +20,11 @@ class Router{
         // If GET is post, display the post page otherwise display index.
         if(isset($_GET['post'])){
             $blogID = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
+
+            if(isset($_POST['commentSubmitButton'])){
+                $commentModel = new CommentModel(NULL, $_POST['commentTextArea'], $_SESSION['USER_ID'], $blogID);
+                DBManager::insertComment($commentModel);
+            }
 
             if($blogID){
                 PageController::drawSingleBlog($blogID, 0);

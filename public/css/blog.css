@@ -5,7 +5,8 @@
     border-radius: 4px;
     margin-bottom: 5px;
     color: #ccc;
-    padding: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .blog-item:hover {
@@ -62,4 +63,10 @@
 
 .blogContent {
     font-size: 15px;
+}
+
+.commentTextArea{
+    margin-top: 20px;
+    width: 50%;
+    height: 50%;
 }
