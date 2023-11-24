@@ -15,10 +15,8 @@ class BlogView{
      * 
      * @return string $newPostMain A string containing the blog page HTML.
      */
-    public static function drawNewPost($errorFlag, $blogModel){
+    public static function drawNewPost($errorFlag){
         $errorTag = '';
-        $title = $blogModel->getTitle();
-        $content = $blogModel->getContent();
         if($errorFlag){
             $errorTag = '<p>Each field must contain at least 1 letter</p>';
         }
@@ -28,10 +26,10 @@ class BlogView{
                 <form method="post">
                     <fieldset id="blogs">
                         <label for="postTitle">Title</label>
-                        <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
+                        <input class="forms" type="text" id="postTitle" name="postTitle" placeholder="Title">
     
                         <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10">{$content}</textarea>
+                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10" placeholder="Content"></textarea>
     
                         $errorTag
                         <button type="submit" name="insert" class="updateButton">Submit Blog</button>
@@ -52,7 +50,7 @@ END;
      * 
      * @return string $editMain A string containing the edit page HTML.
      */
-    public static function drawEdit($errorFlag, $blogModel){
+    public static function drawEdit($blogID, $errorFlag, $blogModel){
         $errorTag = '';
         $blogID = $blogModel->getBlogID();
         $title = $blogModel->getTitle();
@@ -118,7 +116,7 @@ END;
                     <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
                     <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
                 </div>
-                <div class="blog-container">
+                <div class="blog-item-container">
                 $blogItem
                 </div>
             </div>
@@ -155,8 +153,15 @@ END;
                         <p class="blogContent">{$content}</p>
                     </div>
                 </div>
+                <div>
+                    <form method="POST" action="blog.php?edit={$blogID}">
+                        <input type="submit" class="editButton" name="editButton" value="Edit">
+                    </form>
+                    <input type="submit" class="commentButton" name="commentButton" onClick="comment.js" value="Comment">
+                </div>
             </div>
         </main>
+        <script src="public/js/comment.js"></script>
 END;
 
         return $html;

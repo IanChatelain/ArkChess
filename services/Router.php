@@ -41,7 +41,7 @@ class Router{
                             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                             $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                             $blogID = filter_input(INPUT_POST, 'blogID', FILTER_SANITIZE_NUMBER_INT);
-                            $blogModel = new BlogModel($blogID, $title, $content);
+                            $blogModel = new BlogModel($blogID, $title, $content, $_SESSION['USER_ID']);
     
                             if(strlen(trim($title)) > 0 && strlen(trim($content) > 0)){
                                 DBManager::updateEdit($blogModel);
@@ -78,13 +78,13 @@ class Router{
         // If GET is newpost, display the new post page otherwise display index.
         elseif(isset($_GET['newpost'])){
             if(!empty($_SESSION['USER_ROLE'])){
-                if($_SESSION['USER_ROLE'] == 1){
+                if($_SESSION['USER_ROLE'] <= 3){
                 // If POST is insert and if POST is not empty string then display new post page,
                 // otherwise display error.
                     if(isset($_POST['insert'])){
                         $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                         $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $blogModel = new BlogModel(NULL, $title, $content);
+                        $blogModel = new BlogModel(NULL, $title, $content, $_SESSION['USER_ID']);
                         
                         if(strlen(trim($title)) > 0 && strlen(trim(trim($content)) > 0)){
                             DBManager::insertNewBlog($blogModel);
@@ -94,7 +94,7 @@ class Router{
                         else
                         {
                             $errorFlag = true;
-                            PageController::drawNewPost($errorFlag, $blogModel);
+                            PageController::drawNewPost($errorFlag);
                         }
                     }
                     else{

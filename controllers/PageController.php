@@ -23,6 +23,7 @@ require_once('views/AdminView.php');
  * PageController controls data flow.
  */
 class PageController{
+    // TODO: Rename all draws to different names than page controller draw functions.
     /**
      * Draws index page views using data from the database.
      */
@@ -42,13 +43,12 @@ class PageController{
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
     public static function drawEdit($blogID, $errorFlag = false, $blogModel = new BlogModel()){
-        self::isReadOnlyUser();
         $blogModelDB = DBManager::getSingleBlog($blogID);
         if(!$errorFlag){
             $blogModel = $blogModelDB;
         }
         echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-        echo BlogView::drawEdit($errorFlag, $blogModel) . "\n";
+        echo BlogView::drawEdit($blogID, $errorFlag, $blogModel) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
@@ -75,10 +75,9 @@ class PageController{
      * @param bool $errorFlag Whether an error was passed. Default 'false'.
      * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
      */
-    public static function drawNewPost($errorFlag = false, $blogModel = new BlogModel()){
-        self::isReadOnlyUser();
+    public static function drawNewPost($errorFlag = false){
         echo CommonView::drawHeader('New Post') . "\n";
-        echo BlogView::drawNewPost($errorFlag, $blogModel) . "\n";
+        echo BlogView::drawNewPost($errorFlag) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
@@ -195,6 +194,12 @@ class PageController{
     public static function isReadOnlyUser(){
         if(!isset($_SESSION['USER_ID'])){
             $_SESSION['USER_ROLE'] = 4;
+        }
+    }
+
+    public static function userOwnsBlog($blogId){
+        if(isset($_SESSION['USER_ID'])){
+
         }
     }
 }

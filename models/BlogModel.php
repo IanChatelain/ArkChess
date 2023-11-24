@@ -8,12 +8,13 @@ class BlogModel{
     private $title;
     private $date;
     private $content;
+    private $userID;
 
-
-    public function __construct($blogID = NULL, $title = '', $content = ''){
+    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL){
         $this->blogID = $blogID;
         $this->title = $title;
         $this->content = $content;
+        $this->userID = $userID;
     }
     
     /**
@@ -57,6 +58,15 @@ class BlogModel{
      */
     public function setDate($date){
         $this->date = date("F d, Y, h:i a", strtotime($date));
+    }
+
+    /**
+     * Gets the blog content.
+     * 
+     * @return string $this->content A string containing the blog content.
+     */
+    public function getUserID(){
+        return $this->userID;
     }
 }
 

@@ -62,7 +62,8 @@ input{
 input.submit, input.reset, input.addUserBtn, input.logout, 
 input.searchBtn, input.userActionSubmit, input.editUserSubmit,
 input.adminBtn, input.deleteUser, input.editUser, input.addUser,
-input.blogSearchButton, input.newPostButton{
+input.blogSearchButton, input.newPostButton, input.commentButton,
+input.editButton{
     background: linear-gradient(to bottom, #3636ae, #1a1a66);
     border: none;
     color: white;
@@ -100,7 +101,8 @@ input:focus{
 input.submit:hover, input.reset:hover, input.addUserBtn:hover, 
 input.logout:hover, input.searchBtn:hover, input.userActionSubmit:hover, 
 input.editUserSubmit:hover, input.deleteUser:hover, input.editUser:hover, 
-input.addUser:hover, input.blogSearchButton:hover, input.newPostButton:hover{
+input.addUser:hover, input.blogSearchButton:hover, input.newPostButton:hover,
+input.commentButton:hover, input.editButton:hover{
     background: linear-gradient(to bottom, #4d4dbf, #2a2a88);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }

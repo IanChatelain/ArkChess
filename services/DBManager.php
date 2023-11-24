@@ -253,7 +253,7 @@ class DBManager{
      * @return BlogModel[] $blogs An array of blogs.
      */
     public static function getMultiBlog(){
-        $indexQuery = "SELECT * FROM blog ORDER BY date DESC";
+        $indexQuery = "SELECT * FROM blog ORDER BY date_time DESC";
         $result = [];
         $blogs = [];
 
@@ -264,7 +264,7 @@ class DBManager{
             $statement->execute();
             $result = $statement->fetchAll();
             foreach($result as $row){
-                $blog = new BlogModel($row['blog_id'],  $row['title'], nl2br($row['text_content']));
+                $blog = new BlogModel($row['blog_id'],  $row['title'], nl2br($row['text_content']), $row['user_id']);
                 $blog->setDate($row['date_time']);
                 $blogs[] = $blog;
             }
@@ -297,8 +297,8 @@ class DBManager{
             if($result === false){
                 return new BlogModel(-1,'','','','');
             }
-            $blog = new BlogModel($result['blog_id'],  $result['title'], $result['text_content']);
-            $blog->setDate($result['date']);
+            $blog = new BlogModel($result['blog_id'],  $result['title'], $result['text_content'], $result['user_id']);
+            $blog->setDate($result['date_time']);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
@@ -314,6 +314,7 @@ class DBManager{
     public static function updateEdit($blogModel){
         $db = self::connect();
 
+        // TODO: add database level security, check for user id in query to match blog.
         $updateQuery = "UPDATE blog SET title = :title, text_content = :text_content WHERE blog_id = :blog_id";
         try{
             $statement = $db->prepare($updateQuery);
@@ -335,11 +336,28 @@ class DBManager{
     public static function insertNewBlog($blogModel){
         $db = self::connect();
 
-        $insertQuery = "INSERT INTO blog (title, text_content) values (:title, :text_content)";
+        $insertQuery = "INSERT INTO blog (title, text_content, user_id) values (:title, :text_content, :user_id)";
         try{
             $statement = $db->prepare($insertQuery);
             $statement->bindValue(':title', $blogModel->getTitle());
             $statement->bindValue(':text_content', $blogModel->getContent());
+            $statement->bindValue(':user_id', $blogModel->getUserID());
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+    
+    public static function insertBlogComment(){
+        $db = self::connect();
+
+        $insertQuery = "INSERT INTO comment (comment_text, user_id, blog_id) values (:comment_text, :user_id, :blog_id)";
+        try{
+            $statement = $db->prepare($insertQuery);
+            $statement->bindValue(':title', $blogModel->getTitle());
+            $statement->bindValue(':text_content', $blogModel->getContent());
+            $statement->bindValue(':user_id', $blogModel->getUserID());
             $statement->execute();
         }
         catch(PDOException $e){
@@ -355,6 +373,7 @@ class DBManager{
     public static function deleteBlog($blogID){
         $db = self::connect();
 
+        // TODO: Add db level security matching user_id to blog.
         $deleteQuery = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
         try{
             $statement = $db->prepare($deleteQuery);
