@@ -2,6 +2,7 @@
 
 require_once('controllers/PageController.php');
 require_once('controllers/AuthController.php');
+require_once('controllers/BlogController.php');
 require_once('models/UserModel.php');
 require_once('services/DBManager.php');
 require_once('services/Utility.php');
@@ -12,26 +13,12 @@ require_once('models/CommentModel.php');
  * Router sanitizes input and decides which page to display.
  */
 class Router{
-
     /**
      * Determines which page to display depending on sanitized server variables.
      */
     public static function blogRoute(){
-        // If GET is post, display the post page otherwise display index.
         if(isset($_GET['post'])){
-            $blogID = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
-
-            if(isset($_POST['commentSubmitButton'])){
-                $commentModel = new CommentModel(NULL, $_POST['commentTextArea'], $_SESSION['USER_ID'], $blogID);
-                DBManager::insertComment($commentModel);
-            }
-
-            if($blogID){
-                PageController::drawSingleBlog($blogID, 0);
-            }
-            else{
-                PageController::drawBlogSearch();
-            }
+            BlogController::handleSingleBlog($_GET['post']);
         }
         // If GET is edit, display the edit page otherwise display index.
         elseif(isset($_GET['edit'])){
@@ -78,7 +65,7 @@ class Router{
                 }
             }
             else{
-                PageController::drawBlogSearch();
+                BlogController::displayAllBlogs();
             }
         }
         // If GET is newpost, display the new post page otherwise display index.
@@ -116,7 +103,7 @@ class Router{
             }
         }
         else{
-            PageController::drawBlogSearch();
+            BlogController::displayAllBlogs();
         }
     }
 

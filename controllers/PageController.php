@@ -1,13 +1,7 @@
 <?php
 
-// Might not need this.
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 require_once('services/DBManager.php');
 require_once('controllers/AuthController.php');
-require_once('views/BlogView.php');
 require_once('views/CommonView.php');
 require_once('views/ContactView.php');
 require_once('views/LearnView.php');
@@ -50,24 +44,6 @@ class PageController{
         echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
         echo BlogView::drawEdit($blogID, $errorFlag, $blogModel) . "\n";
         echo CommonView::drawFooter() . "\n";
-    }
-
-    /**
-     * Draws single post views using data from the database.
-     * 
-     * @param int $blogID A blogs unique identifier.
-     */
-    public static function drawSingleBlog($blogID, $commentID){
-        $blogModel = DBManager::getSingleBlog($blogID);
-        $commentModel = DBManager::getComment($blogID);
-        if($blogModel->getBlogID() == -1){
-            self::drawNotFound();
-        }
-        else{
-            echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-            echo BlogView::drawSingleBlog($blogModel, NULL) . "\n";
-            echo CommonView::drawFooter() . "\n";
-        }
     }
 
     /**

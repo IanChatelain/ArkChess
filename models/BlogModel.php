@@ -8,19 +8,44 @@ require_once('models/CommentModel.php');
 class BlogModel{
     private $blogID;
     private $title;
-    private $date;
     private $content;
+    private $date;
     private $userID;
-    private CommentModel $comments;
+    private CommentModel $comments; // Array of comment models.
+    private $gameID;
 
-    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments){
+    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments = NULL){
         $this->blogID = $blogID;
         $this->title = $title;
         $this->content = $content;
         $this->userID = $userID;
-        $this->comments = $comments;
     }
-    
+
+    public function setBlogData($blogID){
+        $data = DBManager::getSingleBlog($blogID);
+        $this->setData($data);
+    }
+
+    public function getAllBlogs(){
+        $dataArray = DBManager::getMultiBlog();
+        $blogModelArray = [];
+
+        foreach($dataArray as $data){
+            $blogModel = new BlogModel();
+            $blogModel->setData($data);
+            $blogModelArray[] = $blogModel;
+        }
+
+        return $blogModelArray;
+    }
+
+    private function setData($data){
+        $this->blogID = $data['blog_id'];
+        $this->title = $data['title'];
+        $this->content = $data['text_content'];
+        $this->date = $data['date_time'];
+        $this->userID = $data['user_id'];
+    }
     /**
      * Gets the blog id.
      * 

@@ -255,25 +255,19 @@ class DBManager{
     public static function getMultiBlog(){
         $indexQuery = "SELECT * FROM blog ORDER BY date_time DESC";
         $result = [];
-        $blogs = [];
 
         $db = self::connect();
 
         try{
             $statement = $db->prepare($indexQuery);
             $statement->execute();
-            $result = $statement->fetchAll();
-            foreach($result as $row){
-                $blog = new BlogModel($row['blog_id'],  $row['title'], nl2br($row['text_content']), $row['user_id']);
-                $blog->setDate($row['date_time']);
-                $blogs[] = $blog;
-            }
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
         }
 
-        return $blogs;
+        return $result;
     }
 
     /**
@@ -285,7 +279,7 @@ class DBManager{
      */
     public static function getSingleBlog($blogID){
         $blogQuery = "SELECT * FROM blog WHERE blog_id = :blog_id";
-        $result = [];
+        $result;
 
         $db = self::connect();
 
@@ -293,17 +287,12 @@ class DBManager{
             $statement = $db->prepare($blogQuery);
             $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
-            $result = $statement->fetch();
-            if($result === false){
-                return new BlogModel(-1,'','','','');
-            }
-            $blog = new BlogModel($result['blog_id'],  $result['title'], $result['text_content'], $result['user_id']);
-            $blog->setDate($result['date_time']);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
         }
-        return $blog;
+        return $result;
     }
 
     public static function getComments($blogID){
