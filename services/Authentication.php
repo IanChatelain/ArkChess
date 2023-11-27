@@ -42,17 +42,7 @@ class Authentication{
     }
 
     public static function isAuthorized(){
-        if(isset($_SESSION['ROLE_ID'])){
-            if($_SESSION['ROLE_ID'] < 4){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
+        return isset($_SESSION['ROLE_ID']) && $_SESSION['ROLE_ID'] < 4;
     }
 
     public static function setUserSession($userId, $userName, $role){

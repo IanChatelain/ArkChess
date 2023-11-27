@@ -27,7 +27,7 @@ class Router{
      */
     public static function blogRoute(){
         if(isset($_GET['blog'])){
-            BlogActionController::handleBlogRequest();
+            BlogActionController::handleSingleBlogRequest();
         }
         elseif(isset($_GET['edit'])){
             BlogActionController::handleEditBlogRequest();
@@ -101,9 +101,9 @@ class Router{
     }
 
     public static function adminRoute(){
-        if(isset($_SESSION['USER_ROLE']))
+        if(isset($_SESSION['ROLE_ID']))
         {
-            if($_SESSION['USER_ROLE'] == 1){
+            if($_SESSION['ROLE_ID'] == 1){
                 if (isset($_POST['deleteUser']) && isset($_POST['userId'])) {
                     $userId = $_POST['userId'];
                     DBManager::deleteUser($userId);
@@ -126,11 +126,13 @@ class Router{
                 PageController::drawAdmin();
             }
             else{
-                PageController::drawRestricted();
+                header('Location: restricted.php');
+                exit();
             }
         }
         else{
-            PageController::drawRestricted();
+            header('Location: restricted.php');
+            exit();
         }
     }
     
@@ -149,14 +151,10 @@ class Router{
             }
         }
     }
-}
 
-class ParseGet extends Router{
-
-}
-
-class ParsePost extends Router{
-
+    public static function restrictedRoute(){
+        PageController::drawRestricted();
+    }
 }
 
 ?>

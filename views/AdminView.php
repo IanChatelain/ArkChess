@@ -28,11 +28,6 @@ class AdminView{
             $userEmail = $user->getEmail();
             $userID = $user->getUserID();
             $userRating = $user->getRating();
-
-            // <select name="action">
-            //     <option value="edit">Edit</option>
-            //     <option value="delete">Delete</option>
-            // </select>
     
             $userRows .= <<<END
                 <tr>

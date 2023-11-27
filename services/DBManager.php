@@ -34,10 +34,10 @@ class DBManager{
     public static function insertNewUser($userName, $password, $email, $token){
         $db = self::connect();
 
-        $insertQuery = "INSERT INTO chessuser (user_name, user_password, email, validation_token) values (:user_name, :user_password, :email, :validation_token)";
+        $query = "INSERT INTO chessuser (user_name, user_password, email, validation_token) values (:user_name, :user_password, :email, :validation_token)";
 
         try{
-            $statement = $db->prepare($insertQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue(':user_name', $userName);
             $statement->bindValue(':user_password', $password);
             $statement->bindValue(':email', $email);
@@ -86,10 +86,10 @@ class DBManager{
     public static function getAuthUser($userId){
         $db = self::connect();
 
-        $userQuery = "SELECT * FROM chessuser WHERE user_id = :userID";
+        $query = "SELECT * FROM chessuser WHERE user_id = :userID";
     
         try{
-            $statement = $db->prepare($userQuery);
+            $statement = $db->prepare($query);
             $statement->bindParam(':userID', $userID, PDO::PARAM_INT);
             $statement->execute();
             $row = $statement->fetch();
@@ -125,14 +125,14 @@ class DBManager{
     }
 
     public static function getAllUsers(){
-        $indexQuery = "SELECT * FROM chessuser";
+        $query = "SELECT * FROM chessuser";
         $columns = [];
         $users = [];
 
         $db = self::connect();
 
         try{
-            $statement = $db->prepare($indexQuery);
+            $statement = $db->prepare($query);
             $statement->execute();
             $result = $statement->fetchAll();
             foreach($result as $row){
@@ -227,10 +227,10 @@ class DBManager{
     public static function verifyUserLogin($userName, $password){
         $db = self::connect();
 
-        $userQuery = "SELECT user_id, user_name, user_password FROM chessuser WHERE user_name = :user_name";
+        $query = "SELECT user_id, user_name, user_password FROM chessuser WHERE user_name = :user_name";
     
         try{
-            $statement = $db->prepare($userQuery);
+            $statement = $db->prepare($query);
             $statement->bindParam(':user_name', $userName, PDO::PARAM_STR);
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -253,13 +253,13 @@ class DBManager{
      * @return BlogModel[] $blogs An array of blogs.
      */
     public static function getMultiBlog(){
-        $indexQuery = "SELECT * FROM blog ORDER BY date_time DESC";
+        $query = "SELECT * FROM blog ORDER BY date_time DESC";
         $result = [];
 
         $db = self::connect();
 
         try{
-            $statement = $db->prepare($indexQuery);
+            $statement = $db->prepare($query);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -278,13 +278,13 @@ class DBManager{
      * @return BlogModel $blog An instance of a blog.
      */
     public static function getSingleBlog($blogID){
-        $blogQuery = "SELECT * FROM blog WHERE blog_id = :blog_id";
+        $query = "SELECT * FROM blog WHERE blog_id = :blog_id";
         $result;
 
         $db = self::connect();
 
         try{
-            $statement = $db->prepare($blogQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -296,14 +296,14 @@ class DBManager{
     }
 
     public static function getComments($blogID){
-        $blogQuery = "SELECT * FROM comment WHERE blog_id = :blog_id";
+        $query = "SELECT * FROM comment WHERE blog_id = :blog_id";
         $blogModel = self::getSingleBlog($blogID);
         $result = [];
 
         $db = self::connect();
 
         try{
-            $statement = $db->prepare($blogQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -332,9 +332,9 @@ class DBManager{
         $db = self::connect();
 
         // TODO: add database level security, check for user id in query to match blog.
-        $updateQuery = "UPDATE blog SET title = :title, text_content = :text_content WHERE blog_id = :blog_id";
+        $query = "UPDATE blog SET title = :title, text_content = :text_content WHERE blog_id = :blog_id";
         try{
-            $statement = $db->prepare($updateQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue(':title', $blogModel->getTitle());
             $statement->bindValue(':text_content', $blogModel->getContent());
             $statement->bindValue(':blog_id', $blogModel->getBlogID(), PDO::PARAM_INT);
@@ -353,13 +353,29 @@ class DBManager{
     public static function insertNewBlog($blogModel){
         $db = self::connect();
 
-        $insertQuery = "INSERT INTO blog (title, text_content, user_id) values (:title, :text_content, :user_id)";
+        $query = "INSERT INTO blog (title, text_content, user_id) values (:title, :text_content, :user_id)";
         try{
-            $statement = $db->prepare($insertQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue(':title', $blogModel->getTitle());
             $statement->bindValue(':text_content', $blogModel->getContent());
             $statement->bindValue(':user_id', $blogModel->getUserID());
             $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+
+    public static function getLastInsertId($table){
+        $db = self::connect();
+
+        $tableID = $table . "_id";
+        $query = "SELECT $tableID FROM $table ORDER BY $tableID DESC LIMIT 1";
+
+        try{
+            $statement = $db->prepare($query);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_COLUMN, 0);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
@@ -373,9 +389,9 @@ class DBManager{
 
         $db = self::connect();
 
-        $insertQuery = "INSERT INTO comment (comment_text, user_id, blog_id) values (:comment_text, :user_id, :blog_id)";
+        $query = "INSERT INTO comment (comment_text, user_id, blog_id) values (:comment_text, :user_id, :blog_id)";
         try{
-            $statement = $db->prepare($insertQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue(':title', $blogModel->getTitle());
             $statement->bindValue(':text_content', $blogModel->getContent());
             $statement->bindValue(':user_id', $blogModel->getUserID());
@@ -395,9 +411,9 @@ class DBManager{
         $db = self::connect();
 
         // TODO: Add db level security matching user_id to blog.
-        $deleteQuery = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
+        $query = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
         try{
-            $statement = $db->prepare($deleteQuery);
+            $statement = $db->prepare($query);
             $statement->bindValue(':blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
         }

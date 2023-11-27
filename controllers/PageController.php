@@ -20,35 +20,6 @@ class PageController{
     // TODO: Rename all draws to different names than page controller draw functions.
 
     /**
-     * Draws edit page views using data from the database.
-     * 
-     * @param int $blogID A blogs unique identifier.
-     * @param bool $errorFlag Whether an error was passed. Default 'false'.
-     * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
-     */
-    public static function drawEdit($blogID, $errorFlag = false, $blogModel = new BlogModel()){
-        $blogModelDB = DBManager::getSingleBlog($blogID);
-        if(!$errorFlag){
-            $blogModel = $blogModelDB;
-        }
-        echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-        echo BlogView::drawEdit($blogID, $errorFlag, $blogModel) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
-
-    /**
-     * Draws new post page views using data from the database.
-     * 
-     * @param bool $errorFlag Whether an error was passed. Default 'false'.
-     * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
-     */
-    public static function drawNewPost($errorFlag = false){
-        echo CommonView::drawHeader('New Post') . "\n";
-        echo BlogView::drawNewPost($errorFlag) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
-
-    /**
      * Draws opening database search page views using data from lichess API.
      */
     public static function drawLearn(){

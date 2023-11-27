@@ -25,13 +25,13 @@ class BlogView{
                         <input class="forms" type="text" id="postTitle" name="postTitle" placeholder="Title">
     
                         <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10" placeholder="Content"></textarea>
+                        <textarea class="forms" name="postContent" id="postContent"></textarea>
     
                         <button type="submit" name="insert" class="updateButton">Submit Blog</button>
                     </fieldset>
                 </form>
             </div>
-END;
+            END;
         
         return $html;
     }
@@ -48,8 +48,8 @@ END;
     public static function drawEdit($blogModel, $errorFlag){
         $errorTag = '';
         $blogID = $blogModel->getBlogID();
-        $title = $blogModel->getTitle();
-        $content = $blogModel->getContent();
+        $title = htmlspecialchars($blogModel->getTitle());
+        $content = htmlspecialchars($blogModel->getContent());
         if($errorFlag){
             $errorTag = '<p>Each field must contain at least 1 letter.</p>';
         }
@@ -63,15 +63,14 @@ END;
                         <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
     
                         <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10">{$content}</textarea>
-    
+                        <textarea class="forms" name="postContent" id="postContent">{$content}</textarea>
                         $errorTag
                         <button type="submit" name="update" class="updateButton">Update</button>
                         <button type="submit" name="delete" class="deleteButton">Delete</button>
                     </fieldset>
                 </form>
             </div>
-END;
+            END;
         
         return $html;
     }
@@ -89,8 +88,10 @@ END;
 
         if($isAuthed){
             $standardUserControls = <<<END
-            <a href="blog.php?newpost"><input type="submit" name="newPostButton" class="newPostButton" value="New Post"></a>
-    END;
+            <form type="hidden" method="POST" action="blog.php?newpost">
+                <input type="submit" name="newPostButton" class="newPostButton" value="New Post">
+            </form>
+            END;
         }
 
         if($blogModels){
@@ -98,16 +99,16 @@ END;
                 $blogID = $blogModel->getBlogID();
                 $title = $blogModel->getTitle();
                 $date = $blogModel->getDate();
-                $content = substr($blogModel->getContent(), 0, 200);
+                $userID = $blogModel->getUserID(); // Needs to be joined to get the user name and display it on each item.
                 $blogItem .= <<<END
                 <div class="blog-item">
                     <h2>
                         <a href="blog.php?blog={$blogID}">{$title}</a>
                     </h2>
                     <p class="date">{$date}</p>
-                    <p class="blogContent">{$content}</p>
                 </div>
-    END;
+                END;
+                $blogItem .= "\n";
             }
         }
         else{
@@ -129,7 +130,7 @@ END;
                 </div>
             </div>
         </main>
-END;
+        END;
 
         return $html;
     }
@@ -157,7 +158,7 @@ END;
                 </form>
                 <input type="submit" class="commentButton" name="commentButton" onClick="comment.js" value="Comment">
             </div>
-END;
+            END;
         }
 
         $commentBlock = <<<END
@@ -165,7 +166,7 @@ END;
             <p class="date">{$date}</p>
             <p class="blogContent">{$content}</p>
         </div>
-END;
+        END;
 
         $html = <<<END
         <main class="form-container profile">
@@ -184,7 +185,7 @@ END;
             </div>
         </main>
         <script src="public/js/comment.js"></script>
-END;
+        END;
 
         return $html;
     }

@@ -4,24 +4,37 @@ require_once('views/BlogView.php');
 require_once('models/BlogModel.php');
 require_once('views/NotFoundView.php');
 require_once('views/BlogView.php');
+require_once('services/Sanitize.php');
 
 /**
  * BlogController controls blog data flow.
  */
 class BlogActionController{
     /**
-     * Draws single post views using data from the database.
+     * Draws main blog page views using data from the database.
+     */
+    public static function handleBlogSearchRequest(){
+        $blogModel = new BlogModel();
+        $blogModelArray = $blogModel->getAllBlogs();
+
+        echo CommonView::drawHeader('Blogs') . "\n";
+        echo BlogView::drawBlogSearch($blogModelArray, Authentication::isAuthorized()) . "\n";
+        echo CommonView::drawFooter() . "\n";
+    }
+
+    /**
+     * Draws single blog views using data from the database.
      * 
      * @param int $blogID A blogs unique identifier.
      */
-    public static function handleBlogRequest(){
+    public static function handleSingleBlogRequest(){
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
 
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
 
         if($singleBlog->getBlogID() == -1){
-            header('Location: CommunityView.php');
+            header('Location: blog.php');
             exit;
         }
         else{
@@ -29,50 +42,63 @@ class BlogActionController{
         }
     }
 
-    /**
-     * Draws main blog page views using data from the database.
+     /**
+     * Draws edit blog views using data from the database.
+     * 
+     * @param int $blogID A blogs unique identifier.
      */
-    public static function handleBlogSearchRequest(){
-        $isAuthed = Authentication::isAuthorized();
-        $blogModel = new BlogModel();
-        $blogModelArray = $blogModel->getAllBlogs();
-
-        echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogSearch($blogModelArray, $isAuthed) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
- 
     public static function handleEditBlogRequest(){
         $blogID = filter_input(INPUT_GET, 'edit', FILTER_SANITIZE_NUMBER_INT);
 
-        self::handleEdit($blogID);
+        if(!Authentication::isAuthorized()){
+            header('Location: restricted.php');
+            exit;
+        }
+
+        $singleBlog = new BlogModel();
+        $singleBlog->setBlogData($blogID);
+
+        if($singleBlog->getBlogID() == -1){
+            header('Location: blog.php');
+            exit;
+        }
+
         if(isset($_POST['update'])){
-            $blogID = filter_input(INPUT_GET, 'update', FILTER_SANITIZE_NUMBER_INT);
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
-            $userID = $_SESSION['USER_ID'];
+            if(!empty($title) || !empty($content)){
+                $blogModel = new BlogModel($blogID, $title, $content);
 
-            $blogModel = new BlogModel($blogID, $title, $content, $userID);
-
-            // if fields are not empty update db and display edited blog
+                DBManager::updateBlog($blogModel);
+                // Redirect to prevent form resubmission
+                header("Location: blog.php?blog={$blogID}");
+                exit;
+            }
         }
         elseif(isset($_POST['delete'])){
-            $blogID = filter_input(INPUT_GET, 'delete', FILTER_SANITIZE_NUMBER_INT);
-
-            // delete blog
+            // Delete the blog and redirect
+            DBManager::deleteBlog($blogID);
+            header('Location: blog.php');
+            exit;
+        }
+        else{
+            self::displayEditBlog($singleBlog);
         }
     }
 
     public static function handleNewBlogRequest(){
         if(isset($_POST['insert'])){
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
             // if fields are not empty insert to db and display inserted blog
             if(!empty($title) || !empty($content)){
                 $blogModel = new BlogModel(NULL, $title, $content, $_SESSION['USER_ID']);
-                DBManager::updateBlog($blogModel);
+                DBmanager::insertNewBlog($blogModel);
+                $blogID = DBmanager::getLastInsertId("blog");
+                header("Location: blog.php?blog={$blogID}");
+                exit;
             }
         }
         else{
@@ -86,11 +112,7 @@ class BlogActionController{
         echo CommonView::drawFooter() . "\n";
     }
 
-    private static function displayEditBlog($blogID){
-        // Handle auth here.
-        $singleBlog = new BlogModel();
-        $singleBlog->setBlogData($blogID);
-
+    private static function displayEditBlog($singleBlog){
         echo CommonView::drawHeader($singleBlog->getTitle()) . "\n";
         echo BlogView::drawEdit($singleBlog, NULL) . "\n";
         echo CommonView::drawFooter() . "\n";
