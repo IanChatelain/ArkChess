@@ -328,7 +328,7 @@ class DBManager{
      * 
      * @param BlogModel $blogModel An instance of a blog.
      */
-    public static function updateEdit($blogModel){
+    public static function updateBlog($blogModel){
         $db = self::connect();
 
         // TODO: add database level security, check for user id in query to match blog.

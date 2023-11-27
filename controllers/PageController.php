@@ -1,7 +1,7 @@
 <?php
 
 require_once('services/DBManager.php');
-require_once('controllers/AuthController.php');
+require_once('services/Authentication.php');
 require_once('views/CommonView.php');
 require_once('views/ContactView.php');
 require_once('views/LearnView.php');
@@ -18,16 +18,6 @@ require_once('views/AdminView.php');
  */
 class PageController{
     // TODO: Rename all draws to different names than page controller draw functions.
-    /**
-     * Draws index page views using data from the database.
-     */
-    public static function drawBlogSearch(){
-        $blogModels = DBManager::getMultiBlog();
-
-        echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogSearch($blogModels) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
 
     /**
      * Draws edit page views using data from the database.
@@ -155,7 +145,7 @@ class PageController{
     }
     
     public static function changeBannerLink(){
-        $userId = AuthController::isLoggedIn();
+        $userId = Authentication::isLoggedIn();
         $linkText = 'Sign In';
         $link = 'login';
 
@@ -170,7 +160,7 @@ class PageController{
 
     public static function isReadOnlyUser(){
         if(!isset($_SESSION['USER_ID'])){
-            $_SESSION['USER_ROLE'] = 4;
+            $_SESSION['ROLE_ID'] = 4;
         }
     }
 

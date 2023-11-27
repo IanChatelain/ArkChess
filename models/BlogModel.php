@@ -40,12 +40,18 @@ class BlogModel{
     }
 
     private function setData($data){
-        $this->blogID = $data['blog_id'];
-        $this->title = $data['title'];
-        $this->content = $data['text_content'];
-        $this->date = $data['date_time'];
-        $this->userID = $data['user_id'];
+        if($data){
+            $this->blogID = $data['blog_id'];
+            $this->title = $data['title'];
+            $this->content = $data['text_content'];
+            $this->date = $data['date_time'];
+            $this->userID = $data['user_id'];
+        }
+        else{
+            $this->blogID = -1;
+        }
     }
+
     /**
      * Gets the blog id.
      * 
