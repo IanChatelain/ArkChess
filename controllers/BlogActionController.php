@@ -16,9 +16,10 @@ class BlogActionController{
     public static function handleBlogSearchRequest(){
         $blogModel = new BlogModel();
         $blogModelArray = $blogModel->getAllBlogs();
+        $sortPreference = DBManager::getSortPreference();
 
         echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogSearch($blogModelArray, Authentication::isAuthorized()) . "\n";
+        echo BlogView::drawBlogSearch($blogModelArray, Authentication::isAuthorized(), $sortPreference) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 

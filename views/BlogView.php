@@ -82,16 +82,35 @@ class BlogView{
      * 
      * @return string $content A string containing the blog page HTML.
      */
-    public static function drawBlogSearch($blogModels, $isAuthed){
+    public static function drawBlogSearch($blogModels, $isAuthed, $sortPreference){
         $blogItem = "";
         $standardUserControls = "";
+        $adminControls = "";
+        if(!empty($sortPreference) && $sortPreference['table_name'] == "blog"){
+            $sortBy = $sortPreference['column_name'];
+            $sortDirection = $sortPreference['direction'];
+        }
 
         if($isAuthed){
+            if($_SESSION['ROLE_ID'] == 1){
+                $adminButton = <<<END
+                <input type="button" class="addUserBtn" name="addUser" value="Sort">
+                END;
+            }
+
             $standardUserControls = <<<END
-            <form type="hidden" method="POST" action="blog.php?newpost">
-                <input type="submit" name="newPostButton" class="newPostButton" value="New Post">
-            </form>
+                <form type="hidden" method="POST" action="blog.php?newpost">
+                    <input type="submit" name="newPostButton" class="newPostButton" value="New Post">
+                </form>
+                END;
+
+            $sortModal = <<<END
+
             END;
+            
+            // $adminControls = <<<END
+
+            // END;
         }
 
         if($blogModels){
@@ -117,11 +136,40 @@ class BlogView{
 
 
         $html = <<<END
+
+        
         <main class="form-container profile">
+
+            <div class="addUserModal modal">
+                <div class="modal-content">
+                    <h2 class="formTitle">Sort Blogs</h2>
+                    <span class="addClose">&times;</span>
+                    <div class="userDetails">
+                        <form type="hidden" method="POST">
+                            <label>Sorted By $sortBy</label>
+                            <p>ASC</p>
+                            <label class="switch">
+                                    <input id="slider" type="checkbox">
+                                    <span class="slider"></span>
+                            </label>
+                            <p>DESC</p> 
+                            <select name="sortByDropDown" id="sortByDropDown">
+                                <option value="default">Sort By</option>
+                                <option value="title">Title</option>
+                                <option value="date_time">Date</option>
+                                <option value="user_name">User</option>
+                            </select>
+                            <input type="submit" name="sortByDropDownBtn">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="formTitle">Community Blogs</h2>
             <div class="blogPageContainer">
                 <div class="blogSearchContainer">
                     $standardUserControls
+                    $adminButton
                     <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
                     <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
                 </div>
@@ -130,6 +178,7 @@ class BlogView{
                 </div>
             </div>
         </main>
+        <script src="public/js/sortBlog.js"></script>
         END;
 
         return $html;

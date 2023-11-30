@@ -3,6 +3,7 @@
 require_once('models/BlogModel.php');
 require_once('models/UserModel.php');
 
+
 /**
  * DBManager handles database connection and queries, as well as server authentication.
  */
@@ -13,7 +14,7 @@ class DBManager{
      */
     public static function connect(){
         if(!defined('DB_DSN')){
-            define('DB_DSN','mysql:host=localhost;dbname=serverside;charset=utf8');
+            define('DB_DSN','mysql:host=localhost;dbname=serverside;charset=utf8'); // 1433 mssql engine port
         }
         if(!defined('DB_USER')){
             define('DB_USER','serveruser');
@@ -253,7 +254,8 @@ class DBManager{
      * @return BlogModel[] $blogs An array of blogs.
      */
     public static function getMultiBlog(){
-        $query = "SELECT * FROM blog ORDER BY date_time DESC";
+        $column = self::getSortPreference()['column_name'];
+        $query = "SELECT * FROM blog ORDER BY $column DESC";
         $result = [];
 
         $db = self::connect();
@@ -268,6 +270,23 @@ class DBManager{
         }
 
         return $result;
+    }
+
+    public static function getSortPreference(){
+        $query = "SELECT * FROM last_sort_preference";
+
+        $db = self::connect();
+
+        try{
+            $statement = $db->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+
+        return $result[0];
     }
 
     /**

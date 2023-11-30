@@ -30,7 +30,7 @@
             },
             "time": "2023-11-17T15:01:25+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "library/HTMLPurifier.composer.php"
@@ -183,7 +183,7 @@
                     ]
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT-only"

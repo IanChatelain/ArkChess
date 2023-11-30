@@ -1,13 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function(){
     var addUserModal = document.getElementsByClassName("addUserModal")[0];
     var addUserBtn = document.getElementsByClassName("addUserBtn")[0];
     var addUserSpan = document.getElementsByClassName("addClose")[0];
 
-    addUserBtn.onclick = function() {
+    addUserBtn.onclick = function(){
         addUserModal.style.display = "block";
     }
 
-    addUserSpan.onclick = function() {
+    addUserSpan.onclick = function(){
         addUserModal.style.display = "none";
     }
 
@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var editUserBtns = document.getElementsByClassName("editUser");
     var editUserSpan = document.getElementsByClassName("editClose")[0];
 
-    editUserSpan.onclick = function() {
+    editUserSpan.onclick = function(){
         editUserModal.style.display = "none";
     }
 
-    Array.from(editUserBtns).forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    Array.from(editUserBtns).forEach(function(btn){
+        btn.addEventListener('click', function(){
 
             var userId = this.getAttribute('data-user-id');
             var userName = this.getAttribute('data-user-name');
@@ -42,21 +42,21 @@ document.addEventListener("DOMContentLoaded", function() {
     Array.from(deleteUserBtns).forEach(function(btn) {
         btn.addEventListener("click", function(event) {
             var userId = this.getAttribute("data-user-id");
-            if (confirm('Are you sure you want to delete user ' + userId + '?')) {
-                // Set the userId in the hidden input field
+            if (confirm('Are you sure you want to delete user ' + userId + '?')){
                 document.querySelector("[name='userId']").value = userId;
-                // Submit the form
                 document.querySelector("[name='userActionForm']").submit();
-            } else {
+            } 
+            else{
                 event.preventDefault();
             }
         });
     });
 
-    window.onclick = function(event) {
-        if (event.target == addUserModal) {
+    window.onclick = function(event){
+        if(event.target == addUserModal) {
             addUserModal.style.display = "none";
-        } else if (event.target == editUserModal) {
+        }
+        else if(event.target == editUserModal){
             editUserModal.style.display = "none";
         }
     }
