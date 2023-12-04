@@ -15,11 +15,17 @@ class BlogActionController{
      */
     public static function handleBlogSearchRequest(){
         $blogModel = new BlogModel();
-        $blogModelArray = $blogModel->getAllBlogs();
-        $sortPreference = DBManager::getSortPreference();
+
+        if(isset($_POST['sortByDropDown'])){
+            $sortBy = $_POST['sortByDropDown'];
+            $blogModelArray = $blogModel->getAllBlogs($sortBy);
+        }
+        else{
+            $blogModelArray = $blogModel->getAllBlogs();
+        }
 
         echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogSearch($blogModelArray, Authentication::isAuthorized(), $sortPreference) . "\n";
+        echo BlogView::drawBlogSearch($blogModelArray, Authentication::isAuthorized()) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 

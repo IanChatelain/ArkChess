@@ -253,9 +253,18 @@ class DBManager{
      * 
      * @return BlogModel[] $blogs An array of blogs.
      */
-    public static function getMultiBlog(){
-        $column = self::getSortPreference()['column_name'];
-        $query = "SELECT * FROM blog ORDER BY $column DESC";
+    public static function getMultiBlog($sortBy){
+        $sortDirection = "DESC";
+
+        if($sortBy != "date_time"){
+            $sortDirection = "ASC";
+        }
+
+        $query = "SELECT * FROM blog ORDER BY $sortBy $sortDirection";
+
+        if($sortBy == "user_name"){
+            $query = "SELECT b.blog_id, b.title, b.text_content, b.date_time, b.user_id, c.user_name FROM blog b LEFT JOIN chessuser c ON b.user_id = c.user_id ORDER BY c.$sortBy $sortDirection";
+        }
         $result = [];
 
         $db = self::connect();
@@ -270,23 +279,6 @@ class DBManager{
         }
 
         return $result;
-    }
-
-    public static function getSortPreference(){
-        $query = "SELECT * FROM last_sort_preference";
-
-        $db = self::connect();
-
-        try{
-            $statement = $db->prepare($query);
-            $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch(PDOException $e){
-            error_log("Database error: " . $e->getMessage());
-        }
-
-        return $result[0];
     }
 
     /**

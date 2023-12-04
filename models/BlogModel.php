@@ -13,6 +13,7 @@ class BlogModel{
     private $userID;
     private CommentModel $comments; // Array of comment models.
     private $gameID;
+    private $userName;
 
     public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments = NULL){
         $this->blogID = $blogID;
@@ -26,8 +27,8 @@ class BlogModel{
         $this->setData($data);
     }
 
-    public function getAllBlogs(){
-        $dataArray = DBManager::getMultiBlog();
+    public function getAllBlogs($sortBy = 'date_time'){
+        $dataArray = DBManager::getMultiBlog($sortBy);
         $blogModelArray = [];
 
         foreach($dataArray as $data){
@@ -46,10 +47,22 @@ class BlogModel{
             $this->content = $data['text_content'];
             $this->date = $data['date_time'];
             $this->userID = $data['user_id'];
+            if(isset($data['user_name'])){
+                $this->userName = $data['user_name'];
+            }
         }
         else{
             $this->blogID = -1;
         }
+    }
+
+    /**
+     * Gets the blog id.
+     * 
+     * @return int $this->blogID A unique identifier of the blog.
+     */
+    public function getUserName(){
+        return $this->userName;
     }
 
     /**
