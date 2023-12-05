@@ -1,6 +1,8 @@
 <?php
 
 require_once('models/CommentModel.php');
+require_once('services/ImageSize.php');
+require_once('models/FileModel.php');
 
 /**
  * BlogModel represents the data stored of in a blog.
@@ -12,8 +14,10 @@ class BlogModel{
     private $date;
     private $userID;
     private CommentModel $comments; // Array of comment models.
+    private FileModel $fileModel;
     private $gameID;
     private $userName;
+    private $fileName;
 
     public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments = NULL){
         $this->blogID = $blogID;
@@ -50,10 +54,16 @@ class BlogModel{
             if(isset($data['user_name'])){
                 $this->userName = $data['user_name'];
             }
+            $this->fileModel = DBManager::getUploadedFile($data['blog_id']);
+            $this->fileName = $this->fileModel->getFileName();
         }
         else{
             $this->blogID = -1;
         }
+    }
+
+    public function getFileName(){
+        return $this->fileName;
     }
 
     /**

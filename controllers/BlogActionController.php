@@ -5,6 +5,9 @@ require_once('models/BlogModel.php');
 require_once('views/NotFoundView.php');
 require_once('views/BlogView.php');
 require_once('services/Sanitize.php');
+require_once('models/FileModel.php');
+require_once('services/FileUpload.php');
+
 
 /**
  * BlogController controls blog data flow.
@@ -35,10 +38,12 @@ class BlogActionController{
      * @param int $blogID A blogs unique identifier.
      */
     public static function handleSingleBlogRequest(){
+        $imageDirectory = "../public/img/uploads";
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
-
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
+        // $singleBlog->getFilePath(Size::ORIGINAL) - Once all image services are functional.
+
 
         if($singleBlog->getBlogID() == -1){
             header('Location: blog.php');
@@ -99,11 +104,16 @@ class BlogActionController{
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
-            // if fields are not empty insert to db and display inserted blog
             if(!empty($title) || !empty($content)){
                 $blogModel = new BlogModel(NULL, $title, $content, $_SESSION['USER_ID']);
-                DBmanager::insertNewBlog($blogModel);
-                $blogID = DBmanager::getLastInsertId("blog");
+                DBManager::insertNewBlog($blogModel);
+                $blogID = DBManager::getLastInsertId("blog");
+                if($blogID){
+                    if(UploadImage::executeResize($blogID)){
+                        $fileModel = new FileModel(NULL, $_SESSION['uploadedFileName'], $blogID);
+                        $fileModel->saveFiles();
+                    }
+                }
                 header("Location: blog.php?blog={$blogID}");
                 exit;
             }

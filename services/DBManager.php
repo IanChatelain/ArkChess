@@ -14,7 +14,7 @@ class DBManager{
      */
     public static function connect(){
         if(!defined('DB_DSN')){
-            define('DB_DSN','mysql:host=localhost;dbname=serverside;charset=utf8'); // 1433 mssql engine port
+            define('DB_DSN','mysql:host=localhost;dbname=serverside;charset=utf8');
         }
         if(!defined('DB_USER')){
             define('DB_USER','serveruser');
@@ -32,17 +32,16 @@ class DBManager{
         }
     }
 
-    public static function insertNewUser($userName, $password, $email, $token){
+    public static function insertNewUser($userName, $password, $email){
         $db = self::connect();
 
-        $query = "INSERT INTO chessuser (user_name, user_password, email, validation_token) values (:user_name, :user_password, :email, :validation_token)";
+        $query = "INSERT INTO chess_user (user_name, password, email) values (:user_name, :password, :email)";
 
         try{
             $statement = $db->prepare($query);
             $statement->bindValue(':user_name', $userName);
-            $statement->bindValue(':user_password', $password);
+            $statement->bindValue(':password', $password);
             $statement->bindValue(':email', $email);
-            $statement->bindValue(':validation_token', $token);
             $statement->execute();
             return $db->lastInsertId();
         }
@@ -51,11 +50,30 @@ class DBManager{
             return false;
         }
     }
+
+    public static function insertUploadedFile($fileID, $fileName, $blogID){
+        $db = self::connect();
+
+        $query = "INSERT INTO blog_image (image_name, blog_id) values (:image_name, :blog_id)";
+
+        try{
+            $statement = $db->prepare($query);
+            $statement->bindValue(':image_name', $fileName);
+            $statement->bindValue(':blog_id', $blogID);
+            $statement->execute();
+            return $db->lastInsertId();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+            return false;
+        }
+    }
+
     
     public static function editUser($userId, $userName, $email, $rating, $role){
         $db = self::connect();
 
-        $query = "UPDATE chessuser SET user_name = :user_name, email = :email, rating = :rating, role_id = :role_id  WHERE user_id = :user_id";
+        $query = "UPDATE chess_user SET user_name = :user_name, email = :email, rating = :rating, role_id = :role_id  WHERE user_id = :user_id";
         try{
             $statement = $db->prepare($query);
             $statement->bindValue(':user_name', $userName);
@@ -73,7 +91,7 @@ class DBManager{
     public static function deleteUser($userId){
         $db = self::connect();
 
-        $query = "DELETE FROM chessuser WHERE user_id = :user_id LIMIT 1";
+        $query = "DELETE FROM chess_user WHERE user_id = :user_id LIMIT 1";
         try{
             $statement = $db->prepare($query);
             $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
@@ -87,7 +105,7 @@ class DBManager{
     public static function getAuthUser($userId){
         $db = self::connect();
 
-        $query = "SELECT * FROM chessuser WHERE user_id = :userID";
+        $query = "SELECT * FROM chess_user WHERE user_id = :userID";
     
         try{
             $statement = $db->prepare($query);
@@ -110,7 +128,7 @@ class DBManager{
 
     public static function doesUserExist($userName) {
         $db = self::connect();
-        $query = "SELECT COUNT(*) FROM chessuser WHERE user_name = :user_name";
+        $query = "SELECT COUNT(*) FROM chess_user WHERE user_name = :user_name";
         
         try {
             $statement = $db->prepare($query);
@@ -126,7 +144,7 @@ class DBManager{
     }
 
     public static function getAllUsers(){
-        $query = "SELECT * FROM chessuser";
+        $query = "SELECT * FROM chess_user";
         $columns = [];
         $users = [];
 
@@ -161,10 +179,10 @@ class DBManager{
         $db = self::connect();
     
         if($userName){
-            $query = "SELECT * FROM chessuser WHERE user_name LIKE :user_name";
+            $query = "SELECT * FROM chess_user WHERE user_name LIKE :user_name";
             $userName = "%$userName%"; // Add wildcard characters for partial matching
         } else {
-            $query = "SELECT * FROM chessusers";
+            $query = "SELECT * FROM chess_user";
         }
     
         $users = [];
@@ -191,10 +209,10 @@ class DBManager{
         $db = self::connect();
 
         if($field == UserField::All){
-            $query = "SELECT user_id, user_name, first_name, last_name, email, rating, role_id FROM chessuser WHERE user_id = :user_id";
+            $query = "SELECT user_id, user_name, first_name, last_name, email, rating, role_id FROM chess_user WHERE user_id = :user_id";
         }
         else{
-            $query = "SELECT $field->value FROM chessuser WHERE user_id = :user_id";
+            $query = "SELECT $field->value FROM chess_user WHERE user_id = :user_id";
         }
 
         try{
@@ -228,14 +246,14 @@ class DBManager{
     public static function verifyUserLogin($userName, $password){
         $db = self::connect();
 
-        $query = "SELECT user_id, user_name, user_password FROM chessuser WHERE user_name = :user_name";
+        $query = "SELECT user_id, user_name, password FROM chess_user WHERE user_name = :user_name";
     
         try{
             $statement = $db->prepare($query);
             $statement->bindParam(':user_name', $userName, PDO::PARAM_STR);
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($row && password_verify($password, $row['user_password'])) {
+            if ($row && password_verify($password, $row['password'])) {
                 return $row['user_id'];
             }
         }
@@ -263,6 +281,7 @@ class DBManager{
         $query = "SELECT * FROM blog ORDER BY $sortBy $sortDirection";
 
         if($sortBy == "user_name"){
+            // TODO: Add binding.
             $query = "SELECT b.blog_id, b.title, b.text_content, b.date_time, b.user_id, c.user_name FROM blog b LEFT JOIN chessuser c ON b.user_id = c.user_id ORDER BY c.$sortBy $sortDirection";
         }
         $result = [];
@@ -306,32 +325,28 @@ class DBManager{
         return $result;
     }
 
-    public static function getComments($blogID){
-        $query = "SELECT * FROM comment WHERE blog_id = :blog_id";
-        $blogModel = self::getSingleBlog($blogID);
+    public static function getUploadedFile($blogID){
+        $db = self::connect();
         $result = [];
 
-        $db = self::connect();
+        $query = "SELECT * FROM blog_image WHERE blog_id = :blog_id";
 
         try{
             $statement = $db->prepare($query);
-            $statement->bindValue('blog_id', $blogID, PDO::PARAM_INT);
+            $statement->bindParam(':blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if($result === false){
-                return new BlogModel(NULL, '','','',NULL);
-            }
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             foreach($result as $row){
-                $commentID = $row['comment_id'];
-                $commentDate = $row['date'];
+                $fileID = $row['image_id'];
+                $imageName = $row['image_name'];
             }
-            $commentModel = new CommentModel();
-
-            return new BlogModel($blogID, $blogModel->getTitle(), $blogModel->getContent(), $blogModel->getUserID(), $commentModel);
+            $fileModel = new FileModel($fileID, $imageName, $blogID);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
+            return false;
         }
+        return $fileModel;
     }
 
     /**
@@ -390,6 +405,7 @@ class DBManager{
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
+            return false;
         }
     }
     

@@ -141,6 +141,15 @@ textarea {
     resize: none;
 }
 
+/* New blog upload image input field. */
+input#file{
+    background: none;
+}
+
+fieldset#blogs{
+    border: none;
+}
+
 /* Recent games container */
 .recent-games-container {
     flex: 1.5;

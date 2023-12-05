@@ -60,7 +60,7 @@ class Authentication{
 
         if(!DBManager::doesUserExist($userName)){
 
-            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email);
 
             if($userId){
                 return true;
@@ -73,16 +73,16 @@ class Authentication{
         $password = $_POST['password'];
         $email = $_POST['email'];
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $token = self::generateSecureToken();
+        // $token = self::generateSecureToken(); // Not implemented yet.
 
         if(!DBManager::doesUserExist($userName)){
 
-            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email);
 
             if($userId){
                 //Email::validationEmail($email, $token);
 
-                self::loginUser();
+                self::loginUser($userName, $password);
             }
         }
     }

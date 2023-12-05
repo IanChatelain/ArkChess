@@ -17,21 +17,27 @@ class BlogView{
      */
     public static function drawNewBlog(){
         $html = <<<END
-            <div>
-                <h1>New Blog</h1>
-                <form method="post">
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                <form method="post" enctype="multipart/form-data">
                     <fieldset id="blogs">
                         <label for="postTitle">Title</label>
                         <input class="forms" type="text" id="postTitle" name="postTitle" placeholder="Title">
-    
+
                         <label for="postContent">Content</label>
                         <textarea class="forms" name="postContent" id="postContent"></textarea>
-    
+
+                        <div class="newBlogButtons">
+                            <label for="file" class="file-label">Upload Image</label>
+                            <input type="file" name="file" id="file">
+                        </div>
                         <button type="submit" name="insert" class="updateButton">Submit Blog</button>
                     </fieldset>
                 </form>
             </div>
-            END;
+        </main>
+        END;
         
         return $html;
     }
@@ -85,6 +91,8 @@ class BlogView{
     public static function drawBlogSearch($blogModels, $isAuthed){
         $blogItem = "";
         $standardUserControls = "";
+        $imgTag = "";
+        $imageDirectory = "../public/img/uploads/medium/";
 
         if($isAuthed){
             $standardUserControls = <<<END
@@ -114,11 +122,18 @@ class BlogView{
                 if($userName == null){
                     $userName = DBManager::getUserData($userID, UserField::UserName);
                 }
+                $fileName = $blogModel->getFileName();
+                if($fileName){
+                    $imagePath = $imageDirectory . $fileName;
+                    $imgTag = <<<END
+                        <img src="{$imagePath}"></img>
+                        END;
+                }
 
                 $blogItem .= <<<END
                 <div class="blog-item">
                     <h2>
-                        <a href="blog.php?blog={$blogID}">{$title}</a>
+                        <a href="blog.php?blog={$blogID}">{$imgTag}{$title}</a>
                     </h2>
                     <p class="date">{$date}</p>
                     <p>$userName</p>
@@ -192,7 +207,7 @@ class BlogView{
                 <h2 class="recent-games-title">
                     <a href="blog.php?blog={$blogID}">{$title}</a>
                 </h2>
-                <div class="blog-container">
+                <div>
                     <div class="blog-item">
                         <p class="date">{$date}</p>
                         <p class="blogContent">{$content}</p>

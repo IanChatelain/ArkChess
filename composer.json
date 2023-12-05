@@ -2,6 +2,7 @@
     "require": {
         "phpmailer/phpmailer": "^6.8",
         "tinymce/tinymce": "^6.8",
-        "ezyang/htmlpurifier": "^4.17"
+        "ezyang/htmlpurifier": "^4.17",
+        "gumlet/php-image-resize": "^2.0"
     }
 }
