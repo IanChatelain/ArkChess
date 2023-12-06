@@ -89,6 +89,7 @@ class BlogActionController{
         }
         elseif(isset($_POST['delete'])){
             // Delete the blog and redirect
+            DBManager::deleteImage($blogID);
             DBManager::deleteBlog($blogID);
             header('Location: blog.php');
             exit;
@@ -104,7 +105,7 @@ class BlogActionController{
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
-            if(!empty($title) || !empty($content)){
+            if(!empty($title) && !empty($content)){
                 $blogModel = new BlogModel(NULL, $title, $content, $_SESSION['USER_ID']);
                 DBManager::insertNewBlog($blogModel);
                 $blogID = DBManager::getLastInsertId("blog");

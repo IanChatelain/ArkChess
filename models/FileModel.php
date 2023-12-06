@@ -20,9 +20,12 @@ class FileModel{
     }
 
     private function setData($data){
+        $data = DBManager::getUploadedFile($blogID);
         if($data){
             $this->fileID = $data['image_id'];
-            $this->fileName = $data['image_name'];
+            $this->fileNameOrg = $data['image_name_org'];
+            $this->fileNameMed = $data['image_name_med'];
+            $this->fileNameThumb = $data['image_name_thumb'];
             $this->blogID = $data['blog_id'];
         }
     }

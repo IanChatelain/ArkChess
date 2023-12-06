@@ -20,10 +20,6 @@ function formHasErrors(){
     let blogContent = tinymce.activeEditor.getContent();
     let contentError = document.getElementById("contentError");
 
-    let fileError = document.getElementById("fileError");
-    let uploadError = document.getElementById("uploadError");
-
-    debugger;
     if(blogTitle.value == null || blogTitle.value.trim() === ""){
         titleError.style.display = "block";
         errorFlag = true;
@@ -32,31 +28,6 @@ function formHasErrors(){
     if(blogContent == null || blogContent.trim() === ""){
         contentError.style.display = "block";
         errorFlag = true;
-    }
-
-    if(fileError){
-        fileError.style.display = "block";
-        errorFlag = true;
-    }
-    else{
-        let fileError = document.getElementById("fileError");
-
-    
-        if(fileError){
-            fileError.remove();
-        }
-    }
-    
-    if(uploadError){
-        uploadError.style.display = "block";
-        errorFlag = true;
-    }
-    else{
-        let uploadError = document.getElementById("uploadError");
-                
-        if(uploadError){
-            uploadError.remove();
-        }
     }
 
     return errorFlag;
@@ -72,21 +43,6 @@ function hideErrors(){
 	}
 }
 
-// Clears all paramaters specified values.
-function clearFields(){
-    for(let y = 0; y < arguments.length; y++){
-        arguments[y].value = "";
-    }
-}
-
-// Checks all parameter elements to see if they are empty.
-function fieldIsEmpty(){
-    for(let z = 0; z < arguments.length; z++){
-        if(field.value == null || field.value.trim() == ""){
-            return false;
-        }
-    }
-}
 
 function load(){
     let blogTitle = document.getElementById("postTitle");
@@ -94,6 +50,20 @@ function load(){
     blogTitle.focus();
 
     hideErrors();
+
+    let fileError = document.getElementById("fileError");
+    let uploadError = document.getElementById("uploadError");
+
+    if(fileError){
+        fileError.style.display = "block";
+        errorFlag = true;
+    }
+    
+    if(uploadError){
+        uploadError.style.display = "block";
+        errorFlag = true;
+    }
+
     document.getElementById("newBlog").addEventListener("submit", validate);
 }
 

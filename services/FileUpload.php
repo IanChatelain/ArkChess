@@ -95,7 +95,7 @@ class UploadImage{
                     if(!move_uploaded_file($tempFilePath, $newFilePath)){
                         $errorCode = -100; // Unable to upload.
                     }
-                } 
+                }
                 else{
                     $newFilePath = self::uploadPath($newFileName);
                     $_SESSION['img_org'] = $newFileName;

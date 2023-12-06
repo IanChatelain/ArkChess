@@ -441,8 +441,21 @@ class DBManager{
     public static function deleteBlog($blogID){
         $db = self::connect();
 
-        // TODO: Add db level security matching user_id to blog.
         $query = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
+        try{
+            $statement = $db->prepare($query);
+            $statement->bindValue(':blog_id', $blogID, PDO::PARAM_INT);
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+
+    public static function deleteImage($blogID){
+        $db = self::connect();
+
+        $query = "DELETE FROM blog_image WHERE blog_id = :blog_id LIMIT 1";
         try{
             $statement = $db->prepare($query);
             $statement->bindValue(':blog_id', $blogID, PDO::PARAM_INT);
