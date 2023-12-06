@@ -134,12 +134,6 @@ class PageController{
             $_SESSION['ROLE_ID'] = 4;
         }
     }
-
-    public static function userOwnsBlog($blogId){
-        if(isset($_SESSION['USER_ID'])){
-
-        }
-    }
 }
 
 ?>

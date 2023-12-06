@@ -15,7 +15,7 @@ class BlogView{
      * 
      * @return string $newPostMain A string containing the blog page HTML.
      */
-    public static function drawNewBlog($errorCode){
+    public static function drawNewBlog($errorCode = NULL){
         $errorMessage = '';
 
         switch($errorCode){
@@ -30,6 +30,7 @@ class BlogView{
                 END;
                 break;
         }
+        
         $html = <<<END
         <main class="form-container profile">
             <h2 class="formTitle">Community Blogs</h2>
@@ -135,7 +136,7 @@ class BlogView{
                 $blogID = $blogModel->getBlogID();
                 $title = $blogModel->getTitle();
                 $date = $blogModel->getDate();
-                $userID = $blogModel->getUserID(); // Needs to be joined to get the user name and display it on each item.
+                $userID = $blogModel->getUserID();
                 $userName = $blogModel->getUserName();
                 if($userName == null){
                     $userName = DBManager::getUserData($userID, UserField::UserName);
@@ -199,6 +200,16 @@ class BlogView{
         $date = $blogModel->getDate();
         $content = $blogModel->getContent();
         $standardUserControls = "";
+        $imgTag = "";
+        $imageDirectory = "public/img/uploads/medium/";
+
+        $fileName = $blogModel->getFileName(Size::MEDIUM);
+        if($fileName){
+            $imagePath = $imageDirectory . $fileName;
+            $imgTag = <<<END
+                <img src="{$imagePath}"></img>
+                END;
+        }
 
         if($isAuthed){
             $standardUserControls = <<<END
@@ -222,6 +233,7 @@ class BlogView{
         <main class="form-container profile">
             <h2 class="formTitle">Community Blogs</h2>
             <div class="blogPageContainer">
+                $imgTag
                 <h2 class="recent-games-title">
                     <a href="blog.php?blog={$blogID}">{$title}</a>
                 </h2>

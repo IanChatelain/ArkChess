@@ -13,6 +13,7 @@ function validate(e){
 
 // Checks whether the forms have valid inputs before submitting the page.
 function formHasErrors(){
+    debugger;
     let errorFlag = false;
     let blogTitle = document.getElementById("postTitle");
     let titleError = document.getElementById("titleError");

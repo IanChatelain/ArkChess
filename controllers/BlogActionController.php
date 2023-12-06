@@ -41,8 +41,6 @@ class BlogActionController{
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
-        // $singleBlog->getFilePath(Size::ORIGINAL) - Once all image services are functional.
-
 
         if($singleBlog->getBlogID() == -1){
             header('Location: blog.php');
@@ -104,13 +102,13 @@ class BlogActionController{
         if(isset($_POST['insert'])){
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
+            $errorCode = UploadImage::executeResize();
 
-            if(!empty($title) && !empty($content)){
+            if(!empty($title) && !empty($content) && $errorCode == 0){
                 $blogModel = new BlogModel(NULL, $title, $content, $_SESSION['USER_ID']);
                 DBManager::insertNewBlog($blogModel);
                 $blogID = DBManager::getLastInsertId("blog");
                 if($blogID){
-                    $errorCode = UploadImage::executeResize($blogID);
                     if($errorCode == 0){
                         $fileModel = new FileModel(NULL, $_SESSION['img_org'], $_SESSION['img_med'], $_SESSION['img_thumb'], $blogID);
                         $fileModel->saveFiles();
@@ -123,6 +121,9 @@ class BlogActionController{
                     header("Location: blog.php?blog={$blogID}");
                     exit;
                 }
+            }
+            else{
+                self::displayNewBlog($errorCode);
             }
         }
         else{
