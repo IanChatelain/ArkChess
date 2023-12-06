@@ -330,6 +330,7 @@ class DBManager{
     public static function getUploadedFile($blogID){
         $db = self::connect();
         $result = [];
+        $fileModel = new FileModel();
 
         $query = "SELECT * FROM blog_image WHERE blog_id = :blog_id";
 
@@ -343,8 +344,8 @@ class DBManager{
                 $imageNameOrg = $row['image_name_org'];
                 $imageNameMed = $row['image_name_med'];
                 $imageNameThumb = $row['image_name_thumb'];
+                $fileModel = new FileModel($fileID, $imageNameOrg, $imageNameMed, $imageNameThumb, $blogID);
             }
-            $fileModel = new FileModel($fileID, $imageNameOrg, $imageNameMed, $imageNameThumb, $blogID);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());
