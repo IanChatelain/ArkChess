@@ -43,20 +43,7 @@ nav ul {
     margin-bottom: 10px;
 }
 
-.updateButton, .deleteButton {
-    box-shadow: 1px 1px 2px black;
-    border-radius: 3px;
-    background-color: transparent;
-    border: 1px solid #c9c9c9;
-    height: 30px;
-    width: 100px;
-    margin-top: 20px;
-    margin-right: 20px;
-}
 
-.deleteButton {
-    float: right;
-}
 
 .content {
     width: 1000px;
@@ -65,11 +52,6 @@ nav ul {
     border-radius: 10px;
     padding: 20px;
     padding-bottom: 0px;
-}
-
-a:hover, button:hover, a:focus, button:focus {
-    color: white;
-    text-shadow: 1px 1px 1px white;
 }
 
 div#container {
@@ -143,16 +125,6 @@ main#indexContent h2 {
 
 #newPost {
     font-size: 14px;
-}
-
-button {
-    box-shadow: 1px 1px 2px black;
-    border-radius: 3px;
-    background-color: transparent;
-    border: 1px solid #c9c9c9;
-    height: 22px;
-    width: 75px;
-    color: #c9c9c9;
 }
 
 footer {

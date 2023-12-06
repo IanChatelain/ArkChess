@@ -344,6 +344,7 @@ class DBManager{
                 $imageNameOrg = $row['image_name_org'];
                 $imageNameMed = $row['image_name_med'];
                 $imageNameThumb = $row['image_name_thumb'];
+                // TODO: $blogID is coming in as a string, needs to change to int.
                 $fileModel = new FileModel($fileID, $imageNameOrg, $imageNameMed, $imageNameThumb, $blogID);
             }
         }

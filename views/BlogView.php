@@ -70,31 +70,44 @@ class BlogView{
      * 
      * @return string $editMain A string containing the edit page HTML.
      */
-    public static function drawEdit($blogModel, $errorFlag){
-        $errorTag = '';
+    public static function drawEdit($blogModel, $deleteOption){
         $blogID = $blogModel->getBlogID();
         $title = htmlspecialchars($blogModel->getTitle());
         $content = htmlspecialchars($blogModel->getContent());
-        if($errorFlag){
-            $errorTag = '<p>Each field must contain at least 1 letter.</p>';
-        }
-        $html = <<<END
-            <div>
-                <h1>Edit Blog</h1>
-                <form method="post">
-                    <fieldset id="blogs">
-                        <label for="postTitle">Title</label>
-                        <input type="hidden" name="blogID" value="{$blogID}">
-                        <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
-    
-                        <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent">{$content}</textarea>
-                        $errorTag
-                        <button type="submit" name="update" class="updateButton">Update</button>
-                        <button type="submit" name="delete" class="deleteButton">Delete</button>
-                    </fieldset>
-                </form>
+        $deleteBlock = '';
+        
+        if($deleteOption){
+            $deleteBlock = <<<END
+            <div class="editImageDelete">
+                <label for="deleteImage">Delete Image</label>
+                <input type="checkbox" id="deleteImage" name="deleteImage" value="delete">
             </div>
+            END;
+        }
+
+        $html = <<<END
+            <main class="form-container profile">
+                <h2 class="formTitle">Community Blogs</h2>
+                <div class="blogPageContainer">
+                    <form id="newBlog" method="post">
+                        <fieldset id="blogs">
+                            <label for="postTitle">Title</label>
+                            <input type="hidden" name="blogID" value="{$blogID}">
+                            <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
+                            <div class="error" id="titleError">Title is required</div>
+        
+                            <label for="postContent">Content</label>
+                            <textarea class="forms" name="postContent" id="postContent">{$content}</textarea>
+                            <div class="error" id="contentError">Content is required</div>
+
+                            $deleteBlock
+                            <button type="submit" name="update" class="updateButton">Update</button>
+                            <button type="submit" name="delete" class="deleteButton">Delete</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </main>
+            <script src="public/js/newBlog.js"></script>
             END;
         
         return $html;
@@ -142,6 +155,7 @@ class BlogView{
                     $userName = DBManager::getUserData($userID, UserField::UserName);
                 }
                 $fileName = $blogModel->getFileName(Size::MEDIUM);
+                $imgTag = '';
                 if($fileName){
                     $imagePath = $imageDirectory . $fileName;
                     $imgTag = <<<END

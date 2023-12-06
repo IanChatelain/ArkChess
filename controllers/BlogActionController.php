@@ -6,7 +6,7 @@ require_once('views/NotFoundView.php');
 require_once('views/BlogView.php');
 require_once('services/Sanitize.php');
 require_once('models/FileModel.php');
-require_once('services/FileUpload.php');
+require_once('services/UploadImage.php');
 
 
 /**
@@ -58,6 +58,14 @@ class BlogActionController{
      */
     public static function handleEditBlogRequest(){
         $blogID = filter_input(INPUT_GET, 'edit', FILTER_SANITIZE_NUMBER_INT);
+        $deleteOption = false;
+        $uploadedImage = DBManager::getUploadedFile($blogID);
+        $imageName = $uploadedImage->getFileName(Size::MEDIUM);
+
+        if($imageName != NULL){
+            $deleteOption = true;
+            $filePath = "/public/img/uploads/medium/" . $imageName;
+        }
 
         if(!Authentication::isAuthorized()){
             header('Location: restricted.php');
@@ -76,7 +84,16 @@ class BlogActionController{
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
-            if(!empty($title) || !empty($content)){
+            // if file was deleted, call getUploadedFile(blogID)
+            // and unlink(filename)
+
+            if(!empty($title) && !empty($content)){
+                if (isset($_POST['deleteImage']) && $_POST['deleteImage'] == 'delete') {
+                    DBManager::deleteImage($blogID);
+
+                    unlink($filePath);
+                }
+
                 $blogModel = new BlogModel($blogID, $title, $content);
 
                 DBManager::updateBlog($blogModel);
@@ -89,16 +106,21 @@ class BlogActionController{
             // Delete the blog and redirect
             DBManager::deleteImage($blogID);
             DBManager::deleteBlog($blogID);
+            unlink($filePath);
             header('Location: blog.php');
             exit;
         }
         else{
-            self::displayEditBlog($singleBlog);
+            self::displayEditBlog($singleBlog, $deleteOption);
         }
     }
 
     public static function handleNewBlogRequest(){
         $errorCode = 0;
+        unset($_SESSION['img_org']);
+        unset($_SESSION['img_med']);
+        unset($_SESSION['img_thumb']);
+
         if(isset($_POST['insert'])){
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
@@ -109,7 +131,7 @@ class BlogActionController{
                 DBManager::insertNewBlog($blogModel);
                 $blogID = DBManager::getLastInsertId("blog");
                 if($blogID){
-                    if($errorCode == 0){
+                    if($errorCode == 0 && $_FILES['file']['name'] != NULL){
                         $fileModel = new FileModel(NULL, $_SESSION['img_org'], $_SESSION['img_med'], $_SESSION['img_thumb'], $blogID);
                         $fileModel->saveFiles();
                     }
@@ -137,15 +159,15 @@ class BlogActionController{
         echo CommonView::drawFooter() . "\n";
     }
 
-    private static function displayEditBlog($singleBlog){
+    private static function displayEditBlog($singleBlog, $deleteOption){
         echo CommonView::drawHeader($singleBlog->getTitle()) . "\n";
-        echo BlogView::drawEdit($singleBlog, NULL) . "\n";
+        echo BlogView::drawEdit($singleBlog, $deleteOption) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 
-    private static function displayNewBlog($errorFlag){
+    private static function displayNewBlog($errorCode){
         echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawNewBlog($errorFlag) . "\n";
+        echo BlogView::drawNewBlog($errorCode) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 }

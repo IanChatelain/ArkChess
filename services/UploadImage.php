@@ -10,7 +10,7 @@ class UploadImage{
      * @param Size|null $size The size category of the file, if applicable.
      * @return string The file path where the uploaded file should be stored.
      */
-    protected static function uploadPath($fileName, ?Size $size = NULL){
+    public static function uploadPath($fileName, ?Size $size = NULL){
         $uploadDirectory = '..' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'uploads';
         $currentDirectory = dirname(__FILE__);
 
