@@ -5,13 +5,17 @@
  */
 class FileModel{
     private $fileID;
-    private $fileName;
+    private $fileNameOrg;
+    private $fileNameMed;
+    private $fileNameThumb;
     private $blogID;
 
 
-    public function __construct($fileID = NULL, $fileName = NULL, $blogID = NULL){
+    public function __construct($fileID = NULL, $fileNameOrg = NULL, $fileNameMed = NULL, $fileNameThumb = NULL, $blogID = NULL){
         $this->fileID = $fileID;
-        $this->fileName = $fileName;
+        $this->fileNameOrg = $fileNameOrg;
+        $this->fileNameMed = $fileNameMed;
+        $this->fileNameThumb = $fileNameThumb;
         $this->blogID = $blogID;
     }
 
@@ -20,12 +24,21 @@ class FileModel{
             $this->fileID = $data['image_id'];
             $this->fileName = $data['image_name'];
             $this->blogID = $data['blog_id'];
-            $this->date = $data['date_time'];
         }
     }
 
-    public function getFileName(){
-        return $this->fileName;
+    public function getFileName(Size $size){
+        switch($size){
+            case Size::ORIGINAL:
+                return $this->fileNameOrg;
+                break;
+            case Size::MEDIUM:
+                return $this->fileNameMed;
+                break;
+            case Size::THUMBNAIL:
+                return $this->fileNameThumb;
+                break;
+        }
     }
     
     /**
@@ -47,7 +60,7 @@ class FileModel{
     }
 
     public function saveFiles(){
-        DBManager::insertUploadedFile(NULL, $this->fileName, $this->blogID);
+        DBManager::insertUploadedFile(NULL, $this->fileNameOrg, $this->fileNameMed, $this->fileNameThumb, $this->blogID);
     }
 }
 

@@ -51,14 +51,16 @@ class DBManager{
         }
     }
 
-    public static function insertUploadedFile($fileID, $fileName, $blogID){
+    public static function insertUploadedFile($fileID, $fileNameOrg, $fileNameMed, $fileNameThumb, $blogID){
         $db = self::connect();
 
-        $query = "INSERT INTO blog_image (image_name, blog_id) values (:image_name, :blog_id)";
+        $query = "INSERT INTO blog_image (image_name_org, image_name_med, image_name_thumb, blog_id) values (:image_name_org, :image_name_med, :image_name_thumb, :blog_id)";
 
         try{
             $statement = $db->prepare($query);
-            $statement->bindValue(':image_name', $fileName);
+            $statement->bindValue(':image_name_org', $fileNameOrg);
+            $statement->bindValue(':image_name_med', $fileNameMed);
+            $statement->bindValue(':image_name_thumb', $fileNameThumb);
             $statement->bindValue(':blog_id', $blogID);
             $statement->execute();
             return $db->lastInsertId();
@@ -338,9 +340,11 @@ class DBManager{
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             foreach($result as $row){
                 $fileID = $row['image_id'];
-                $imageName = $row['image_name'];
+                $imageNameOrg = $row['image_name_org'];
+                $imageNameMed = $row['image_name_med'];
+                $imageNameThumb = $row['image_name_thumb'];
             }
-            $fileModel = new FileModel($fileID, $imageName, $blogID);
+            $fileModel = new FileModel($fileID, $imageNameOrg, $imageNameMed, $imageNameThumb, $blogID);
         }
         catch(PDOException $e){
             error_log("Database error: " . $e->getMessage());

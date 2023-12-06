@@ -24,6 +24,7 @@ class UploadImage{
                     break;
             }
         }
+
         
         $segments = [$currentDirectory, $uploadDirectory, basename($fileName)];
         return join(DIRECTORY_SEPARATOR, $segments);
@@ -42,7 +43,6 @@ class UploadImage{
 
         if(isset($fileInfo['extension'])){
             $newFileName .= '.' . $fileInfo['extension'];
-            $_SESSION['uploadedFileName'] = $newFileName;
         }
 
         $newFilePath = self::uploadPath($newFileName, $size);
@@ -52,9 +52,11 @@ class UploadImage{
         switch($size){
             case Size::MEDIUM:
                 $image->resizeToWidth(250);
+                $_SESSION['img_med'] = $newFileName;
                 break;
             case Size::THUMBNAIL:
                 $image->resizeToWidth(50);
+                $_SESSION['img_thumb'] = $newFileName;
                 break;
         }
 
@@ -77,6 +79,7 @@ class UploadImage{
     }
 
     public static function executeResize(){
+        $errorCode = 0;
         if(isset($_FILES['file']) && ($_FILES['file']['error'] === 0)){
             $fileName = $_FILES['file']['name'];
             $tempFilePath = $_FILES['file']['tmp_name'];
@@ -89,26 +92,27 @@ class UploadImage{
                 $newFileName = sprintf("%s_%s.%s", $baseName, $uniqueString, $extension);
                 if($_FILES['file']['type'] == "application/pdf"){
                     $newFilePath = self::uploadPath($newFileName);
-                    if(move_uploaded_file($tempFilePath, $newFilePath)){
-                        return true;
-                    } 
-                    else{
-                        return false;
+                    if(!move_uploaded_file($tempFilePath, $newFilePath)){
+                        $errorCode = -100; // Unable to upload.
                     }
                 } 
                 else{
                     $newFilePath = self::uploadPath($newFileName);
+                    $_SESSION['img_org'] = $newFileName;
                     if(move_uploaded_file($tempFilePath, $newFilePath)){
                         self::resizeImage($newFilePath, Size::MEDIUM);
                         self::resizeImage($newFilePath, Size::THUMBNAIL);
-                        return true;
+                    }
+                    else{
+                        $errorCode = -100; // Unable to upload.
                     }
                 }
             } 
             else{
-                return false;
+                $errorCode = -200; // Invalid file type
             }
         }
+        return $errorCode;
     }
 }
 

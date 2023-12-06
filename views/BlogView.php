@@ -15,28 +15,46 @@ class BlogView{
      * 
      * @return string $newPostMain A string containing the blog page HTML.
      */
-    public static function drawNewBlog(){
+    public static function drawNewBlog($errorCode){
+        $errorMessage = '';
+
+        switch($errorCode){
+            case -100:
+                $errorMessage = <<<END
+                <div class="error" id="uploadError">Upload failed, try again.</div>
+                END;
+                break;
+            case -200:
+                $errorMessage = <<<END
+                <div class="error" id="fileError">Invalid file type, select an image.</div>
+                END;
+                break;
+        }
         $html = <<<END
         <main class="form-container profile">
             <h2 class="formTitle">Community Blogs</h2>
             <div class="blogPageContainer">
-                <form method="post" enctype="multipart/form-data">
+                <form id="newBlog" method="post" enctype="multipart/form-data">
                     <fieldset id="blogs">
                         <label for="postTitle">Title</label>
                         <input class="forms" type="text" id="postTitle" name="postTitle" placeholder="Title">
+                        <div class="error" id="titleError">Title is required</div>
 
                         <label for="postContent">Content</label>
                         <textarea class="forms" name="postContent" id="postContent"></textarea>
+                        <div class="error" id="contentError">Content is required</div>
 
                         <div class="newBlogButtons">
                             <label for="file" class="file-label">Upload Image</label>
                             <input type="file" name="file" id="file">
+                            $errorMessage
                         </div>
                         <button type="submit" name="insert" class="updateButton">Submit Blog</button>
                     </fieldset>
                 </form>
             </div>
         </main>
+        <script src="public/js/newBlog.js"></script>
         END;
         
         return $html;
@@ -92,7 +110,7 @@ class BlogView{
         $blogItem = "";
         $standardUserControls = "";
         $imgTag = "";
-        $imageDirectory = "../public/img/uploads/medium/";
+        $imageDirectory = "public/img/uploads/medium/";
 
         if($isAuthed){
             $standardUserControls = <<<END
@@ -122,7 +140,7 @@ class BlogView{
                 if($userName == null){
                     $userName = DBManager::getUserData($userID, UserField::UserName);
                 }
-                $fileName = $blogModel->getFileName();
+                $fileName = $blogModel->getFileName(Size::MEDIUM);
                 if($fileName){
                     $imagePath = $imageDirectory . $fileName;
                     $imgTag = <<<END
@@ -132,8 +150,9 @@ class BlogView{
 
                 $blogItem .= <<<END
                 <div class="blog-item">
+                    {$imgTag}
                     <h2>
-                        <a href="blog.php?blog={$blogID}">{$imgTag}{$title}</a>
+                        <a href="blog.php?blog={$blogID}">{$title}</a>
                     </h2>
                     <p class="date">{$date}</p>
                     <p>$userName</p>
@@ -161,7 +180,6 @@ class BlogView{
                 </div>
             </div>
         </main>
-        <script src="public/js/sortBlog.js"></script>
         END;
 
         return $html;

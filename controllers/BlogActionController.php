@@ -38,7 +38,6 @@ class BlogActionController{
      * @param int $blogID A blogs unique identifier.
      */
     public static function handleSingleBlogRequest(){
-        $imageDirectory = "../public/img/uploads";
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
@@ -100,6 +99,7 @@ class BlogActionController{
     }
 
     public static function handleNewBlogRequest(){
+        $errorCode = 0;
         if(isset($_POST['insert'])){
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
@@ -109,17 +109,23 @@ class BlogActionController{
                 DBManager::insertNewBlog($blogModel);
                 $blogID = DBManager::getLastInsertId("blog");
                 if($blogID){
-                    if(UploadImage::executeResize($blogID)){
-                        $fileModel = new FileModel(NULL, $_SESSION['uploadedFileName'], $blogID);
+                    $errorCode = UploadImage::executeResize($blogID);
+                    if($errorCode == 0){
+                        $fileModel = new FileModel(NULL, $_SESSION['img_org'], $_SESSION['img_med'], $_SESSION['img_thumb'], $blogID);
                         $fileModel->saveFiles();
                     }
+                    else{
+                        self::displayNewBlog($errorCode);
+                    }
                 }
-                header("Location: blog.php?blog={$blogID}");
-                exit;
+                if($errorCode == 0){
+                    header("Location: blog.php?blog={$blogID}");
+                    exit;
+                }
             }
         }
         else{
-            self::displayNewBlog();
+            self::displayNewBlog($errorCode);
         }
     }
 
@@ -135,9 +141,9 @@ class BlogActionController{
         echo CommonView::drawFooter() . "\n";
     }
 
-    private static function displayNewBlog(){
+    private static function displayNewBlog($errorFlag){
         echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawNewBlog() . "\n";
+        echo BlogView::drawNewBlog($errorFlag) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 }

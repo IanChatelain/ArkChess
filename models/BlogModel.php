@@ -17,7 +17,9 @@ class BlogModel{
     private FileModel $fileModel;
     private $gameID;
     private $userName;
-    private $fileName;
+    private $fileNameOrg;
+    private $fileNameMed;
+    private $fileNameThumb;
 
     public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments = NULL){
         $this->blogID = $blogID;
@@ -55,15 +57,14 @@ class BlogModel{
                 $this->userName = $data['user_name'];
             }
             $this->fileModel = DBManager::getUploadedFile($data['blog_id']);
-            $this->fileName = $this->fileModel->getFileName();
         }
         else{
             $this->blogID = -1;
         }
     }
 
-    public function getFileName(){
-        return $this->fileName;
+    public function getFileName(Size $size){
+        return $this->fileModel->getFileName($size);
     }
 
     /**
