@@ -5,9 +5,9 @@ require_once('models/UserModel.php');
 require_once('services/Email.php');
 
 /**
- * AuthController controls user authentication.
+ * Authentication controls user authentication.
  */
-class AuthController{
+class Authentication{
     public static function generateSecureToken(){
         $token = openssl_random_pseudo_bytes(16, $crypto_strong);
 
@@ -27,10 +27,7 @@ class AuthController{
         }
     }
 
-    public static function loginUser(){
-        $userName = $_POST['username'];
-        $password = $_POST['password'];
-
+    public static function loginUser($userName, $password){
         // Returns user id or false if user not verified.
         $userId = DBManager::verifyUserLogin($userName, $password);
         $userRole = DBManager::getUserData($userId, UserField::Role);
@@ -44,10 +41,14 @@ class AuthController{
         }
     }
 
+    public static function isAuthorized(){
+        return isset($_SESSION['ROLE_ID']) && $_SESSION['ROLE_ID'] < 4;
+    }
+
     public static function setUserSession($userId, $userName, $role){
         $_SESSION['USER_ID'] = $userId;
         $_SESSION['USER_NAME'] = $userName;
-        $_SESSION['USER_ROLE'] = $role;
+        $_SESSION['ROLE_ID'] = $role;
     }
 
     public static function addUser(){
@@ -59,7 +60,7 @@ class AuthController{
 
         if(!DBManager::doesUserExist($userName)){
 
-            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email);
 
             if($userId){
                 return true;
@@ -72,16 +73,16 @@ class AuthController{
         $password = $_POST['password'];
         $email = $_POST['email'];
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $token = self::generateSecureToken();
+        // $token = self::generateSecureToken(); // Not implemented yet.
 
         if(!DBManager::doesUserExist($userName)){
 
-            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email, $token);
+            $userId = DBManager::insertNewUser($userName, $hashedPassword, $email);
 
             if($userId){
                 //Email::validationEmail($email, $token);
 
-                self::loginUser();
+                self::loginUser($userName, $password);
             }
         }
     }

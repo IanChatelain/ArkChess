@@ -33,8 +33,11 @@ class CommonView{
                 <link rel="stylesheet" type="text/css" href="public/css/learn.css">
                 <link rel="stylesheet" type="text/css" href="public/css/login.css">
                 <link rel="stylesheet" type="text/css" href="public/css/admin.css">
+                <link rel="stylesheet" type="text/css" href="public/css/blog.css">
                 <link rel="stylesheet" type="text/css" href="public/css/adminModal.css">
                 <link rel="stylesheet" type="text/css" href="public/css/chessboard-1.0.0.css">
+                <script src="vendor/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+                <script>tinymce.init({selector: '#postContent', statusbar: false, menubar: false});</script>
                 <title>ArkChess - {$title}</title>
             </head>
             <body>
@@ -54,7 +57,7 @@ class CommonView{
                             </ul>
                         </nav>
                     </header>
-END;
+            END;
 
         return $header;
     }
@@ -71,7 +74,7 @@ END;
         $footer = <<<END
                         <footer>
                             <nav aria-label="Bottom navigation">
-                                <ul id="class="footer-links"">
+                                <ul id="class="footer-links">
                                     <li><a href="play.php">Play</a></li>
                                     <li><a href="blog.php">Blogs</a></li>
                                     <li><a href="learn.php">Learn</a></li>
@@ -81,14 +84,12 @@ END;
                             </nav>
                         </footer>
                     </div>
-                    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-                        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="crossorigin="anonymous">
-                    </script>
+                    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
                     <script src="public/js/chessboard-1.0.0.js"></script>
                     <script src="public/js/banner.js"></script>
                 </body>
             </html>
-END;
+            END;
 
         return $footer;
     }

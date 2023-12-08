@@ -32,7 +32,7 @@ class UserModel{
     public function getUserID(){
         return $this->userID;
     }
-    
+
     /**
      * Gets the user name.
      * 

@@ -1,0 +1,81 @@
+/* Individual Opening Tiles */
+.blog-item {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    color: #ccc;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.blog-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.blog-item-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.blogSearch{
+    width: 200px;
+    height: 30px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.blogSearchContainer{
+    border-bottom: 1px solid #3a3a3c;
+    display: flex;
+    justify-content: space-between;
+}
+
+.blogPageContainer {
+    padding: 20px;
+    border-radius: 8px; /* Maintain the border radius */
+    background: #1C1C1E; /* Darker background for containers */
+    border: 1px solid rgb(59, 59, 59);
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between user details */
+    row-gap: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    width: 96%;
+}
+
+.blogs {
+    box-shadow: inset 0px 0px 5px #888888;
+    outline: 1px solid #c9c9c9;
+    border: 1px solid black;
+    background-color: rgba(19, 19, 19, 0);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#blogs h2 {
+    line-height: 0;
+}
+
+.blogContent {
+    font-size: 15px;
+}
+
+.commentTextArea{
+    margin-top: 20px;
+    width: 50%;
+    height: 50%;
+}
+
+.editImageDelete{
+    
+}
+
+.newBlogButtons{
+
+}

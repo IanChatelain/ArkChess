@@ -23,7 +23,7 @@ class LoginView{
                 <div class="error" id="usernameError">Username is required</div>
 
 END;
-
+        // TODO: Rework this like new blog.
         if ($errorMessage !== '' && $errorMessage !== null) {
             $content .= '<div class="error" id="loginError">' . htmlspecialchars($errorMessage) . '</div>';
         }

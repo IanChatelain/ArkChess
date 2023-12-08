@@ -1,116 +1,44 @@
 <?php
 
+ini_set('display_errors', 1);
+
+session_start();
+
 require_once('controllers/PageController.php');
-require_once('controllers/AuthController.php');
+require_once('services/Authentication.php');
+require_once('controllers/BlogActionController.php');
 require_once('models/UserModel.php');
 require_once('services/DBManager.php');
 require_once('services/Utility.php');
 require_once('services/UserField.php');
+require_once('models/CommentModel.php');
 
 /**
  * Router sanitizes input and decides which page to display.
  */
 class Router{
-
+    // private fields like:
+    // $page; (blog, login, play, learn)
+    // $parameter; (sub page get request values like edit, new post)
+    // $action; (get, post)
+    // 
+    // child parse classes will handle which controller to send the requests to 
+    // or methods 
     /**
      * Determines which page to display depending on sanitized server variables.
      */
     public static function blogRoute(){
-        // If GET is post, display the post page otherwise display index.
-        if(isset($_GET['post'])){
-            $blogID = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
-
-            if($blogID){
-                PageController::drawSinglePost($blogID, 0);
-            }
-            else{
-                PageController::drawBlogIndex();
-            }
+        if(isset($_GET['blog'])){
+            BlogActionController::handleSingleBlogRequest();
         }
-        // If GET is edit, display the edit page otherwise display index.
         elseif(isset($_GET['edit'])){
-            $blogID = filter_input(INPUT_GET, 'edit', FILTER_SANITIZE_NUMBER_INT);
-
-            if($blogID){
-                if(!empty($_SESSION['USER_ROLE'])){
-                    if($_SESSION['USER_ROLE'] == 1){
-                        // If POST is update and if POST is not empty string then display edit page,
-                        // otherwise display error.
-                        if(isset($_POST['update'])){
-                            $errorFlag = false;
-                            $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                            $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                            $blogID = filter_input(INPUT_POST, 'blogID', FILTER_SANITIZE_NUMBER_INT);
-                            $blogModel = new BlogModel($blogID, $title, $content);
-    
-                            if(strlen(trim($title)) > 0 && strlen(trim($content) > 0)){
-                                DBManager::updateEdit($blogModel);
-                                header("Location: blog.php?post={$blogID}");
-                                exit;
-                            }
-                            else{
-                                $errorFlag = true;
-                                PageController::drawEdit($blogID, $errorFlag, $blogModel);
-                            }
-                        }
-                        // If POST is delete, delete the post and display index.
-                        elseif(isset($_POST['delete'])){
-                            DBManager::deleteBlog($blogID);
-                            header("Location: blog.php");
-                            exit;
-                        }
-                        else{
-                            PageController::drawEdit($blogID);
-                        }
-                    }
-                    else{
-                        PageController::drawRestricted();
-                    }
-                }
-                else{
-                    PageController::drawRestricted();
-                }
-            }
-            else{
-                PageController::drawBlogIndex();
-            }
+            BlogActionController::handleEditBlogRequest();
         }
-        // If GET is newpost, display the new post page otherwise display index.
         elseif(isset($_GET['newpost'])){
-            if(!empty($_SESSION['USER_ROLE'])){
-                if($_SESSION['USER_ROLE'] == 1){
-                // If POST is insert and if POST is not empty string then display new post page,
-                // otherwise display error.
-                    if(isset($_POST['insert'])){
-                        $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $content = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                        $blogModel = new BlogModel(NULL, $title, $content);
-                        
-                        if(strlen(trim($title)) > 0 && strlen(trim(trim($content)) > 0)){
-                            DBManager::insertNewBlog($blogModel);
-                            header("Location: blog.php");
-                            exit;
-                        }
-                        else
-                        {
-                            $errorFlag = true;
-                            PageController::drawNewPost($errorFlag, $blogModel);
-                        }
-                    }
-                    else{
-                        PageController::drawNewPost();
-                    }
-                }
-                else{
-                    PageController::drawRestricted();
-                }
-            }
-            else{
-                PageController::drawRestricted();
-            }
+            BlogActionController::handleNewBlogRequest();
         }
         else{
-            PageController::drawBlogIndex();
+            BlogActionController::handleBlogSearchRequest();
         }
     }
 
@@ -122,9 +50,10 @@ class Router{
         PageController::drawLearn();
     }
 
+    // Workingon this before quitting
     public static function loginRoute(){
         if (isset($_POST['login'])) {
-            if (AuthController::loginUser()) {
+            if (Authentication::loginUser($_POST['username'], $_POST['password'])) {
                 header('Location: profile.php');
                 exit();
             } else {
@@ -143,13 +72,13 @@ class Router{
     public static function profileRoute(){
         // Check for logout first.
         if(isset($_POST['logout']) || isset($_POST['logout.php'])){
-            AuthController::logoutUser();
+            Authentication::logoutUser();
             header('Location: login.php');
             exit();
         }
 
         // Then check if user is logged in.
-        if(AuthController::isLoggedIn()){
+        if(Authentication::isLoggedIn()){
             PageController::drawProfile();
         }
         else{
@@ -160,7 +89,7 @@ class Router{
     
     public static function registerRoute(){
         if(isset($_POST['submit'])){
-            AuthController::registerUser();
+            Authentication::registerUser();
             header('Location: profile.php');
             exit();
         }
@@ -168,21 +97,21 @@ class Router{
     }
 
     public static function logoutRoute(){
-        AuthController::logoutUser();
+        Authentication::logoutUser();
         header('Location: login.php');
         exit();
     }
 
     public static function adminRoute(){
-        if(isset($_SESSION['USER_ROLE']))
+        if(isset($_SESSION['ROLE_ID']))
         {
-            if($_SESSION['USER_ROLE'] == 1){
+            if($_SESSION['ROLE_ID'] == 1){
                 if (isset($_POST['deleteUser']) && isset($_POST['userId'])) {
                     $userId = $_POST['userId'];
                     DBManager::deleteUser($userId);
                 }
                 if(isset($_POST['addUser'])){
-                    AuthController::addUser();
+                    Authentication::addUser();
                     header('Location: admin.php');
                     exit();
                 }
@@ -199,11 +128,13 @@ class Router{
                 PageController::drawAdmin();
             }
             else{
-                PageController::drawRestricted();
+                header('Location: restricted.php');
+                exit();
             }
         }
         else{
-            PageController::drawRestricted();
+            header('Location: restricted.php');
+            exit();
         }
     }
     
@@ -221,6 +152,10 @@ class Router{
                 }
             }
         }
+    }
+
+    public static function restrictedRoute(){
+        PageController::drawRestricted();
     }
 }
 

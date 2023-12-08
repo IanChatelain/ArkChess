@@ -1,13 +1,7 @@
 <?php
 
-// Might not need this.
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 require_once('services/DBManager.php');
-require_once('controllers/AuthController.php');
-require_once('views/BlogView.php');
+require_once('services/Authentication.php');
 require_once('views/CommonView.php');
 require_once('views/ContactView.php');
 require_once('views/LearnView.php');
@@ -23,66 +17,7 @@ require_once('views/AdminView.php');
  * PageController controls data flow.
  */
 class PageController{
-    /**
-     * Draws index page views using data from the database.
-     */
-    public static function drawBlogIndex(){
-        self::isReadOnlyUser();
-        $blogModels = DBManager::getMultiBlog();
-
-        echo CommonView::drawHeader('Blogs') . "\n";
-        echo BlogView::drawBlogIndex($blogModels) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
-
-    /**
-     * Draws edit page views using data from the database.
-     * 
-     * @param int $blogID A blogs unique identifier.
-     * @param bool $errorFlag Whether an error was passed. Default 'false'.
-     * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
-     */
-    public static function drawEdit($blogID, $errorFlag = false, $blogModel = new BlogModel()){
-        self::isReadOnlyUser();
-        $blogModelDB = DBManager::getSingleBlog($blogID);
-        if(!$errorFlag){
-            $blogModel = $blogModelDB;
-        }
-        echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-        echo BlogView::drawEdit($errorFlag, $blogModel) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
-
-    /**
-     * Draws single post views using data from the database.
-     * 
-     * @param int $blogID A blogs unique identifier.
-     */
-    public static function drawSinglePost($blogID){
-        self::isReadOnlyUser();
-        $blogModel = DBManager::getSingleBlog($blogID);
-        if($blogModel->getBlogID() == -1){
-            self::drawNotFound();
-        }
-        else{
-            echo CommonView::drawHeader($blogModel->getTitle()) . "\n";
-            echo BlogView::drawPost($blogModel, NULL) . "\n";
-            echo CommonView::drawFooter() . "\n";
-        }
-    }
-
-    /**
-     * Draws new post page views using data from the database.
-     * 
-     * @param bool $errorFlag Whether an error was passed. Default 'false'.
-     * @param BlogModel $blogModel A blog. Default 'new BlogModel()'.
-     */
-    public static function drawNewPost($errorFlag = false, $blogModel = new BlogModel()){
-        self::isReadOnlyUser();
-        echo CommonView::drawHeader('New Post') . "\n";
-        echo BlogView::drawNewPost($errorFlag, $blogModel) . "\n";
-        echo CommonView::drawFooter() . "\n";
-    }
+    // TODO: Rename all draws to different names than page controller draw functions.
 
     /**
      * Draws opening database search page views using data from lichess API.
@@ -181,7 +116,7 @@ class PageController{
     }
     
     public static function changeBannerLink(){
-        $userId = AuthController::isLoggedIn();
+        $userId = Authentication::isLoggedIn();
         $linkText = 'Sign In';
         $link = 'login';
 
@@ -196,7 +131,7 @@ class PageController{
 
     public static function isReadOnlyUser(){
         if(!isset($_SESSION['USER_ID'])){
-            $_SESSION['USER_ROLE'] = 4;
+            $_SESSION['ROLE_ID'] = 4;
         }
     }
 }

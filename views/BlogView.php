@@ -15,32 +15,50 @@ class BlogView{
      * 
      * @return string $newPostMain A string containing the blog page HTML.
      */
-    public static function drawNewPost($errorFlag, $blogModel){
-        $errorTag = '';
-        $title = $blogModel->getTitle();
-        $content = $blogModel->getContent();
-        if($errorFlag){
-            $errorTag = '<p>Each field must contain at least 1 letter</p>';
+    public static function drawNewBlog($errorCode = NULL){
+        $errorMessage = '';
+
+        switch($errorCode){
+            case -100:
+                $errorMessage = <<<END
+                <div class="error" id="uploadError">Upload failed, try again.</div>
+                END;
+                break;
+            case -200:
+                $errorMessage = <<<END
+                <div class="error" id="fileError">Invalid file type, select an image.</div>
+                END;
+                break;
         }
-        $newPostMain = <<<END
-            <div>
-                <h1>New Blog</h1>
-                <form method="post">
+        
+        $html = <<<END
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                <form id="newBlog" method="post" enctype="multipart/form-data">
                     <fieldset id="blogs">
                         <label for="postTitle">Title</label>
-                        <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
-    
+                        <input class="forms" type="text" id="postTitle" name="postTitle" placeholder="Title">
+                        <div class="error" id="titleError">Title is required</div>
+
                         <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10">{$content}</textarea>
-    
-                        $errorTag
+                        <textarea class="forms" name="postContent" id="postContent"></textarea>
+                        <div class="error" id="contentError">Content is required</div>
+
+                        <div class="newBlogButtons">
+                            <label for="file" class="file-label">Upload Image</label>
+                            <input type="file" name="file" id="file">
+                            $errorMessage
+                        </div>
                         <button type="submit" name="insert" class="updateButton">Submit Blog</button>
                     </fieldset>
                 </form>
             </div>
-END;
+        </main>
+        <script src="public/js/newBlog.js"></script>
+        END;
         
-        return $newPostMain;
+        return $html;
     }
 
 
@@ -52,35 +70,47 @@ END;
      * 
      * @return string $editMain A string containing the edit page HTML.
      */
-    public static function drawEdit($errorFlag, $blogModel){
-        $errorTag = '';
+    public static function drawEdit($blogModel, $deleteOption){
         $blogID = $blogModel->getBlogID();
-        $title = $blogModel->getTitle();
-        $content = $blogModel->getContent();
-        if($errorFlag){
-            $errorTag = '<p>Each field must contain at least 1 letter.</p>';
-        }
-        $editMain = <<<END
-            <div>
-                <h1>Edit Blog</h1>
-                <form method="post">
-                    <fieldset id="blogs">
-                        <label for="postTitle">Title</label>
-                        <input type="hidden" name="blogID" value="{$blogID}">
-                        <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
-    
-                        <label for="postContent">Content</label>
-                        <textarea class="forms" name="postContent" id="postContent" cols="30" rows="10">{$content}</textarea>
-    
-                        $errorTag
-                        <button type="submit" name="update" class="updateButton">Update</button>
-                        <button type="submit" name="delete" class="deleteButton">Delete</button>
-                    </fieldset>
-                </form>
-            </div>
-END;
+        $title = htmlspecialchars($blogModel->getTitle());
+        $content = htmlspecialchars($blogModel->getContent());
+        $deleteBlock = '';
         
-        return $editMain;
+        if($deleteOption){
+            $deleteBlock = <<<END
+            <div class="editImageDelete">
+                <label for="deleteImage">Delete Image</label>
+                <input type="checkbox" id="deleteImage" name="deleteImage" value="delete">
+            </div>
+            END;
+        }
+
+        $html = <<<END
+            <main class="form-container profile">
+                <h2 class="formTitle">Community Blogs</h2>
+                <div class="blogPageContainer">
+                    <form id="newBlog" method="post">
+                        <fieldset id="blogs">
+                            <label for="postTitle">Title</label>
+                            <input type="hidden" name="blogID" value="{$blogID}">
+                            <input class="forms" type="text" id="postTitle" name="postTitle" value="{$title}">
+                            <div class="error" id="titleError">Title is required</div>
+        
+                            <label for="postContent">Content</label>
+                            <textarea class="forms" name="postContent" id="postContent">{$content}</textarea>
+                            <div class="error" id="contentError">Content is required</div>
+
+                            $deleteBlock
+                            <button type="submit" name="update" class="updateButton">Update</button>
+                            <button type="submit" name="delete" class="deleteButton">Delete</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </main>
+            <script src="public/js/newBlog.js"></script>
+            END;
+        
+        return $html;
     }
 
     /**
@@ -90,20 +120,84 @@ END;
      * 
      * @return string $content A string containing the blog page HTML.
      */
-    public static function drawBlogIndex($blogModels){
-        $content = '<main class="content"><div><h1>Recent Blogs<a id="newPost" href="blog.php?newpost">New Post</a></h1>';
+    public static function drawBlogSearch($blogModels, $isAuthed){
+        $blogItem = "";
+        $standardUserControls = "";
+        $imgTag = "";
+        $imageDirectory = "public/img/uploads/medium/";
 
-        foreach($blogModels as $blogModel){
-            $content = $content . self::drawPost($blogModel, 200);
+        if($isAuthed){
+            $standardUserControls = <<<END
+                <form type="hidden" method="POST" action="blog.php?newpost">
+                    <input type="submit" name="newPostButton" class="newPostButton" value="New Post">
+                </form>
+                <form type="hidden" method="POST">
+                    <select name="sortByDropDown" id="sortByDropDown">
+                        <option value="default">Sort By</option>
+                        <option value="title">Title</option>
+                        <option value="date_time">Date</option>
+                        <option value="user_name">User</option>
+                    </select>
+
+                    <input type="submit" class="submit" name="submit" value="Sort">
+                </form>
+                END;
         }
 
-        if(empty($blogModels)){
-            $content = $content . '<article class="blogs">No Blogs Exist.</article>';
+        if($blogModels){
+            foreach($blogModels as $blogModel){
+                $blogID = $blogModel->getBlogID();
+                $title = $blogModel->getTitle();
+                $date = $blogModel->getDate();
+                $userID = $blogModel->getUserID();
+                $userName = $blogModel->getUserName();
+                if($userName == null){
+                    $userName = DBManager::getUserData($userID, UserField::UserName);
+                }
+                $fileName = $blogModel->getFileName(Size::MEDIUM);
+                $imgTag = '';
+                if($fileName){
+                    $imagePath = $imageDirectory . $fileName;
+                    $imgTag = <<<END
+                        <img src="{$imagePath}"></img>
+                        END;
+                }
+
+                $blogItem .= <<<END
+                <div class="blog-item">
+                    {$imgTag}
+                    <h2>
+                        <a href="blog.php?blog={$blogID}">{$title}</a>
+                    </h2>
+                    <p class="date">{$date}</p>
+                    <p>$userName</p>
+                </div>
+                END;
+                $blogItem .= "\n";
+            }
+        }
+        else{
+            $blogItem = "No blogs found.";
         }
 
-        $content = $content . '</div></main>';
 
-        return $content;
+        $html = <<<END
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                <div class="blogSearchContainer">
+                    $standardUserControls
+                    <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
+                    <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
+                </div>
+                <div class="blog-item-container">
+                $blogItem
+                </div>
+            </div>
+        </main>
+        END;
+
+        return $html;
     }
 
     /**
@@ -114,29 +208,61 @@ END;
      * 
      * @return string $postMain A string containing the blog post page HTML.
      */
-    public static function drawPost($blogModel, $limit = NULL){
+    public static function drawSingleBlog($blogModel, $isAuthed){
         $blogID = $blogModel->getBlogID();
         $title = $blogModel->getTitle();
         $date = $blogModel->getDate();
         $content = $blogModel->getContent();
-        $blogLink = '';
+        $standardUserControls = "";
+        $imgTag = "";
+        $imageDirectory = "public/img/uploads/medium/";
 
-        if($limit && strlen($content) > $limit){
-            $content = substr($content, 0, $limit);
-            $blogLink = 'Read Full Post...';
+        $fileName = $blogModel->getFileName(Size::MEDIUM);
+        if($fileName){
+            $imagePath = $imageDirectory . $fileName;
+            $imgTag = <<<END
+                <img src="{$imagePath}"></img>
+                END;
         }
 
-        $postMain = <<<END
-            <article class="blogs">  
-                <h2>
-                    <a href="blog.php?post={$blogID}">{$title}</a>
-                    <a id="editLink" href="blog.php?edit={$blogID}">Edit</a>
-                </h2>
-                <p class="date">{$date}</p>
-                <p class="blogContent">{$content}<a class="blogLink" href="blog.php?post={$blogID}">{$blogLink}</a></p>
-            </article>
-END;
+        if($isAuthed){
+            $standardUserControls = <<<END
+            <div>
+                <form method="POST" action="blog.php?edit={$blogID}">
+                    <input type="submit" class="editButton" name="editButton" value="Edit">
+                </form>
+                <input type="submit" class="commentButton" name="commentButton" onClick="comment.js" value="Comment">
+            </div>
+            END;
+        }
 
-        return $postMain;
+        $commentBlock = <<<END
+        <div class="blog-item">
+            <p class="date">{$date}</p>
+            <p class="blogContent">{$content}</p>
+        </div>
+        END;
+
+        $html = <<<END
+        <main class="form-container profile">
+            <h2 class="formTitle">Community Blogs</h2>
+            <div class="blogPageContainer">
+                $imgTag
+                <h2 class="recent-games-title">
+                    <a href="blog.php?blog={$blogID}">{$title}</a>
+                </h2>
+                <div>
+                    <div class="blog-item">
+                        <p class="date">{$date}</p>
+                        <p class="blogContent">{$content}</p>
+                    </div>
+                </div>
+                $standardUserControls
+            </div>
+        </main>
+        <script src="public/js/comment.js"></script>
+        END;
+
+        return $html;
     }
 }
