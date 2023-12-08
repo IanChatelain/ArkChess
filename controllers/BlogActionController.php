@@ -64,7 +64,7 @@ class BlogActionController{
 
         if($imageName != NULL){
             $deleteOption = true;
-            $filePath = "/public/img/uploads/medium/" . $imageName;
+            $filePathMedium = "public/img/uploads/medium/" . $imageName;
         }
 
         if(!Authentication::isAuthorized()){
@@ -84,14 +84,11 @@ class BlogActionController{
             $title  = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
-            // if file was deleted, call getUploadedFile(blogID)
-            // and unlink(filename)
-
             if(!empty($title) && !empty($content)){
                 if (isset($_POST['deleteImage']) && $_POST['deleteImage'] == 'delete') {
                     DBManager::deleteImage($blogID);
 
-                    unlink($filePath);
+                    unlink($filePathMedium);
                 }
 
                 $blogModel = new BlogModel($blogID, $title, $content);
