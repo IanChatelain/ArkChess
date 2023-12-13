@@ -41,13 +41,23 @@ class BlogActionController{
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
+        $comments = [];
 
         if($singleBlog->getBlogID() == -1){
             header('Location: blog.php');
             exit;
         }
         else{
-            self::displaySingleBlog($singleBlog);
+            if(isset($_POST['commentSubmitButton'])){
+                $commentText  = filter_input(INPUT_POST, 'commentTextArea', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                if(!empty($commentText) && isset($_SESSION['USER_ID'])){
+                    DBManager::insertBlogComment(new CommentModel($commentText, $_SESSION['USER_ID'], $blogID));
+                }
+            }
+            else{
+                $commentModel = DBManager::getBlogComments($blogID);
+                self::displaySingleBlog($singleBlog, $commentModel);
+            }
         }
     }
 
@@ -150,9 +160,9 @@ class BlogActionController{
         }
     }
 
-    public static function displaySingleBlog($singleBlog){
+    public static function displaySingleBlog($singleBlog, $commentModel){
         echo CommonView::drawHeader($singleBlog->getTitle()) . "\n";
-        echo BlogView::drawSingleBlog($singleBlog, Authentication::isAuthorized()) . "\n";
+        echo BlogView::drawSingleBlog($singleBlog, Authentication::isAuthorized(), $commentModel) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 

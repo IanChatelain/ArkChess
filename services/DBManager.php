@@ -425,9 +425,9 @@ class DBManager{
         $query = "INSERT INTO comment (comment_text, user_id, blog_id) values (:comment_text, :user_id, :blog_id)";
         try{
             $statement = $db->prepare($query);
-            $statement->bindValue(':title', $blogModel->getTitle());
-            $statement->bindValue(':text_content', $blogModel->getContent());
-            $statement->bindValue(':user_id', $blogModel->getUserID());
+            $statement->bindValue(':comment_text', $commentText);
+            $statement->bindValue(':user_id', $commentUserID);
+            $statement->bindValue(':blog_id', $commentBlogID);
             $statement->execute();
         }
         catch(PDOException $e){
@@ -435,6 +435,29 @@ class DBManager{
         }
     }
 
+    public static function getBlogComments($blogID){
+        $comments = [];
+
+        $db = self::connect();
+    
+        if($blogID){
+            $query = "SELECT * FROM comment WHERE blog_id LIKE :blog_id";
+        }
+    
+        try{
+            $statement = $db->prepare($query);
+            if($userName){
+                $statement->bindParam(':blog_id', $blogID, PDO::PARAM_INT);
+            }
+            $statement->execute();
+            $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    
+        return $comments;
+    }
     /**
      * Connects and queries the database to delete a blog record.
      * 

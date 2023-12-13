@@ -208,7 +208,7 @@ class BlogView{
      * 
      * @return string $postMain A string containing the blog post page HTML.
      */
-    public static function drawSingleBlog($blogModel, $isAuthed){
+    public static function drawSingleBlog($blogModel, $isAuthed, $comments){
         $blogID = $blogModel->getBlogID();
         $title = $blogModel->getTitle();
         $date = $blogModel->getDate();
@@ -228,7 +228,7 @@ class BlogView{
         if($isAuthed){
             $standardUserControls = <<<END
             <div>
-                <form method="POST" action="blog.php?edit={$blogID}">
+                <form class="blogUserControls" method="POST" action="blog.php?edit={$blogID}">
                     <input type="submit" class="editButton" name="editButton" value="Edit">
                 </form>
                 <input type="submit" class="commentButton" name="commentButton" onClick="comment.js" value="Comment">
@@ -255,6 +255,9 @@ class BlogView{
                     <div class="blog-item">
                         <p class="date">{$date}</p>
                         <p class="blogContent">{$content}</p>
+                        <div class="commentContainer">
+                            {$comments}
+                        </div>
                     </div>
                 </div>
                 $standardUserControls

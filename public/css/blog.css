@@ -72,10 +72,7 @@
     height: 50%;
 }
 
-.editImageDelete{
-    
-}
-
-.newBlogButtons{
-
+form#commentForm{
+    display: flex;
+    flex-direction: column;
 }
