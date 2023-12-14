@@ -17,11 +17,15 @@ class BlogActionController{
      * Draws main blog page views using data from the database.
      */
     public static function handleBlogSearchRequest(){
+        $searchInput = filter_input(INPUT_POST, 'blogSearch', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $blogModel = new BlogModel();
 
         if(isset($_POST['sortByDropDown'])){
             $sortBy = $_POST['sortByDropDown'];
             $blogModelArray = $blogModel->getAllBlogs($sortBy);
+        }
+        elseif(isset($_POST['blogSearch'])){
+            $blogModelArray = $blogModel->getAllBlogs(NULL, $searchInput);
         }
         else{
             $blogModelArray = $blogModel->getAllBlogs();
@@ -41,7 +45,6 @@ class BlogActionController{
         $blogID = filter_input(INPUT_GET, 'blog', FILTER_SANITIZE_NUMBER_INT);
         $singleBlog = new BlogModel();
         $singleBlog->setBlogData($blogID);
-        $comments = [];
 
         if($singleBlog->getBlogID() == -1){
             header('Location: blog.php');
@@ -52,13 +55,26 @@ class BlogActionController{
                 $commentText  = filter_input(INPUT_POST, 'commentTextArea', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 if(!empty($commentText) && isset($_SESSION['USER_ID'])){
                     DBManager::insertBlogComment(new CommentModel($commentText, $_SESSION['USER_ID'], $blogID));
+                    header("Location: blog.php?blog={$blogID}");
+                    exit;
                 }
-            }
-            else{
-                $commentModel = DBManager::getBlogComments($blogID);
-                self::displaySingleBlog($singleBlog, $commentModel);
+
+                // ------ USE FOR CAPTCHA ---- 
+                //$userCaptcha  = filter_input(INPUT_POST, 'captchaAnswer', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                // if (isset($_SESSION['captcha']) && strtoupper($userCaptcha) === strtoupper($_SESSION['captcha'])) {
+                //     $commentText  = filter_input(INPUT_POST, 'commentTextArea', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                //     if(!empty($commentText) && isset($_SESSION['USER_ID'])){
+                //         DBManager::insertBlogComment(new CommentModel($commentText, $_SESSION['USER_ID'], $blogID));
+                //         header("Location: blog.php?blog={$blogID}");
+                //         exit;
+                //     }
+                // } else {
+                //     header("Location: blog.php?blog={$blogID}");
+                //     exit;
+                // }
             }
         }
+        self::displaySingleBlog($singleBlog);
     }
 
      /**
@@ -112,6 +128,7 @@ class BlogActionController{
         elseif(isset($_POST['delete'])){
             // Delete the blog and redirect
             DBManager::deleteImage($blogID);
+            DBManager::deleteComment($blogID);
             DBManager::deleteBlog($blogID);
             unlink($filePath);
             header('Location: blog.php');
@@ -160,9 +177,9 @@ class BlogActionController{
         }
     }
 
-    public static function displaySingleBlog($singleBlog, $commentModel){
+    public static function displaySingleBlog($singleBlog){
         echo CommonView::drawHeader($singleBlog->getTitle()) . "\n";
-        echo BlogView::drawSingleBlog($singleBlog, Authentication::isAuthorized(), $commentModel) . "\n";
+        echo BlogView::drawSingleBlog($singleBlog, Authentication::isAuthorized()) . "\n";
         echo CommonView::drawFooter() . "\n";
     }
 

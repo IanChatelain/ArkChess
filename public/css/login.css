@@ -64,7 +64,7 @@ input.searchBtn, input.userActionSubmit, input.editUserSubmit,
 input.adminBtn, input.deleteUser, input.editUser, input.addUser,
 input.blogSearchButton, input.newPostButton, input.commentButton,
 input.editButton, input.commentSubmitButton, input.commentCancelButton,
-button.updateButton, button.deleteButton{
+button.updateButton, button.deleteButton, button.captchaRefreshButton{
     background: linear-gradient(to bottom, #3636ae, #1a1a66);
     border: none;
     color: white;
@@ -108,7 +108,8 @@ input.logout:hover, input.searchBtn:hover, input.userActionSubmit:hover,
 input.editUserSubmit:hover, input.deleteUser:hover, input.editUser:hover, 
 input.addUser:hover, input.blogSearchButton:hover, input.newPostButton:hover,
 input.commentButton:hover, input.editButton:hover, input.commentSubmitButton:hover,
-input.commentCancelButton:hover, button.updateButton:hover, button.deleteButton:hover{
+input.commentCancelButton:hover, button.updateButton:hover, button.deleteButton:hover,
+button.captchaRefreshButton:hover{
     background: linear-gradient(to bottom, #4d4dbf, #2a2a88);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }

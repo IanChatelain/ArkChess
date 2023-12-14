@@ -273,7 +273,7 @@ class DBManager{
      * 
      * @return BlogModel[] $blogs An array of blogs.
      */
-    public static function getMultiBlog($sortBy){
+    public static function getMultiBlog($sortBy, $searchInput = NULL){
         $sortDirection = "DESC";
 
         if($sortBy != "date_time"){
@@ -281,6 +281,10 @@ class DBManager{
         }
 
         $query = "SELECT * FROM blog ORDER BY $sortBy $sortDirection";
+
+        if($searchInput){
+            $query = "SELECT * FROM blog WHERE text_content LIKE CONCAT('%', '$searchInput', '%') ORDER BY $sortBy $sortDirection";
+        }
 
         if($sortBy == "user_name"){
             // TODO: Add binding.
@@ -435,20 +439,18 @@ class DBManager{
         }
     }
 
-    public static function getBlogComments($blogID){
+    public static function getBlogComment($blogID){
         $comments = [];
 
         $db = self::connect();
     
         if($blogID){
-            $query = "SELECT * FROM comment WHERE blog_id LIKE :blog_id";
+            $query = "SELECT co.blog_id, co.user_id, co.comment_id, co.comment_text, co.date_time, us.user_name FROM comment co JOIN chess_user us ON us.user_id = co.user_id WHERE blog_id LIKE :blog_id;";
         }
     
         try{
             $statement = $db->prepare($query);
-            if($userName){
-                $statement->bindParam(':blog_id', $blogID, PDO::PARAM_INT);
-            }
+            $statement->bindParam(':blog_id', $blogID, PDO::PARAM_INT);
             $statement->execute();
             $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -458,6 +460,22 @@ class DBManager{
     
         return $comments;
     }
+
+    public static function deleteComment($blogID){
+        $db = self::connect();
+
+        $query = "DELETE FROM comment WHERE blog_id = :blog_id";
+        try{
+            $statement = $db->prepare($query);
+            $statement->bindValue(':blog_id', $blogID, PDO::PARAM_INT);
+            $statement->execute();
+        }
+        catch(PDOException $e){
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+
+
     /**
      * Connects and queries the database to delete a blog record.
      * 

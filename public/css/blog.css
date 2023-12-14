@@ -9,7 +9,11 @@
     padding-right: 15px;
 }
 
-.blog-item:hover {
+.commentContainer{
+    width: 40%;
+}
+
+.blog-item:hover, .commentContainer:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -75,4 +79,8 @@
 form#commentForm{
     display: flex;
     flex-direction: column;
+}
+
+img#captchaImage, .captchaAnswer{
+    width: 25%;
 }
