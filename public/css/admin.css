@@ -1,34 +1,32 @@
-/* Table Layout & Alignment */
-table {
+table{
     width: 100%;
     border-collapse: collapse;
 }
 
-table, th, td {
+table, th, td{
     border: 1px solid #797979;
     text-align: center;
     padding: 8px;
 }
 
-tr:nth-child(even) {
+tr:nth-child(even){
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-tr:hover {
+tr:hover{
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-table th {
+table th{
     background-color: rgba(0, 0, 0, 0.4);
     color: #c9c9c9;
 }
 
-.adminUserDetails {
+.adminUserDetails{
     padding: 20px;
-    border-radius: 8px; /* Maintain the border radius */
-    background: #1C1C1E; /* Darker background for containers */
+    border-radius: 8px;
+    background: #1C1C1E;
     border: 1px solid rgb(59, 59, 59);
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); */
     width: 96%;
     color: #ffffff;
     padding-top: 10px;

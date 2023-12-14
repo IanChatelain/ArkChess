@@ -120,7 +120,7 @@ class PageController{
         $linkText = 'Sign In';
         $link = 'login';
 
-        if ($userId) {
+        if($userId){
             $userName = DBManager::getUserData($_SESSION['USER_ID'], UserField::UserName);
             $linkText = $userName;
             $link = 'profile';

@@ -25,33 +25,36 @@ function formHasErrors(){
         let field = document.getElementById(requiredFields[i]);
         let regex = regexKeys[i];
 
-        if (field.value == null || field.value.trim() === "") {
+        if (field.value == null || field.value.trim() === ""){
             document.getElementById(requiredFields[i] + "Error").style.display = "block";
             if (!errorFlag) {
                 field.focus();
             }
             errorFlag = true;
-        } else if (regex !== null && !regex.test(field.value)) {
+        } 
+        else if (regex !== null && !regex.test(field.value)){
             // Handle each field-specific requirement
-            if (field.id === "password") {
+            if (field.id === "password"){
                 ShowPasswordRequirements();
                 errorFlag = true;
-            } else if (field.id === "username") {
+            } 
+            else if (field.id === "username"){
                 showUsernameRequirements();
                 errorFlag = true;
-            } else if (field.id === "email") {
+            } 
+            else if (field.id === "email"){
                 showEmailRequirements();
                 errorFlag = true;
             }
         }
 
-        if (!errorFlag) {
+        if (!errorFlag){
             let password = document.getElementById("password").value;
             let confirmPassword = document.getElementById("confirmPassword").value;
-            if (password !== confirmPassword) {
+            if (password !== confirmPassword){
                 document.getElementById("confirmPasswordError").textContent = "* Passwords must match";
                 document.getElementById("confirmPasswordError").style.display = "block";
-                if (!errorFlag) {
+                if (!errorFlag){
                     document.getElementById("confirmPassword").focus();
                 }
                 errorFlag = true;
@@ -87,7 +90,7 @@ function ShowPasswordRequirements(){
     }
 }
 
-function showUsernameRequirements() {
+function showUsernameRequirements(){
     let username = document.getElementById("username");
     let marker = document.getElementById("usernameError");
     let usernameRegexKeys = [/^[a-zA-Z0-9]+$/,
@@ -95,7 +98,7 @@ function showUsernameRequirements() {
     let usernameReqPhrases = ["* Username can only contain letters, numbers",
                               "* Username must be 3 to 16 characters long"];
 
-    for (let u = 0; u < usernameRegexKeys.length; u++) {
+    for (let u = 0; u < usernameRegexKeys.length; u++){
         let usernameRegex = usernameRegexKeys[u];
         if (!usernameRegex.test(username.value)) {
             let usernamePhrase = document.createElement("p");
@@ -106,12 +109,12 @@ function showUsernameRequirements() {
     }
 }
 
-function showEmailRequirements() {
+function showEmailRequirements(){
     let email = document.getElementById("email").value;
     let marker = document.getElementById("emailError");
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email)){
         let emailError = document.createElement("p");
         emailError.innerHTML = "* Please enter a valid email address";
         emailError.setAttribute("class", "error");

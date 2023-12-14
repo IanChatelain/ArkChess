@@ -61,14 +61,15 @@ class BlogActionController{
 
                 // ------ USE FOR CAPTCHA ---- 
                 //$userCaptcha  = filter_input(INPUT_POST, 'captchaAnswer', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                // if (isset($_SESSION['captcha']) && strtoupper($userCaptcha) === strtoupper($_SESSION['captcha'])) {
+                // if(isset($_SESSION['captcha']) && strtoupper($userCaptcha) === strtoupper($_SESSION['captcha'])){
                 //     $commentText  = filter_input(INPUT_POST, 'commentTextArea', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 //     if(!empty($commentText) && isset($_SESSION['USER_ID'])){
                 //         DBManager::insertBlogComment(new CommentModel($commentText, $_SESSION['USER_ID'], $blogID));
                 //         header("Location: blog.php?blog={$blogID}");
                 //         exit;
                 //     }
-                // } else {
+                // } 
+                // else{
                 //     header("Location: blog.php?blog={$blogID}");
                 //     exit;
                 // }
@@ -111,7 +112,7 @@ class BlogActionController{
             $content = Sanitize::sanitizeHTML($_POST['postContent']);
 
             if(!empty($title) && !empty($content)){
-                if (isset($_POST['deleteImage']) && $_POST['deleteImage'] == 'delete') {
+                if(isset($_POST['deleteImage']) && $_POST['deleteImage'] == 'delete'){
                     DBManager::deleteImage($blogID);
 
                     unlink($filePathMedium);

@@ -255,7 +255,7 @@ class DBManager{
             $statement->bindParam(':user_name', $userName, PDO::PARAM_STR);
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($row && password_verify($password, $row['password'])) {
+            if ($row && password_verify($password, $row['password'])){
                 return $row['user_id'];
             }
         }

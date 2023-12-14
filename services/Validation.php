@@ -1,6 +1,6 @@
 <?php
 
-class ValidateField {
+class ValidateField{
     protected $sanitizedData;
     protected bool $isValid = false;
     protected string $fieldName;
@@ -26,7 +26,7 @@ class ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateQuantityField extends ValidateField {
+class ValidateQuantityField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = false;
@@ -50,7 +50,7 @@ class ValidateQuantityField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateEmptyField extends ValidateField {
+class ValidateEmptyField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -71,7 +71,7 @@ class ValidateEmptyField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateProvinceField extends ValidateField {
+class ValidateProvinceField extends ValidateField{
 
     // Valid province codes
     private array $provinceCodes = [
@@ -109,7 +109,7 @@ class ValidateProvinceField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidatePostalField extends ValidateField {
+class ValidatePostalField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -131,7 +131,7 @@ class ValidatePostalField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateEmailField extends ValidateField {
+class ValidateEmailField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -152,7 +152,7 @@ class ValidateEmailField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateCardTypeField extends ValidateField {
+class ValidateCardTypeField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -173,7 +173,7 @@ class ValidateCardTypeField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateMonthField extends ValidateField {
+class ValidateMonthField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -194,7 +194,7 @@ class ValidateMonthField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateYearField extends ValidateField {
+class ValidateYearField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;
@@ -215,7 +215,7 @@ class ValidateYearField extends ValidateField {
 /**
  * Class that validates the given HTML field.
  */
-class ValidateCardNumberField extends ValidateField {
+class ValidateCardNumberField extends ValidateField{
     public function __construct($fieldName){
         parent::__construct($fieldName);
         $this->required = true;

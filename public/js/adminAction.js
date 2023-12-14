@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     var deleteUserBtns = document.getElementsByClassName("deleteUser");
-    Array.from(deleteUserBtns).forEach(function(btn) {
+    Array.from(deleteUserBtns).forEach(function(btn){
         btn.addEventListener("click", function(event) {
             var userId = this.getAttribute("data-user-id");
             if (confirm('Are you sure you want to delete user ' + userId + '?')){
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     window.onclick = function(event){
-        if(event.target == addUserModal) {
+        if(event.target == addUserModal){
             addUserModal.style.display = "none";
         }
         else if(event.target == editUserModal){

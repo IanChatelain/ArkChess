@@ -1,30 +1,29 @@
-/* Modal styling */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
+.modal{
+    display: none;
+    position: fixed;
     z-index: 1;
     top: -15%;
     left: 35%;
-    height: 80%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for contrast */
-    width: 25%; /* Adjust width as necessary */
-    margin: 10% auto; /* Increase top margin to push it down the page */
+    height: 80%;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 25%;
+    margin: 10% auto;
     padding: 20px;
-    border-radius: 5px; /* Optional: rounded corners */
+    border-radius: 5px;
 }
 
 .modal-content{
-    justify-content: space-between; /* Add space between the child elements */
-    background-color: #333; /* Dark background */
-    color: #fff; /* Light text */
-    border-radius: 8px; /* Rounded corners */
-    width: 90%; /* Adjust as needed */
-    margin: 5% auto; /* Vertically center */
+    justify-content: space-between;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    width: 90%;
+    margin: 5% auto;
     padding: 20px;
 }
 
 .addClose, .editClose{
-    color: #aaa; /* Light grey */
+    color: #aaa;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -32,14 +31,14 @@
 }
 
 .close:hover, .close:focus{
-    color: #ddd; /* Slightly darker grey on hover/focus */
+    color: #ddd;
     text-decoration: none;
     cursor: pointer;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px){
     .modal-content {
-        width: 80%; /* Full width on smaller screens */
+        width: 80%;
         margin: 10% auto;
     }
 }

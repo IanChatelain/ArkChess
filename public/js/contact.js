@@ -1,19 +1,20 @@
-function validate(e) {
+function validate(e){
     hideErrors();
     let errors = formHasErrors();
 
-    if (errors) {
+    if (errors){
         e.preventDefault();
     } else {
-        e.preventDefault(); // Remove this if the form should submit to a server
+        e.preventDefault();
         displayThankYou();
     }
 }
 
-function resetForm(e) {
-    if (!confirm('Are you sure you want to clear the form?')) {
+function resetForm(e){
+    if (!confirm('Are you sure you want to clear the form?')){
         e.preventDefault();
-    } else {
+    } 
+    else{
         hideErrors();
     }
 }
@@ -25,25 +26,23 @@ function formHasErrors(){
         "comment": /.+/
     };
 
-    // Check for empty fields first
-    for (let id in fields) {
+    for (let id in fields){
         let field = document.getElementById(id);
-        if (field.value.trim() === "") {
+        if (field.value.trim() === ""){
             document.getElementById(id + "Required_error").style.display = "block";
             field.focus();
             errorFlag = true;
         }
     }
 
-    // If no empty fields were found, check for invalid input
-    if (!errorFlag) {
-        for (let id in fields) {
+    if (!errorFlag){
+        for (let id in fields){
             let field = document.getElementById(id);
-            if (!fields[id].test(field.value)) {
+            if (!fields[id].test(field.value)){
                 document.getElementById(id + "Invalid_error").style.display = "block";
                 field.focus();
                 errorFlag = true;
-                break; // Stop at the first invalid input
+                break;
             }
         }
     }
@@ -52,26 +51,21 @@ function formHasErrors(){
 }
 
 
-function hideErrors() {
+function hideErrors(){
     var errors = document.getElementsByClassName("error");
-    for (var i = 0; i < errors.length; i++) {
+    for (var i = 0; i < errors.length; i++){
         errors[i].style.display = "none";
     }
 }
 
-function displayThankYou() {
+function displayThankYou(){
     let formContainer = document.getElementsByClassName("form-container")[0];
-    if (formContainer) {
+    if (formContainer){
         formContainer.innerHTML = '<h2 id="thankYouTitle">Thank You!</h2><p>Thank you for contacting us! We have received your message and will respond to you as soon as possible.</p>';
-        // Alternatively, you can hide the form and add the thank you message
-        // document.getElementById("contactForm").style.display = 'none';
-        // let thankYouMessage = document.createElement('div');
-        // thankYouMessage.innerHTML = '<h2 id="thankYouTitle">Thank You!</h2><p>Thank you for contacting us! We have received your message and will respond to you as soon as possible.</p>';
-        // formContainer.appendChild(thankYouMessage);
     }
 }
 
-function load() {
+function load(){
     let email = document.getElementById("email");
     email.focus();
 

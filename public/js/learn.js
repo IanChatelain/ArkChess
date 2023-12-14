@@ -1,6 +1,6 @@
 'use strict';
 
-function initChessboard(elementId, fen) {
+function initChessboard(elementId, fen){
     var config = {
         position: fen,
         draggable: true,
@@ -10,7 +10,7 @@ function initChessboard(elementId, fen) {
     return board;
 }
 
-function fetchAndDisplayOpenings(query = '', limit = 20) {
+function fetchAndDisplayOpenings(query = '', limit = 20){
     fetch('https://explorer.lichess.ovh/masters?topGames=20')
         .then(response => response.json())
         .then(data => {
@@ -27,7 +27,7 @@ function fetchAndDisplayOpenings(query = '', limit = 20) {
                 const chess = new Chess();
                 const result = chess.move({ from: move.uci.slice(0, 2), to: move.uci.slice(2, 4) });
 
-                if (result === null) {
+                if (result === null){
                     console.error('Illegal move or incorrect UCI string:', move.uci);
                     return;
                 }
@@ -61,7 +61,7 @@ function fetchAndDisplayOpenings(query = '', limit = 20) {
         });
 }
 
-function searchOpenings(event) {
+function searchOpenings(event){
     event.preventDefault();
     const query = document.getElementById('openingSearch').value;
     fetchAndDisplaySearchOpenings(query);
@@ -70,7 +70,7 @@ function searchOpenings(event) {
 function loadApp(){
     fetchAndDisplayOpenings();
     const form = document.getElementById('openingForm');
-    if (form) {
+    if (form){
         form.addEventListener('submit', searchOpenings);
     }
 }

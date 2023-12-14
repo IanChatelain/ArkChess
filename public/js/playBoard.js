@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the chessboard
     let playBoard = Chessboard('playBoard', {
-        position: 'start', // set the starting position
-        draggable: true,  // make the pieces draggable
+        position: 'start',
+        draggable: true,
         showNotation: false
     });
 });

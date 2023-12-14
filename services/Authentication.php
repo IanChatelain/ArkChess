@@ -87,7 +87,7 @@ class Authentication{
         }
     }
 
-    public static function logoutUser() {
+    public static function logoutUser(){
         $_SESSION = array();
     
         if (ini_get("session.use_cookies")) {

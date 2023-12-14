@@ -5,8 +5,7 @@
     text-shadow: none;
 }
 
-/* Profile page main content container */
-.form-container.profile {
+.form-container.profile{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -15,20 +14,19 @@
     gap: 20px;
 }
 
-.logoutContainer {
+.logoutContainer{
     display: flex;
     margin-right: auto;
 }
 
-.profileContent {
+.profileContent{
     display: flex;
-    justify-content: space-between; /* Add space between the child elements */
-    width: 100%; /* Ensure it takes the full width of its parent */
-    gap: 20px; /* Optional: add space between the child elements */
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
 }
 
-/* Common main content container */
-.form-container {
+.form-container{
     background: linear-gradient(to bottom left, #4d4d4d, #303030, #242424, #161616);
     border-radius: 8px;
     padding: 20px;
@@ -38,7 +36,7 @@
     padding-top: 15px;
 }
 
-.formTitle {
+.formTitle{
     color: #fff;
     text-align: center;
     margin-top: 5px;
@@ -99,7 +97,7 @@ input:focus{
     border: 1px solid #555;
 }   
 
-button.deleteButton {
+button.deleteButton{
     float: right;
 }
 
@@ -118,23 +116,23 @@ input.logout{
     margin-left: 20px;
 }
 
-.form-links {
+.form-links{
     font-size: 0.8em;
     margin-left: 10px;
 }
 
-.form-links a {
+.form-links a{
     color: #819cff;
     text-decoration: none;
     margin: 0 5px;
     transition: color 0.3s ease;
 }
 
-.form-links a:hover {
+.form-links a:hover{
     color: #ccd1ff;
 }
 
-textarea {
+textarea{
     background: #fff;
     border: 1px solid #aaa;
     border-radius: 4px;
@@ -147,7 +145,6 @@ textarea {
     resize: none;
 }
 
-/* New blog upload image input field. */
 input#file{
     background: none;
 }
@@ -156,51 +153,48 @@ fieldset#blogs{
     border: none;
 }
 
-/* Recent games container */
-.recent-games-container {
+.recent-games-container{
     flex: 1.5;
     order: 2;
     border-radius: 8px;
     padding: 20px;
-    background: #1C1C1E; /* Darker background for containers */
+    background: #1C1C1E;
     border: 1px solid rgb(59, 59, 59);
-    /* box-shadow: 0 4px 6px rgba(136, 136, 136, 0.6); */
     width: 95%;
     max-width: 1000px;
     padding-top: 10px;
 }
 
-.userDetails {
-    flex: 1; /* Allow the container to grow */
+.userDetails{
+    flex: 1;
     padding: 20px;
-    border-radius: 8px; /* Maintain the border radius */
-    background: #1C1C1E; /* Darker background for containers */
+    border-radius: 8px;
+    background: #1C1C1E;
     border: 1px solid rgb(59, 59, 59);
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); */
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between user details */
+    gap: 10px;
     padding-top: 10px;
 }
 
-    .userDetail {
-        font-size: 1rem; /* Increase font size */
-        padding-bottom: 8px; /* Padding at the bottom */
+    .userDetail{
+        font-size: 1rem;
+        padding-bottom: 8px;
     }
 
-    .userDetail:last-child {
-        border-bottom: none; /* Remove border from the last item */
+    .userDetail:last-child{
+        border-bottom: none;
     }
 
-    .userDetail .label {
+    .userDetail .label{
         display: inline-block;
-        font-weight: 700; /* Bold for labels */
-        margin-right: 5px; /* Space between label and value */
-        color: #a9a9a9; /* Subtle color for labels */
+        font-weight: 700;
+        margin-right: 5px;
+        color: #a9a9a9;
     }
 
-.recent-games-title {
+.recent-games-title{
     color: #ddd;
     margin-bottom: 15px;
     padding-bottom: 5px;
@@ -210,7 +204,7 @@ fieldset#blogs{
     border-bottom: 1px solid #3a3a3c;
 }
 
-.recent-game-item {
+.recent-game-item{
     background: #333;
     border: 1px solid #444;
     border-radius: 4px;
@@ -219,6 +213,6 @@ fieldset#blogs{
     color: #ccc;
 }
 
-.recent-game-item:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Hover effect for tiles */
+.recent-game-item:hover{
+    background-color: rgba(255, 255, 255, 0.2);
 }
