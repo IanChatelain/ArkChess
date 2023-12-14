@@ -13,7 +13,8 @@ class BlogModel{
     private $content;
     private $date;
     private $userID;
-    private CommentModel $comments; // Array of comment models.
+    private CommentModel $commentModel;
+    private $commentModels; // Array of comment models.
     private FileModel $fileModel;
     private $gameID;
     private $userName;
@@ -21,7 +22,7 @@ class BlogModel{
     private $fileNameMed;
     private $fileNameThumb;
 
-    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL, CommentModel $comments = NULL){
+    public function __construct($blogID = NULL, $title = '', $content = '', $userID = NULL){
         $this->blogID = $blogID;
         $this->title = $title;
         $this->content = $content;
@@ -33,8 +34,11 @@ class BlogModel{
         $this->setData($data);
     }
 
-    public function getAllBlogs($sortBy = 'date_time'){
-        $dataArray = DBManager::getMultiBlog($sortBy);
+    public function getAllBlogs($sortBy = NULL, $searchInput = NULL){
+        if($sortBy == NULL){
+            $sortBy = 'date_time';
+        }
+        $dataArray = DBManager::getMultiBlog($sortBy, $searchInput);
         $blogModelArray = [];
 
         foreach($dataArray as $data){
@@ -57,12 +61,18 @@ class BlogModel{
                 $this->userName = $data['user_name'];
             }
             $this->fileModel = DBManager::getUploadedFile($data['blog_id']);
+            $this->commentModels = CommentModel::getAllComments($data['blog_id']);
         }
         else{
             $this->blogID = -1;
         }
     }
 
+    public function getComments(){
+        return $this->commentModels;
+    }
+
+    // TODO: Move to file model.
     public function getFileName(Size $size){
         return $this->fileModel->getFileName($size);
     }

@@ -9,7 +9,11 @@
     padding-right: 15px;
 }
 
-.blog-item:hover {
+.commentContainer{
+    width: 40%;
+}
+
+.blog-item:hover, .commentContainer:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -72,10 +76,11 @@
     height: 50%;
 }
 
-.editImageDelete{
-    
+form#commentForm{
+    display: flex;
+    flex-direction: column;
 }
 
-.newBlogButtons{
-
+img#captchaImage, .captchaAnswer{
+    width: 25%;
 }

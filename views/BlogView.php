@@ -187,8 +187,10 @@ class BlogView{
             <div class="blogPageContainer">
                 <div class="blogSearchContainer">
                     $standardUserControls
-                    <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
-                    <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
+                    <form method="POST">
+                        <input type="text" name="blogSearch" class="blogSearch" placeholder="Search Blogs">
+                        <input type="submit" name="blogSearchButton" class="blogSearchButton" value="Search">
+                    </form>
                 </div>
                 <div class="blog-item-container">
                 $blogItem
@@ -216,32 +218,48 @@ class BlogView{
         $standardUserControls = "";
         $imgTag = "";
         $imageDirectory = "public/img/uploads/medium/";
+        $commentBlock = "";
 
         $fileName = $blogModel->getFileName(Size::MEDIUM);
+
         if($fileName){
             $imagePath = $imageDirectory . $fileName;
             $imgTag = <<<END
                 <img src="{$imagePath}"></img>
                 END;
         }
+        
+        $commentModels = $blogModel->getComments();
+        
+        if(!empty($commentModels)){
+            foreach($commentModels as $commentModel){
+                $commentDate = $commentModel->getDate();
+                $commentText = $commentModel->getText();
+                $commentUser = $commentModel->getUserName();
+
+                $commentBlock .= <<<END
+                <div class="commentContainer blog-item">
+                    <p class="date">{$commentUser} | {$commentDate}</p>
+                    <p class="blogContent">{$commentText}</p>
+                </div>
+                END;
+
+                $commentBlock .= "\n";
+            }
+        }
 
         if($isAuthed){
             $standardUserControls = <<<END
             <div>
-                <form method="POST" action="blog.php?edit={$blogID}">
+                <form class="blogUserControls" method="POST" action="blog.php?edit={$blogID}">
                     <input type="submit" class="editButton" name="editButton" value="Edit">
                 </form>
-                <input type="submit" class="commentButton" name="commentButton" onClick="comment.js" value="Comment">
+                <div>
+                    <input type="submit" class="commentButton" name="commentButton" value="Comment">
+                </div>
             </div>
             END;
         }
-
-        $commentBlock = <<<END
-        <div class="blog-item">
-            <p class="date">{$date}</p>
-            <p class="blogContent">{$content}</p>
-        </div>
-        END;
 
         $html = <<<END
         <main class="form-container profile">
@@ -256,6 +274,7 @@ class BlogView{
                         <p class="date">{$date}</p>
                         <p class="blogContent">{$content}</p>
                     </div>
+                    $commentBlock
                 </div>
                 $standardUserControls
             </div>

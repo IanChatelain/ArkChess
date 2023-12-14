@@ -1,44 +1,57 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var commentButton = document.getElementsByClassName('commentButton')[0];
+document.addEventListener("DOMContentLoaded", function(){
+    commentButton = document.getElementsByClassName('commentButton')[0];
 
-    commentButton.addEventListener("click", function(event) {
+    commentButton.addEventListener("click", function(event){
         event.preventDefault();
 
-        var commentButton = document.getElementsByClassName("commentButton")[0];
-        commentButton.setAttribute("display", "hidden");
+        commentButton = document.getElementsByClassName("commentButton")[0];
+        commentButton.style.display = "none";
 
-        blogItem = document.getElementsByClassName('blog-item')[0];
-        var commentForm = document.createElement("form");
+        blogItem = document.getElementsByClassName('blogPageContainer')[0];
+        commentForm = document.createElement("form");
         commentForm.setAttribute("method", "post");
         commentForm.setAttribute("id", "commentForm");
 
-        var commentTextArea = document.createElement("textarea");
+        commentTextArea = document.createElement("textarea");
         commentTextArea.setAttribute("name", "commentTextArea");
         commentTextArea.setAttribute("class", "commentTextArea");
         commentTextArea.setAttribute("cols", "30");
         commentTextArea.setAttribute("rows", "10");
 
-        var submitButton = document.createElement("input");
+        submitButton = document.createElement("input");
         submitButton.setAttribute("type", "submit");
         submitButton.setAttribute("class", "commentSubmitButton");
         submitButton.setAttribute("name", "commentSubmitButton");
         submitButton.setAttribute("value", "Submit");
 
-        var cancelButton = document.createElement("input");
+        cancelButton = document.createElement("input");
         cancelButton.setAttribute("type", "submit");
         cancelButton.setAttribute("class", "commentCancelButton");
         cancelButton.setAttribute("name", "commentCancelButton");
         cancelButton.setAttribute("value", "Cancel");
 
+        captchaAnswer = document.createElement("input");
+        captchaAnswer.setAttribute("type", "text");
+        captchaAnswer.setAttribute("class", "captchaAnswer");
+        captchaAnswer.setAttribute("name", "captchaAnswer");
+        captchaAnswer.setAttribute("placeholder", "Captcha Answer");
+
+        captchaImage = document.createElement('img');
+        captchaImage.id = 'captchaImage';
+        captchaImage.src = 'services/Captcha.php';
 
         commentForm.appendChild(commentTextArea);
         commentForm.appendChild(submitButton);
         commentForm.appendChild(cancelButton);
+        commentForm.appendChild(captchaImage);
+        commentForm.appendChild(captchaAnswer);
+        
         blogItem.appendChild(commentForm);
 
-        cancelButton.addEventListener("click", function(event) {
-            document.body.removeChild(commentForm);
-            commentButton.setAttribute("display", "block");
+        cancelButton.addEventListener("click", function(e){
+            e.preventDefault();
+            blogItem.removeChild(commentForm);
+            commentButton.style.display = "block";
         });
     })
 });

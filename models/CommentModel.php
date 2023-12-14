@@ -4,27 +4,58 @@ class CommentModel{
     private $commentID;
     private $commentText;
     private $userID;
+    private $userName;
     private $blogID;
     private $date;
 
-    public function __construct($commentID = NULL, $commentText = '', $userID = NULL, $date = NULL){
-        $this->commentID = $commentID;
+    public function __construct($commentText = '', $userID = NULL, $blogID = NULL){
         $this->commentText = $commentText;
         $this->userID = $userID;
         $this->blogID = $blogID;
-        $this->date = $date;
     }
 
-    public static function getText(){
+    public function getText(){
         return $this->commentText;
     }
 
-    public static function getUserID(){
+    public function getUserID(){
         return $this->userID;
     }
 
-    public static function getBlogID(){
+    public function getBlogID(){
         return $this->blogID;
+    }
+
+    public function getDate(){
+        return $this->date;
+    }
+
+    public function getUserName(){
+        return $this->userName;
+    }
+
+    private function setData($data){
+        if($data){
+            $this->commentID = $data['comment_id'];
+            $this->date = $data['date_time'];
+            $this->commentText = $data['comment_text'];
+            $this->userID = $data['user_id'];
+            $this->blogID = $data['blog_id'];
+            $this->userName = $data['user_name'];
+        }
+    }
+
+    public static function getAllComments($blogID){
+        $dataArray = DBManager::getBlogComment($blogID);
+        $commentModelArray = [];
+
+        foreach($dataArray as $data){
+            $commentModel = new CommentModel();
+            $commentModel->setData($data);
+            $commentModelArray[] = $commentModel;
+        }
+
+        return $commentModelArray;
     }
 }
 
