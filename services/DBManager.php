@@ -484,6 +484,8 @@ class DBManager{
     public static function deleteBlog($blogID){
         $db = self::connect();
 
+        // $query = QueryBuilder::buildQuery($blogID, QueryType::Delete, Table::Blog, Where::BlogID);
+
         $query = "DELETE FROM blog WHERE blog_id = :blog_id LIMIT 1";
         try{
             $statement = $db->prepare($query);
