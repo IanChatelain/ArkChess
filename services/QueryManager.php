@@ -24,6 +24,8 @@ class QueryManager{
     private Table $table;
     private Where $column;
     private $parameterValue;
+    private $query;
+    private $bindFormat;
 
     public function __construct(Type $type, Table $table){
         $this->type = $type;
@@ -37,7 +39,7 @@ class QueryManager{
             $query = sprintf('DELETE FROM %s WHERE %s = %s', $table, $column, $parameterValue);
         }
 
-        return $query;
+        $this->query = $query;
     }
 
     public static function executeQuery(){
